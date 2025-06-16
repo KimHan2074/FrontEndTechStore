@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import routes from './routes';
 import React from 'react';
 import Header from './components/user/Header/Header';
+import AboutUs from './pages/user/About_us/About_us';
 
 function App() {
   // const showMain = (routes) => {
@@ -27,7 +28,10 @@ function App() {
     //   </Routes>
     // </Router>
 
-    <Header></Header>
+    <div>
+        <Header></Header>
+        <AboutUs></AboutUs>
+    </div>
   );
 }
 
