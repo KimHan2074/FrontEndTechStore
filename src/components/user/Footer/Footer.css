@@ -1,0 +1,94 @@
+.footer-container {
+  background-color: #1f2937; /* Dark gray */
+  color: #f9fafb; /* Light gray */
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
+  gap: 20px;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul li {
+  margin: 5px 0;
+}
+
+.browse-link {
+  color: #facc15; /* Yellow */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.browse-link:hover {
+  text-decoration: underline;
+}
+
+.download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin: 10px 0;
+  padding: 10px 15px;
+  background-color: #374151; /* Darker gray */
+  color: #f9fafb;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #f97316; /* Orange */
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tag {
+  background-color: #374151;
+  color: #f9fafb;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tag:hover {
+  background-color: #f97316; /* Orange */
+}
+
+.footer-bottom {
+  border-top: 1px solid #374151;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.9rem;
+  color: #9ca3af; /* Gray */
+}
