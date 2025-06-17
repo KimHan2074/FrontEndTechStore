@@ -16,6 +16,7 @@ function AppRoutes() {
       {/* User layout */}
       {/* <Route element={<AuthLayout />}>
         <Route path="/" element={<Login />} /> */}
+        {/* <Route path="/auth/callback" element={<AuthCallback />} /> */}
         {/* register, reset password */}
       {/* </Route> */}
 
