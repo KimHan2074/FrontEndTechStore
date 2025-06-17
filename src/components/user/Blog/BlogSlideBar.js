@@ -1,96 +1,101 @@
-import React from "react";
-import "../../../pages/Blog/Blog.css"
-const BlogSlideBar = () => {
-    const categories = [
-        { id: 1, name: "All", active: true },
-        { id: 2, name: "Computer & Laptop", active: false },
-        { id: 3, name: "Smartphone", active: false },
-        { id: 4, name: "Headphones", active: false },
-        { id: 5, name: "Accessories", active: false },
-        { id: 6, name: "Camera & Photo", active: false },
-        { id: 7, name: "TV & Homes", active: false },
-    ];
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "../../../pages/user/Blog/Blog.css";
 
-    const blogPosts = [
-        {
-            id: 1,
-            title: "Curabitur pulvinar aliquam lectucnon blandit erat mattis vitae",
-            date: "28 Nov, 2015",
-            image: "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482759uMk/anh-mo-ta.png",
-        },
-        {
-            id: 2,
-            title: "Curabitur pulvinar aliquam lectucnon blandit erat mattis vitae",
-            date: "28 Nov, 2015",
-            image: "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482759uMk/anh-mo-ta.png",
-        },
-        {
-            id: 3,
-            title: "Curabitur pulvinar aliquam lectucnon blandit erat mattis vitae",
-            date: "28 Nov, 2015",
-            image: "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482759uMk/anh-mo-ta.png",
-        },
-    ];
+const BlogSlideBar = ({ selectedCategoryId, setSelectedCategoryId }) => {
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-    const galleryImages = [
-        { id: 1, src: "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482759uMk/anh-mo-ta.png" },
-        { id: 2, src: "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482759uMk/anh-mo-ta.png" },
-        { id: 3, src: "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482759uMk/anh-mo-ta.png" },
-        { id: 4, src: "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482759uMk/anh-mo-ta.png" },
-        { id: 5, src: "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482759uMk/anh-mo-ta.png" },
-        { id: 6, src: "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482759uMk/anh-mo-ta.png" },
-    ];
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const latestRes = await axios.get("http://localhost:8000/api/blogs/status");
+        setBlogPosts(latestRes.data);
 
-    return (
-        <div className="mobile-interface">
-            <div className="section">
-                <h2 className="section-title">CATEGORIES</h2>
-                <ul className="category-list">
-                    {categories.map((category) => (
-                        <li key={category.id} className="category-item">
-                            <label className="category-label">
-                                <input
-                                    type="radio"
-                                    name="category"
-                                    checked={category.active}
-                                    readOnly
-                                    className="radio-category-list"
-                                />
-                                <span>{category.name}</span>
-                            </label>
-                        </li>
-                    ))}
-                </ul>
+        const allBlogRes = await axios.get("http://localhost:8000/api/blogs");
+        const allImages = allBlogRes.data.filter(blog => blog.image_url);
+        const shuffled = [...allImages].sort(() => 0.5 - Math.random());
+        setGalleryImages(shuffled.slice(0, 6));
+      } catch (err) {
+        console.error("Error fetching blog data:", err);
+      }
+    };
 
+    const fetchCategories = async () => {
+      try {
+        const categoryRes = await axios.get("http://localhost:8000/api/blogs/categories");
+        setCategories(categoryRes.data);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
+
+    fetchBlogs();
+    fetchCategories();
+  }, []);
+
+  return (
+    <div className="mobile-interface">
+      <div className="section">
+        <h2 className="section-title">CATEGORIES</h2>
+        <ul className="category-list">
+          <li className="category-item">
+            <label className="category-label">
+              <input
+                type="radio"
+                name="category"
+                className="radio-category-list"
+                checked={selectedCategoryId === null}
+                onChange={() => setSelectedCategoryId(null)}
+              />
+              <span>All</span>
+            </label>
+          </li>
+          {categories.map((category) => (
+            <li key={category.id} className="category-item">
+              <label className="category-label">
+                <input
+                  type="radio"
+                  name="category"
+                  className="radio-category-list"
+                  checked={selectedCategoryId === category.id}
+                  onChange={() => setSelectedCategoryId(category.id)}
+                />
+                <span>{category.name}</span>
+              </label>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title">LATEST BLOG</h2>
+        <div className="blog-list">
+          {blogPosts.map((post) => (
+            <div key={post.id} className="blog-item">
+              <img src={post.image_url} alt={post.title} className="blog-image" />
+              <div className="blog-content">
+                <p className="blog-title">{post.title}</p>
+                <p className="blog-date">{post.publish_date?.slice(0, 10)}</p>
+              </div>
             </div>
-
-            <div className="section">
-                <h2 className="section-title">LATEST BLOG</h2>
-                <div className="blog-list">
-                    {blogPosts.map((post) => (
-                        <div key={post.id} className="blog-item">
-                            <img src={post.image} alt={post.title} className="blog-image" />
-                            <div className="blog-content">
-                                <p className="blog-title">{post.title}</p>
-                                <p className="blog-date">{post.date}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            <div className="section">
-                <h2 className="section-title">GALLERY</h2>
-                <div className="gallery-grid">
-                    {galleryImages.map((image) => (
-                        <div key={image.id} className="gallery-item">
-                            <img src={image.src} alt="Gallery" className="gallery-image" />
-                        </div>
-                    ))}
-                </div>
-            </div>
+          ))}
         </div>
-    );
+      </div>
+
+      <div className="section">
+        <h2 className="section-title">GALLERY</h2>
+        <div className="gallery-grid">
+          {galleryImages.map((image) => (
+            <div key={image.id} className="gallery-item">
+              <img src={image.image_url} alt="Gallery" className="gallery-image" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default BlogSlideBar;

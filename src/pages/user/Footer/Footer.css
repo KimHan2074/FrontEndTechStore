@@ -8,7 +8,7 @@
 .footer-container {
   display: flex;
   flex-wrap: wrap;
-  max-width: 1200px;
+  max-width: 1080px;
   margin: 0 auto;
   justify-content: space-between;
 }
@@ -23,6 +23,7 @@
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .footer-logo-icon {
@@ -30,24 +31,26 @@
 }
 
 .footer-logo-text {
-  font-size: 18px;
+  font-size: 12px;
   font-weight: bold;
   letter-spacing: 1px;
 }
 
 .footer-contact {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
 .footer-support {
   margin-bottom: 5px;
   color: #aaaaaa;
+  cursor: pointer;
 }
 
 .footer-phone {
   font-weight: bold;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .footer-address,
@@ -55,11 +58,12 @@
   margin: 0;
   color: #cccccc;
   margin-top: 5px;
+  cursor: pointer;
 }
 
 .footer-title {
-  font-size: 16px;
-  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
   margin-bottom: 20px;
   text-transform: uppercase;
 }
@@ -77,16 +81,16 @@
 .footer-links a {
   color: #cccccc;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 12px;
   transition: color 0.2s;
 }
 
 .footer-links a:hover {
-  color: #ffcc00;
+  color: #EBC80C;
 }
 
 .footer-browse {
-  color: #ffcc00;
+  color: #EBC80C;
   display: flex;
   align-items: center;
 }
@@ -94,17 +98,6 @@
 .footer-browse span {
   margin-left: 5px;
 }
-
-.footer-apps {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.footer-apps img {
-  max-width: 140px;
-}
-
 .footer-tags {
   display: flex;
   flex-wrap: wrap;
@@ -126,10 +119,44 @@
 }
 
 .footer-copyright {
-  border-top: 1px solid #333333;
+  border-top: 1px solid #ffffff;
   margin-top: 20px;
   padding-top: 20px;
   text-align: center;
   font-size: 12px;
-  color: #888888;
+  cursor: pointer;
+  color: #ffff;
+}
+
+.footer-apps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 0;
+}
+
+.footer-apps a {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #303639;
+  border-radius: 4px;
+  text-decoration: none;
+  width: 65%;
+  color: white;
+  transition: all 0.3s ease;
+  border: 1px solid #303639;
+}
+
+.footer-apps a:hover {
+  background-color: #4a4a4a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.footer-apps span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
 }

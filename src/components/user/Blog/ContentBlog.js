@@ -1,97 +1,154 @@
-import React from "react";
-import "../../../pages/Blog/Blog.css";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "../../../pages/user/Blog/Blog.css";
+import { ArrowRight,ArrowLeft } from "lucide-react";
 
-const ContentBlog = () => {
-    const cards = [
-        {
-            id: 1,
-            image: "https://i.pinimg.com/736x/b9/8c/fd/b98cfd0f58ef0b34017cc705dc6ac675.jpg",
-            author: "Cameron",
-            date: "1 Feb, 2020",
-            title: "Curabitur pulvinar aliquam lectus, non blandit erat mattis vitae.",
-            description:
-                "Mauris scelerisque nisl id rutrum volutpat. Pellentesque urna nisi, suscipit at tortor vitae, hendrerit blandit lorem.",
-            isActive: false,
-        },
-        {
-            id: 2,
-            image: "https://i.pinimg.com/736x/b9/8c/fd/b98cfd0f58ef0b34017cc705dc6ac675.jpg",
-            author: "Cameron",
-            date: "1 Feb, 2020",
-            title: "Curabitur pulvinar aliquam lectus, non blandit erat mattis vitae.",
-            description:
-                "Mauris scelerisque nisl id rutrum volutpat. Pellentesque urna nisi, suscipit at tortor vitae, hendrerit blandit lorem.",
-            isActive: false,
-        },
-        {
-            id: 3,
-            image: "https://i.pinimg.com/736x/b9/8c/fd/b98cfd0f58ef0b34017cc705dc6ac675.jpg",
-            author: "Cameron",
-            date: "1 Feb, 2020",
-            title: "Curabitur pulvinar aliquam lectus, non blandit erat mattis vitae.",
-            description:
-                "Mauris scelerisque nisl id rutrum volutpat. Pellentesque urna nisi, suscipit at tortor vitae, hendrerit blandit lorem.",
-            isActive: true,
-        },
-        {
-            id: 4,
-            image: "https://i.pinimg.com/736x/b9/8c/fd/b98cfd0f58ef0b34017cc705dc6ac675.jpg",
-            author: "Cameron",
-            date: "1 Feb, 2020",
-            title: "Curabitur pulvinar aliquam lectus, non blandit erat mattis vitae.",
-            description:
-                "Mauris scelerisque nisl id rutrum volutpat. Pellentesque urna nisi, suscipit at tortor vitae, hendrerit blandit lorem.",
-            isActive: false,
-        },
-         {
-            id: 5,
-            image: "https://i.pinimg.com/736x/b9/8c/fd/b98cfd0f58ef0b34017cc705dc6ac675.jpg",
-            author: "Cameron",
-            date: "1 Feb, 2020",
-            title: "Curabitur pulvinar aliquam lectus, non blandit erat mattis vitae.",
-            description:
-                "Mauris scelerisque nisl id rutrum volutpat. Pellentesque urna nisi, suscipit at tortor vitae, hendrerit blandit lorem.",
-            isActive: false,
-        },
-    ];
+const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
+  const [cards, setCards] = useState([]);
+  const [searchItem, setSearchItem] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [expandedCardId, setExpandedCardId] = useState(null);
+  const [isDataFetched, setIsDataFetched] = useState(false);
+  const cardsPerPage = 9;
 
+  useEffect(() => {
+    const fetchData = () => {
+      axios
+        .get("http://localhost:8000/api/blogs")
+        .then((response) => {
+          setCards(response.data);
+          setIsDataFetched(true);
+        })
+        .catch((error) => console.error("Error fetching blogs:", error));
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const filteredCards = cards.filter((card) => {
+    const matchesSearch =
+      card.title.toLowerCase().includes(searchItem.toLowerCase()) ||
+      card.content.toLowerCase().includes(searchItem.toLowerCase());
+
+    const matchesCategory =
+      selectedCategoryId === null || card.category_id === selectedCategoryId;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  useEffect(() => {
+    if (isDataFetched && typeof onSearchResult === "function") {
+      onSearchResult(filteredCards.length > 0);
+    }
+  }, [filteredCards, onSearchResult, isDataFetched, searchItem, selectedCategoryId]);
+
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const currentCards = filteredCards.slice(indexOfFirstCard, indexOfLastCard);
+  const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchItem(e.target.value);
+    setCurrentPage(1);
+  };
+
+  return (
+    <div className="blog-container">
+      <div className="search-container-blog">
+        <input
+          type="text"
+          placeholder="Search..."
+          className="search-input-blog"
+          onChange={handleSearchChange}
+          value={searchItem}
+        />
+        <i className="fa-solid fa-magnifying-glass search-icon-blog"></i>
+      </div>
+
+      <div className="cards-container-blog">
+        {filteredCards.length === 0 ? (
+          <p className="no-results-message">No matching articles found</p>
+        ) : (
+          currentCards.map((card) => (
+            <div
+              key={card.id}
+              className={`card-blog ${card.isActive ? "active-card" : ""}`}
+            >
+              <img
+                src={card.image_url || "/placeholder.svg"}
+                alt="Blog"
+                className="card-image-blog"
+              />
+              <div className="card-meta-blog">
+                <div className="card-meta-detail">
+                  <i className="fa-solid fa-user icon-outline"></i>
+                  <span className="author">{card.author?.name}</span>
+                </div>
+                <div className="card-meta-detail">
+                  <i className="fa-solid fa-calendar icon-outline"></i>
+                  <span className="date">{card.publish_date?.slice(0, 10)}</span>
+                </div>
+              </div>
+
+              <h3 className={`card-title-blog ${expandedCardId === card.id ? "expanded" : ""}`}>
+                {card.title}
+              </h3>
+              <p className={`card-description-blog ${expandedCardId === card.id ? "expanded" : ""}`}>
+                {card.content}
+              </p>
+              <button
+                className="read-more-button"
+                onClick={() => setExpandedCardId(expandedCardId === card.id ? null : card.id)}
+              >
+                {expandedCardId === card.id ? "SHOW LESS" : "READ MORE"}{" "}
+                <span className="arrow-icon">
+                  <ArrowRight color="#FF9000" size={16} />
+                </span>
+              </button>
+            </div>
+          ))
+        )}
+      </div>
+
+      {totalPages > 1 && (
+<div className="pagination-blog">
+  <button
+    className="pagination-button"
+    onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+  >
+    <ArrowLeft className="arrow-icon" size={16}/>
+  </button>
+  {Array.from({ length: totalPages }, (_, i) => {
+    const pageNum = (i + 1).toString().padStart(2, '0');
     return (
-        <div className="blog-container">
-            <div className="search-container-blog">
-                <input type="text" placeholder="Search..." className="search-input-blog" />
-                <i className="fa-solid fa-magnifying-glass search-icon-blog"></i>
-            </div>
-            <div className="cards-container-blog">
-                {cards.map((card) => (
-                    <div
-                        key={card.id}
-                        className={`card-blog ${card.isActive ? "active-card" : ""}`}
-                    >
-                        <img
-                            src={card.image || "/placeholder.svg"}
-                            alt="Circuit board"
-                            className="card-image-blog"
-                        />
-                        <div className="card-meta-blog">
-                            <div className="card-meta-detail">
-                                <i className="fa-solid fa-user icon-outline"></i>
-                                <span className="author">{card.author}</span>
-                            </div>
-                            <div className="card-meta-detail">
-                                <i className="fa-solid fa-calendar icon-outline"></i>
-                                <span className="date">{card.date}</span>
-                            </div>
-                        </div>
-                        <h3 className="card-title-blog">{card.title}</h3>
-                        <p className="card-description-blog">{card.description}</p>
-                        <button className="read-more-button">
-                            READ MORE <span className="arrow-icon">→</span>
-                        </button>
-                    </div>
-                ))}
-            </div>
-        </div>
+      <button
+        key={pageNum}
+        onClick={() => handlePageChange(i + 1)}
+        className={`pagination-button ${currentPage === i + 1 ? "active-page" : ""}`}
+      >
+        {pageNum}
+      </button>
     );
+  })}
+  <button
+    className="pagination-button"
+    onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
+  >
+    <ArrowRight className="arrow-icon" size={16} />
+  </button>
+</div>
+
+
+
+      )}
+    </div>
+  );
 };
 
 export default ContentBlog;
