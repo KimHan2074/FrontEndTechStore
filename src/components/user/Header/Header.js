@@ -125,7 +125,7 @@ function Header() {
 
                             <li className="menu-item">
                                 <NavLink
-                                    to="/user/header"
+                                    to="/blog"
                                     className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
                                 >
                                     <span className="blog-icon"><Archive size={18} /></span> Blog

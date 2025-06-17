@@ -17,7 +17,7 @@ function AppRoutes() {
       {/* User layout */}
       <Route element={<AuthLayout />}>
         {/* <Route path="/" element={<Login />} /> */}
-        <Route path="/user/header" element={<Header />} />
+        {/* <Route path="/user/header" element={<Header />} /> */}
       </Route>
 
       {/* admin layout */}
