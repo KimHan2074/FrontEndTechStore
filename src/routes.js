@@ -1,23 +1,24 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-// import UserLayout from "./layouts/User/UserLayout.js";
-// import AuthLayout from "./layouts/AuthLayout.jsx";
+import UserLayout from "./layouts/User/UserLayout.js";
+import Header from "./components/user/Header/Header.js";
+import AuthLayout from "./layouts/Auth/AuthLayout.js";
+import ContentBlog from "./components/user/Blog/ContentBlog.js";
 // import AdminLayout from "./layouts/AdminLayout.jsx";
 
 function AppRoutes() {
   return (
     <Routes>
       {/* student layout */}
-      {/* <Route element={<UserLayout />}>
-        <Route path="/student/header" element={<Header />} /> */}
-        {/* Minh họa */}
-      {/* </Route> */}
-
+       <Route element={<UserLayout />}>
+        <Route path="/user/header" element={<Header />} />
+        <Route path="/Blog/content" element={<ContentBlog />} />
+      </Route>
       {/* User layout */}
-      {/* <Route element={<AuthLayout />}>
-        <Route path="/" element={<Login />} /> */}
-        {/* register, reset password */}
-      {/* </Route> */}
+      <Route element={<AuthLayout />}>
+        {/* <Route path="/" element={<Login />} /> */}
+        {/* <Route path="/user/header" element={<Header />} /> */}
+      </Route>
 
       {/* admin layout */}
       {/* <Route element={<AdminLayout/>}>
