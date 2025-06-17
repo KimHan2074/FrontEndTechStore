@@ -10,9 +10,10 @@ import NotFound from './pages/user/NotFound/NotFound';
 import Footer from './components/user/Footer/Footer';
 import TawkToChat from './pages/Chatbot/TawkToChat';
 import Chatbox from './pages/Chatbot/Chatbox ';
+import Blog from './pages/user/Blog/Blog';
 
 function App() {
-  // const showMain = (routes) => {
+   // const showMain = (routes) => {
   //   let result = null;
   //   if (routes.length > 0) {
   //     result = routes.map((route, index) => {
@@ -31,19 +32,20 @@ function App() {
     //     {showMain(routes)}
     //   </Routes>
     // </Router>
-  <Router>
+    <Router>
     <div>
       <Header></Header>
       <Routes>
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/blog" element={<Blog />} />
       </Routes>
       {/* <TawkToChat></TawkToChat> */}
       {/* <Chatbox></Chatbox> */}
       <Footer></Footer>
     </div>
   </Router>
-
+    
   );
 }
 
