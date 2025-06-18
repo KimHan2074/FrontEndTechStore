@@ -15,10 +15,18 @@ function AppRoutes() {
         <Route path="/Blog/content" element={<ContentBlog />} />
       </Route>
       {/* User layout */}
-      <Route element={<AuthLayout />}>
+
+      {/* <Route element={<AuthLayout />}>
+        <Route path="/" element={<Login />} /> */}
+        {/* <Route path="/auth/callback" element={<AuthCallback />} /> */}
+        {/* register, reset password */}
+      {/* </Route> */}
+
+     <Route element={<AuthLayout />}>
         {/* <Route path="/" element={<Login />} /> */}
         {/* <Route path="/user/header" element={<Header />} /> */}
       </Route>
+
 
       {/* admin layout */}
       {/* <Route element={<AdminLayout/>}>
