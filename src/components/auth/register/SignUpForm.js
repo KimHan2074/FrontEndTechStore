@@ -1,8 +1,7 @@
 import React, { Component } from "react"
+import { Link, useLocation } from "react-router-dom";
 
 export default function SignUpForm({
-  activeTab,
-  setActiveTab,
   showPassword,
   setShowPassword,
   showConfirmPassword,
@@ -10,23 +9,33 @@ export default function SignUpForm({
   formData,
   handleInputChange,
   handleSubmit,
-  handleGoogleSignUp, // thêm
-  handleAppleSignUp    // thêm
+  handleGoogleSignUp, 
+  handleAppleSignUp    
 }) {
+
+  const location = useLocation(); 
+
   return (
     <div className="signup-container">
-      <div className="logo-placeholder">
-        <div className="dashed-border"></div>
-      </div>
-
       <div className="form-card">
-        <div className="tab-container">
-          <button className={`tab ${activeTab === "signin" ? "active" : ""}`} onClick={() => setActiveTab("signin")}>
+         <div className="signin-tab-container">
+          <Link
+            to="/signin"
+            className={`signin-tab ${
+              location.pathname === "/signin" ? "signin-tab-active" : ""
+            }`}
+          >
             Sign In
-          </button>
-          <button className={`tab ${activeTab === "signup" ? "active" : ""}`} onClick={() => setActiveTab("signup")}>
+          </Link>
+
+          <Link
+            to="/signup"
+            className={`signin-tab ${
+              location.pathname === "/signup" ? "signin-tab-active" : ""
+            }`}
+          >
             Sign Up
-          </button>
+          </Link>
         </div>
 
         <form onSubmit={handleSubmit} className="form-content">

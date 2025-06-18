@@ -1,12 +1,13 @@
-// OtpVerification.jsx (đã hoàn thiện)
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../common/LoadingSpinner";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export default function OTP_Verification({ email, onSuccess }) {
+export default function OTP_Verification({ email}) {
   const [email_otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +24,7 @@ export default function OTP_Verification({ email, onSuccess }) {
       setLoading(true);
       await axios.post("http://127.0.0.1:8000/api/auth/verify-otp", { email, email_otp});
       toast.success("Your account has been successfully verified!");
-    //   onSuccess && onSuccess();
+      navigate("/signin");
     } catch (error) {
       console.error("Verification Error:", error);
       toast.error(error?.response?.data?.message || "Invalid OTP.");

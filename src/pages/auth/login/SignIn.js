@@ -1,0 +1,106 @@
+import React, { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import LoadingSpinner from "../../../components/common/LoadingSpinner.js";
+import SignInForm from "../../../components/auth/login/SignInForm.js";
+import "./SignIn.css";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'http://127.0.0.1:8000';
+
+export default function SignIn() {
+  const API_URL = process.env.REACT_APP_BE_URL;
+  const [activeTab, setActiveTab] = useState("signin")
+  const [showPassword, setShowPassword] = useState(false)
+  const [formData, setFormData] = useState({
+    name: "",
+    password: "",
+  })
+
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    // Validation
+    if (!formData.name || !formData.password) {
+      alert("Please fill in all fields!")
+      return
+    }
+
+    try {
+        setLoading(true);
+        await axios.get(`${API_URL}/sanctum/csrf-cookie`, { withCredentials: true})
+        const response = await axios.post(`${API_URL}/api/auth/login`, {
+        name: formData.name,
+        password: formData.password
+      }, {
+        withCredentials: true
+      });
+
+      const { token, role, user } = response.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', role);
+      localStorage.setItem('user', JSON.stringify(user));
+      console.log('Login successful:', response.data);
+
+        setTimeout(() => {
+          if (role === 'user') {
+            navigate('/homepage');
+          } else if (role === 'admin') {
+            navigate('/dashboard');
+          } 
+          else {
+            navigate('/');    
+          } 
+        }, 1000);
+        // Loading 1s trước khi điều hướng sang trang homepage or admin
+      } 
+    catch (error) {
+      setLoading(false);
+      if (error.response?.data?.errors?.email) {
+        toast.error('Login failed. Please check your information again.');
+      } else {
+        toast.error('Login failed. Please check your information again.');
+      }
+    }
+  };
+
+  const handleForgotPassword = () => {
+    navigate("/resetpassword");
+  }
+
+  const handleGoogleSignUp = () => {
+    window.location.href = "http://127.0.0.1:8000/auth/google/redirect";
+  };
+
+  return (
+    <>
+        {loading && <LoadingSpinner />}
+        <SignInForm
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            formData={formData}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+            handleForgotPassword={handleForgotPassword}
+            handleGoogleSignIn={handleGoogleSignUp}
+        />
+        <ToastContainer />
+    </>
+  )
+}

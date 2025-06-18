@@ -47,6 +47,10 @@ import 'react-toastify/dist/ReactToastify.css';
 // import AboutUs from './pages/user/About_us/About_us';
 import SignUp from './pages/auth/register/SignUp';
 import AuthCallback from './pages/auth/AuthCallback';
+import SignIn from './pages/auth/login/SignIn';
+import ResetPassword from './pages/auth/login/ResetPassword';
+import HomePage from './pages/user/Homepage/Homepage';
+import Dashboard from './pages/admin/Dashboard/Dashboard';
 
 function App() {
   return (
@@ -56,9 +60,13 @@ function App() {
       <ToastContainer />
       <Routes>
         {/* <Route path="/about" element={<AboutUs />} /> */}
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="signup" element={<SignUp />} />
         {/* Callback sau khi đăng nhập bằng Google */}
-        <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="callback" element={<AuthCallback />} />
+        <Route path="signin" element={<SignIn />} />
+        <Route path="resetpassword" element={<ResetPassword/>} />
+        <Route path="homepage" element={<HomePage/>} />
+        <Route path="dashboard" element={<Dashboard />}/>
       </Routes>
     </Router>
   )

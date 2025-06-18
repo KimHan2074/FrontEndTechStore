@@ -35,7 +35,6 @@ export default function SignUpPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match!");
       return;
@@ -60,7 +59,7 @@ export default function SignUpPage() {
       toast.error("Password must be at least 6 characters!");
       return;
     }
-    // Validate email format
+
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(formData.email)) {
       toast.error("Invalid email format!");
@@ -69,7 +68,6 @@ export default function SignUpPage() {
   
     try {
       setLoading(true);
-      // Gửi đăng ký bằng Axios
       await axios.post("http://127.0.0.1:8000/api/auth/register", formData);
       toast.success("Registration successful! Please check your email for OTP.");
       setGeneratedEmail(formData.email);
@@ -83,7 +81,6 @@ export default function SignUpPage() {
   }
 
   const handleGoogleSignUp = () => {
-    // Chuyển hướng về route của backend để bắt đầu OAuth
     window.location.href = "http://127.0.0.1:8000/auth/google/redirect";
   };
 
@@ -108,7 +105,6 @@ export default function SignUpPage() {
           email={generatedEmail}
           onSuccess={() => {
             toast.success("Your account has been successfully verified!");
-            // Chuyển hướng hoặc hoàn thành đăng ký tại đây nếu cần
           }}
         />
       )}

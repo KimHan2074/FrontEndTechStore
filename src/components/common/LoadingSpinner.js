@@ -1,10 +1,18 @@
 import React from "react";
-import { Loader2 } from "lucide-react";
 import "./LoadingSpinner.css";
+
 export default function LoadingSpinner() {
   return (
-    <div className="spinner">
-      <Loader2 className="animate-spin mr-2" /> Loading...
+    <div className="spinner-overlay">
+      <div className="spinner-container">
+        <div className="spinner">
+          <div className="spinner-circle spinner-circle-outer"></div>
+          <div className="spinner-circle-off spinner-circle-inner"></div>
+          <div className="spinner-circle spinner-circle-single-1"></div>
+          <div className="spinner-circle spinner-circle-single-2"></div>
+          <div className="text">...working...</div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
