@@ -58,13 +58,13 @@ export default function SignIn() {
 
         setTimeout(() => {
           if (role === 'user') {
-            navigate('/homepage');
+            navigate('/user/homepage');
           } else if (role === 'admin') {
-            navigate('/dashboard');
+            navigate('/admin/dashboard');
           } 
-          else {
-            navigate('/');    
-          } 
+          // else {
+          //   navigate('/');    
+          // } 
         }, 1000);
         // Loading 1s trước khi điều hướng sang trang homepage or admin
       } 
