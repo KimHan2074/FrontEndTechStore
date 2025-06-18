@@ -15,10 +15,10 @@ export default function AuthCallback() {
     if (token) {
       localStorage.setItem("access_token", token);
       toast.success("Đăng nhập bằng Google thành công!");
-      navigate("/homepage"); 
+      navigate("/user/homepage"); 
     } else {
       toast.error("Đăng nhập bằng Google thất bại!");
-      navigate("/login"); 
+      navigate("/signin"); 
     }
   }, [location]);
 
