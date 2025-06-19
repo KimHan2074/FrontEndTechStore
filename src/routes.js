@@ -12,6 +12,7 @@ import Dashboard from './pages/admin/Dashboard/Dashboard';
 import AboutUs from './pages/user/About_us/About_us';
 import NotFound from './pages/user/NotFound/NotFound';
 import Blog from './pages/user/Blog/Blog';
+import Profile from './pages/user/Profile/Profile';
 
 function AppRoutes() {
   return (
@@ -30,6 +31,7 @@ function AppRoutes() {
         <Route path="/user/homepage" element={<HomePage />} />
         <Route path="/user/about-us" element={<AboutUs />} />
         <Route path="/user/blog" element={<Blog />} />
+        <Route path="/user/profile" element={<Profile />} />
       </Route>
 
       {/* Admin layout */}
