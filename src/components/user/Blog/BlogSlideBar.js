@@ -40,7 +40,7 @@ const BlogSlideBar = ({ selectedCategoryId, setSelectedCategoryId }) => {
       <div className="section">
         <h2 className="section-title">CATEGORIES</h2>
         <ul className="category-list">
-          <li className="category-item">
+          <li className="category-item-blog">
             <label className="category-label">
               <input
                 type="radio"
@@ -53,7 +53,7 @@ const BlogSlideBar = ({ selectedCategoryId, setSelectedCategoryId }) => {
             </label>
           </li>
           {categories.map((category) => (
-            <li key={category.id} className="category-item">
+            <li key={category.id} className="category-item-blog">
               <label className="category-label">
                 <input
                   type="radio"
