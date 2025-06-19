@@ -8,8 +8,10 @@ import Header from './components/user/Header/Header';
 import AboutUs from './pages/user/About_us/About_us';
 import NotFound from './pages/user/NotFound/NotFound';
 import Footer from './components/user/Footer/Footer';
+import Profile from './pages/user/Profile/Profile';
 import TawkToChat from './pages/Chatbot/TawkToChat';
 import Chatbox from './pages/Chatbot/Chatbox ';
+import Orders from './pages/user/Order/Orders';
 
 function App() {
   // const showMain = (routes) => {
@@ -37,6 +39,8 @@ function App() {
       <Routes>
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/profile" element={<Profile/>} />
+        <Route path="/orders" element={<Orders/>} />
       </Routes>
       {/* <TawkToChat></TawkToChat> */}
       {/* <Chatbox></Chatbox> */}
