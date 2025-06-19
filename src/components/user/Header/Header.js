@@ -1,131 +1,148 @@
 import { useState } from "react"
-import { Search, ShoppingCart, Heart, User, ChevronDown, Phone } from "lucide-react"
-import { Link } from "react-router-dom";
-import "./Header.css"
+import { NavLink } from "react-router-dom"
+import "../../../pages/user/Header/Header.css"
 
-export default function Header() {
-  const [searchQuery, setSearchQuery] = useState("")
+import {
+    Search, ShoppingCart, Heart, User, ChevronDown, Phone,
+    Twitter, Facebook, Youtube, Instagram, MessageCircleHeart,
+    CreditCard, House, AlignJustify, Archive
+} from "lucide-react"
 
-  return (
-    <div className = "header-content">
-        <div className="header">
-            {/* Top Banner */}
-            <div className="top-banner">
-                <div className="banner-content">
+function Header() {
+    const [searchQuery, setSearchQuery] = useState("")
 
-                    <div className="black-friday">
-                        <span className="black">BLACK</span> Friday
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value)
+    }
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault()
+        console.log("Searching for:", searchQuery)
+    }
+
+    return (
+        <header className="store-header">
+            <div className="promo-banner">
+                <div className="container banner-content">
+                    <div className="black-friday-label">
+                        <span className="black-label">Black</span>
+                        <span className="friday-label">Friday</span>
                     </div>
-
-                    <div className="up-to-discount">
-                        <span className="up-to">Up to</span>
-                        <span className="discount">59%</span>
-                        <span className="off">OFF</span>
+                    <div className="promo-text">
+                        Up to <span className="discount-percentage">59%</span> OFF
                     </div>
-                
                     <button className="shop-now-btn">SHOP NOW</button>
                 </div>
             </div>
 
-            {/* Welcome Bar */}
             <div className="welcome-bar">
-                <div className="welcome-text">Welcome to TechStore.</div>
-                <div className="social-icons">
-                <span>Follow us:</span>
-                {/* <Link className="social-icon" to="/about"><img src="/foo.jpg" alt="foo" style={{ width:'500px', height:'500px'}} /></Link>
-                <Link className="social-icon" to="/about"><img src="/foo.jpg" alt="foo" style={{ width:'500px', height:'500px'}} /></Link>
-                <Link className="social-icon" to="/about"><img src="/foo.jpg" alt="foo" style={{ width:'500px', height:'500px'}} /></Link>
-                <Link className="social-icon" to="/about"><img src="/foo.jpg" alt="foo" style={{ width:'500px', height:'500px'}} /></Link>
-                <Link className="social-icon" to="/about"><img src="/foo.jpg" alt="foo" style={{ width:'500px', height:'500px'}} /></Link> */}
-
-                <div className="social-icon">fb</div>
-                <div className="social-icon">ig</div>
-                <div className="social-icon">tt</div>
-                <div className="social-icon">mess</div>
-                <div className="social-icon">ig</div>
+                <div className="container welcome-content">
+                    <div className="welcome-text">Welcome to TechStore.</div>
+                    <div className="social-links">
+                        <span>Follow us:</span>
+                        <a href="#" className="social-link"><Twitter size={18} /></a>
+                        <a href="#" className="social-link"><Facebook size={18} /></a>
+                        <a href="#" className="social-link"><MessageCircleHeart size={18} /></a>
+                        <a href="#" className="social-link"><CreditCard size={18} /></a>
+                        <a href="#" className="social-link"><Youtube size={18} /></a>
+                        <a href="#" className="social-link"><Instagram size={18} /></a>
+                    </div>
                 </div>
             </div>
 
-            {/* Main Navigation */}
             <div className="main-nav">
-                <div className="logo">
-                {/* <Link href="/"> */}
-                    <div className="logo-container">
-                    <div className="logo-icon">
-                        <span className="logo-text">T</span>
+                <div className="container nav-content">
+                    <div className="logo">
+                        <img
+                            src="/assets/images/logo.png"
+                            style={{ width: '100px', height: '50px' }}
+                            className="logo-img" alt="Logo" />
                     </div>
-                    <span className="logo-name">TECHSTORE</span>
+
+                    <div className="search-container">
+                        <form onSubmit={handleSearchSubmit}>
+                            <input
+                                type="text"
+                                placeholder="Search for anything..."
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                className="search-input"
+                            />
+                            <button type="submit" className="search-button">
+                                <Search size={18} />
+                            </button>
+                        </form>
                     </div>
-                {/* </Link> */}
-                </div>
 
-                <div className="search-container">
-                <input
-                    type="text"
-                    className="search-input"
-                    placeholder="Search products..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <button className="search-button">
-                    <Search size={18} />
-                </button>
-                </div>
-
-                <div className="nav-icons">
-                    {/* <Link className="nav-icon" to="/cart"> 
-                        <ShoppingCart size={20} />
-                        <span className="icon-badge">0</span>
-                    </Link> */}
-
-                    {/* <Link className="nav-icon" to="/wishlist"> 
-                        <Heart size={20} />
-                        <span className="icon-badge">0</span>
-                    </Link>
-
-                    <Link className="nav-icon" to="/profile"> 
-                        <User size={20} />
-                    </Link> */}
-
-                    <div className="nav-icon">Cart</div>
-                    <div className="nav-icon">Wishlist</div>
-                    <div className="nav-icon">Profile</div>
+                    <div className="nav-icons">
+                        <a href="/cart" className="icon-link">
+                            <ShoppingCart size={20} />
+                            <span className="badge">2</span>
+                        </a>
+                        <a href="/wishlist" className="icon-link">
+                            <Heart size={20} />
+                            <span className="badge">3</span>
+                        </a>
+                        <a href="/user/profile" className="icon-link">
+                            <User size={20} />
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            {/* Bottom Navigation */}
-            <div className="bottom-nav">
-                <div className="categories">
-                <span className="category-text">All Category</span>
-                <ChevronDown size={16} />
-                </div>
+            {/* Category Navigation */}
+            <div className="category-nav">
+                <div className="container category-content">
+                    <div className="category-dropdown">
+                        <NavLink
+                            to="/user/header"
+                            className={({ isActive }) => isActive ? "dropdown-btn active" : "dropdown-btn"}
+                        >
+                            All Category
+                        </NavLink>
+                        <div className="dropdown-arrow"><ChevronDown /></div>
+                    </div>
 
-                <nav className="nav-links">
-                    {/* <Link className="nav-link" to="/homepage"> <span className="nav-link-icon">🏠</span>
-                        Homepage
-                    </Link>
 
-                    <Link className="nav-link" to="/products"> <span className="nav-link-icon">📋</span>
-                        Product List
-                    </Link>
-                
-                    <Link className="nav-link" to="/blog"> <span className="nav-link-icon">📝</span>
-                        Blog
-                    </Link> */}
-                    <ul>
-                        <li className="nav-link">Homepage</li>
-                        <li className="nav-link">Product List</li>
-                        <li className="nav-link">Blog</li>
-                    </ul>
-                </nav>
+                    <nav className="main-menu">
+                        <ul className="menu-items">
+                            <li className="menu-item">
+                                <NavLink
+                                    to="/user/header"
+                                    className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
+                                >
+                                    <span className="home-icon"><House size={18} /></span> Homepage
+                                </NavLink>
+                            </li>
 
-                <div className="phone-number">
-                <Phone size={16} />
-                <span>+1 202-555-0104</span>
+                            <li className="menu-item">
+                                <NavLink
+                                    to="/user/header"
+                                    className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
+                                >
+                                    <span className="list-icon"><AlignJustify size={18} /></span> Product List
+                                </NavLink>
+                            </li>
+
+                            <li className="menu-item">
+                                <NavLink
+                                    to="/user/blog"
+                                    className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
+                                >
+                                    <span className="blog-icon"><Archive size={18} /></span> Blog
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div className="contact-phone">
+                        <Phone size={18} />
+                        <span className="phone-number">+1-202-555-0104</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        </div>
-  )
+        </header>
+    )
 }
 
+export default Header
