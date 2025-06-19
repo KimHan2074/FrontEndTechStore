@@ -12,7 +12,7 @@ function AppRoutes() {
       {/* student layout */}
        <Route element={<UserLayout />}>
         <Route path="/user/header" element={<Header />} />
-        <Route path="/Blog/content" element={<ContentBlog />} />
+        <Route path="/blog/content" element={<ContentBlog />} />
       </Route>
       {/* User layout */}
       <Route element={<AuthLayout />}>
