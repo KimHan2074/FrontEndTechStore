@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../../components/user/Header/Header';
+import Footer from '../../components/user/Footer/Footer';
 import { Outlet } from 'react-router-dom';
 
 class AuthLayout extends Component {
@@ -8,6 +9,7 @@ class AuthLayout extends Component {
             <div>
                 <Header/>
                 <Outlet/>
+                <Footer />
             </div>
         );
     }

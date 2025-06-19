@@ -1,0 +1,91 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.profile-sidebar {
+  width: 20%;
+  background-color: #1B6392;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-info {
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-info .avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.profile-info div {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: left;
+  margin-left: 10px;
+}
+
+.profile-info p {
+  margin: 10px;
+  font-size: 14px;
+  color: #cfd8e3;
+  text-align: left;
+  margin-left: 10px;
+}
+
+.menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: black;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+.menu-item:hover {
+  background-color: #0574c8;
+}
+
+.menu-link {
+  text-decoration: none;
+  color: black; 
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.menu-item.active .menu-link {
+  color: white; 
+  border-radius: 8px; 
+}
+

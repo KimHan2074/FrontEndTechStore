@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { NavLink } from "react-router-dom"
 import "../../../pages/user/Header/Header.css"
+
 import {
     Search, ShoppingCart, Heart, User, ChevronDown, Phone,
     Twitter, Facebook, Youtube, Instagram, MessageCircleHeart,
@@ -82,7 +83,7 @@ function Header() {
                             <Heart size={20} />
                             <span className="badge">3</span>
                         </a>
-                        <a href="/account" className="icon-link">
+                        <a href="/user/profile" className="icon-link">
                             <User size={20} />
                         </a>
                     </div>
@@ -125,7 +126,7 @@ function Header() {
 
                             <li className="menu-item">
                                 <NavLink
-                                    to="/blog"
+                                    to="/user/blog"
                                     className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
                                 >
                                     <span className="blog-icon"><Archive size={18} /></span> Blog
