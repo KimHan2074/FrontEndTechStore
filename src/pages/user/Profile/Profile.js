@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Profile.css";
 import { Eye, EyeOff } from "lucide-react";
 import Sidebar from "../Sidebar/Sidebar";
+import axios from "axios";
 
 const Profile = () => {
   const [showPasswords, setShowPasswords] = useState({
@@ -22,40 +23,49 @@ const Profile = () => {
     new: "",
     confirm: "",
   });
-  const [avatar, setAvatar] = useState(""); 
-  const [activeMenu, setActiveMenu] = useState("profile"); 
-
-  const userId = 1;
+  const [avatar, setAvatar] = useState("");
+  const [activeMenu, setActiveMenu] = useState("profile");
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await fetch(`http://127.0.0.1:8000/api/user/${userId}`, {
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-        });
+    const fetchUserIdAndData = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Token not found. Please log in first.");
+    }
 
-        if (!response.ok) {
-          throw new Error(`Fetch failed: ${response.statusText}`);
-        }
+    const userIdResponse = await axios.get("http://127.0.0.1:8000/api/user/getUserId", {
+      headers: { Authorization: `Bearer ${token}` },
+      withCredentials: true,
+    });
 
-        const json = await response.json();
-        const user = json.data;
+    const fetchedUserId = userIdResponse.data.userId;
+    setUserId(fetchedUserId);
+    console.log("Fetched User ID:", fetchedUserId);
 
-        setProfile({
-          username: user.name ?? "",
-          email: user.email ?? "",
-          phone: user.phone ?? "",
-          address: user.address ?? "",
-        });
-        setAvatar(user.avatar || "");
-      } catch (err) {
-        console.error("Error fetching profile data:", err);
-      }
-    };
+    const userResponse = await axios.get(`http://127.0.0.1:8000/api/user/${fetchedUserId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      withCredentials: true,
+    });
 
-    fetchProfile();
-  }, [userId]);
+    const userData = userResponse.data.data;
+    setProfile({
+      username: userData.name ?? "N/A",
+      email: userData.email ?? "N/A",
+      phone: userData.phone ?? "Not Provided",
+      address: userData.address ?? "Not Provided",
+    });
+    setAvatar(userData.avatar || "https://example.com/default-avatar.png"); 
+    console.log("Fetched User Data:", userData);
+  } catch (error) {
+    console.error("Error fetching data:", error.response?.data || error.message);
+  }
+};
+
+
+    fetchUserIdAndData();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -68,139 +78,125 @@ const Profile = () => {
   };
 
   const handleProfileUpdate = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/user/update-profile/${userId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", 
-        body: JSON.stringify({
+    e.preventDefault();
+    if (!userId) {
+      alert("User ID not found. Please try again.");
+      return;
+    }
+    try {
+      const response = await axios.put(
+        `http://127.0.0.1:8000/api/user/update-profile/${userId}`,
+        {
           name: profile.username,
           email: profile.email,
           phone: profile.phone,
           address: profile.address,
-        }),
-      }
-    );
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "Failed to update profile");
-    }
-
-    const updatedProfile = await response.json();
-    console.log("Profile updated:", updatedProfile);
-    alert("Profile updated successfully!");
+      console.log("Profile updated:", response.data);
+      alert("Profile updated successfully!");
     } catch (err) {
-      console.error("Error updating profile:", err);
-      alert("Failed to update profile");
+      console.error("Error updating profile:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Failed to update profile");
     }
   };
+
   const handleChangePassword = async (e) => {
     e.preventDefault();
     if (passwords.new !== passwords.confirm) {
       alert("New password and confirmation do not match!");
       return;
     }
-
+    if (!userId) {
+      alert("User ID not found. Please try again.");
+      return;
+    }
     try {
-      const response = await fetch(
+      const response = await axios.put(
         `http://127.0.0.1:8000/api/user/change-password/${userId}`,
         {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            current_password: passwords.current,
-            new_password: passwords.new,
-            new_password_confirmation: passwords.confirm,
-          }),
+          current_password: passwords.current,
+          new_password: passwords.new,
+          new_password_confirmation: passwords.confirm,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
         }
       );
-
-      if (!response.ok) throw new Error(response.statusText);
 
       alert("Password changed successfully!");
       setPasswords({ current: "", new: "", confirm: "" });
     } catch (err) {
-      console.error("Error changing password:", err);
+      console.error("Error changing password:", err.response?.data || err.message);
       alert("Failed to change password:\n" + err.message);
     }
   };
 
-  const togglePasswordVisibility = (field) => {
-    setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
-  };
   const handleImageUpload = async (e) => {
-  console.log("File upload triggered");
-  const file = e.target.files[0];
-  if (!file) {
-    console.log("No file selected");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", "techstore");
-  formData.append("cloud_name", "dgjxz5ohr");
-
-  try {
-    console.log("Uploading image...");
-    const response = await fetch(
-      `https://api.cloudinary.com/v1_1/dgjxz5ohr/image/upload`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to upload image");
+    const file = e.target.files[0];
+    if (!file) {
+      console.log("No file selected");
+      return;
     }
 
-    const data = await response.json();
-    console.log("Upload response:", data);
-    setAvatar(data.secure_url);
-    alert("Image uploaded successfully!");
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "techstore");
+    formData.append("cloud_name", "dgjxz5ohr");
 
-    await saveAvatarToDatabase(data.secure_url);
+    try {
+      const response = await fetch(`https://api.cloudinary.com/v1_1/dgjxz5ohr/image/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload image");
+      }
+
+      const data = await response.json();
+      setAvatar(data.secure_url);
+      alert("Image uploaded successfully!");
+
+      await saveAvatarToDatabase(data.secure_url);
     } catch (err) {
       console.error("Error uploading image:", err);
       alert("Failed to upload image");
     }
   };
 
-
   const saveAvatarToDatabase = async (avatarUrl) => {
-  try {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/user/update-avatar/${userId}`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ avatar: avatarUrl }),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to save avatar to database");
+    if (!userId) {
+      alert("User ID not found. Please try again.");
+      return;
     }
+    try {
+      await axios.put(
+        `http://127.0.0.1:8000/api/user/update-avatar/${userId}`,
+        { avatar: avatarUrl },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
 
-    alert("Avatar saved to database successfully!");
+      alert("Avatar saved to database successfully!");
     } catch (err) {
       console.error("Error saving avatar to database:", err);
       alert("Failed to save avatar to database");
     }
   };
-
+  const togglePasswordVisibility = (field) => {
+    setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
   return (
     <div className="profile-container">
       <Sidebar
