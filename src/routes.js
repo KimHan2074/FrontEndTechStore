@@ -23,6 +23,10 @@ function AppRoutes() {
         <Route path="/callback" element={<AuthCallback />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
+      {/* student layout */}
+       <Route element={<UserLayout />}>
+        <Route path="/user/header" element={<Header />} />
+        <Route path="/blog/content" element={<ContentBlog />} />
       </Route>
 
       {/* User layout */}
