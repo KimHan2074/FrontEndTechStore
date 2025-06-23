@@ -117,7 +117,7 @@ function Header() {
 
                             <li className="menu-item">
                                 <NavLink
-                                    to="/user/header"
+                                    to="/user/product"
                                     className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
                                 >
                                     <span className="list-icon"><AlignJustify size={18} /></span> Product List
