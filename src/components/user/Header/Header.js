@@ -8,17 +8,18 @@ import {
     CreditCard, House, AlignJustify, Archive
 } from "lucide-react"
 
-function Header() {
-    const [searchQuery, setSearchQuery] = useState("")
+function Header({ onSearch }) {
+  const [searchQuery, setSearchQuery] = useState("");
 
-    const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value)
-    }
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
-    const handleSearchSubmit = (e) => {
-        e.preventDefault()
-        console.log("Searching for:", searchQuery)
-    }
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    onSearch(searchQuery);
+  };
+
 
     return (
         <header className="store-header">
@@ -60,18 +61,18 @@ function Header() {
                     </div>
 
                     <div className="search-container">
-                        <form onSubmit={handleSearchSubmit}>
-                            <input
-                                type="text"
-                                placeholder="Search for anything..."
-                                value={searchQuery}
-                                onChange={handleSearchChange}
-                                className="search-input"
-                            />
-                            <button type="submit" className="search-button">
-                                <Search size={18} />
-                            </button>
-                        </form>
+                         <form onSubmit={handleSearchSubmit}>
+              <input
+                type="text"
+                placeholder="Search for anything..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="search-input"
+              />
+              <button type="submit" className="search-button">
+                <Search size={18} />
+              </button>
+            </form>
                     </div>
 
                     <div className="nav-icons">
@@ -117,7 +118,7 @@ function Header() {
 
                             <li className="menu-item">
                                 <NavLink
-                                    to="/user/header"
+                                    to="/user/product"
                                     className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
                                 >
                                     <span className="list-icon"><AlignJustify size={18} /></span> Product List
