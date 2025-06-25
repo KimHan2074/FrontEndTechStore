@@ -7,12 +7,15 @@ import SignUp from './pages/auth/register/SignUp';
 import SignIn from './pages/auth/login/SignIn';
 import ResetPassword from './pages/auth/login/ResetPassword';
 import AuthCallback from './pages/auth/AuthCallback';
-import HomePage from './pages/user/Homepage/Homepage';
+import HomePage from './pages/user/HomePage/HomePage';
 import Dashboard from './pages/admin/Dashboard/Dashboard';
 import AboutUs from './pages/user/About_us/About_us';
 import NotFound from './pages/user/NotFound/NotFound';
 import Blog from './pages/user/Blog/Blog';
 import Profile from './pages/user/Profile/Profile';
+import Product from './pages/user/Product/Product';
+import ContentBlog from './components/user/Blog/ContentBlog';
+import Header from "./components/user/Header/Header.js";
 
 function AppRoutes() {
   return (
@@ -23,6 +26,7 @@ function AppRoutes() {
         <Route path="/callback" element={<AuthCallback />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
+      </Route>
       {/* student layout */}
        <Route element={<UserLayout />}>
         <Route path="/user/header" element={<Header />} />
@@ -36,6 +40,7 @@ function AppRoutes() {
         <Route path="/user/about-us" element={<AboutUs />} />
         <Route path="/user/blog" element={<Blog />} />
         <Route path="/user/profile" element={<Profile />} />
+        <Route path="/user/Product" element={<Product />} />
       </Route>
 
       {/* Admin layout */}
