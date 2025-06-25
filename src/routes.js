@@ -7,7 +7,7 @@ import SignUp from './pages/auth/register/SignUp';
 import SignIn from './pages/auth/login/SignIn';
 import ResetPassword from './pages/auth/login/ResetPassword';
 import AuthCallback from './pages/auth/AuthCallback';
-import HomePage from './pages/user/HomePage/HomePage.js';
+import HomePage from "./pages/user/HomePage/HomePage.js";
 import Dashboard from './pages/admin/Dashboard/Dashboard';
 import AboutUs from './pages/user/About_us/About_us';
 import NotFound from './pages/user/NotFound/NotFound';
@@ -15,6 +15,7 @@ import Blog from './pages/user/Blog/Blog';
 import Profile from './pages/user/Profile/Profile';
 import ShoppingCart from "./pages/user/Cart/Cart.js";
 import Wishlist from "./pages/user/Wishlist/Wishlist.js";
+import Product from './pages/user/Product/Product';
 
 function AppRoutes() {
   return (
@@ -35,6 +36,7 @@ function AppRoutes() {
           <Route path="profile" element={<Profile />} />
           <Route path="shopping_cart" element={<ShoppingCart />} />
           <Route path="wishlist" element={<Wishlist />} />
+          <Route path="Product" element={<Product />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 
@@ -42,10 +44,8 @@ function AppRoutes() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
         </Route>
-
       </Routes>
     </>
-    
   );
 }
 
