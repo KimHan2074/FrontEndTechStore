@@ -37,7 +37,7 @@ const ProductSidebar = ({ selectedCategoryId, setSelectedCategoryId, onSearch  }
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/blogs/categories");
+      const response = await axios.get("http://127.0.0.1:8000/api/products/all-categories");
       setCategories(response.data);
     } catch (err) {
       console.error("Error fetching categories:", err);
