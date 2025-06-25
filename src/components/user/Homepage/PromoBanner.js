@@ -1,5 +1,5 @@
 import React from "react"
-import "../../../pages/user/HomePage/HomePage.css"
+// import "../../../pages/user/HomePage/HomePage.css"
 
 const PromoBanner = () => {
     return (
