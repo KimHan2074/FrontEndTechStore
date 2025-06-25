@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "../../../pages/user/HomePage/HomePage.css";
+// import "../../../pages/user/HomePage/HomePage.css";
 import {ArrowRight} from "lucide-react";
 const FeaturedProductSection = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
