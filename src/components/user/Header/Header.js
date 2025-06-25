@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { NavLink } from "react-router-dom"
 import "../../../pages/user/Header/Header.css"
+import { useCart } from "../../../context/CartContext"
 
 import {
     Search, ShoppingCart, Heart, User, ChevronDown, Phone,
@@ -8,8 +9,13 @@ import {
     CreditCard, House, AlignJustify, Archive
 } from "lucide-react"
 
-function Header({ onSearch }) {
-  const [searchQuery, setSearchQuery] = useState("");
+function Header( onSearch){
+
+    const { cartItems } = useCart()
+    const itemCount = cartItems?.length || 0
+    const token = localStorage.getItem("token"); // ✅ kiểm tra login
+
+    const [searchQuery, setSearchQuery] = useState("")
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -76,11 +82,18 @@ function Header({ onSearch }) {
                     </div>
 
                     <div className="nav-icons">
-                        <a href="/cart" className="icon-link">
+                        {/* <a href="/user/shopping_cart" className="icon-link">
                             <ShoppingCart size={20} />
                             <span className="badge">2</span>
+                        </a> */}
+
+                        <a href="/user/shopping_cart" className="icon-link">
+                            <ShoppingCart size={20} />
+                              {token && itemCount > 0 && (
+                                <span className="badge">{itemCount}</span>
+                                )}
                         </a>
-                        <a href="/wishlist" className="icon-link">
+                        <a href="/user/wishlist" className="icon-link">
                             <Heart size={20} />
                             <span className="badge">3</span>
                         </a>
@@ -109,7 +122,7 @@ function Header({ onSearch }) {
                         <ul className="menu-items">
                             <li className="menu-item">
                                 <NavLink
-                                    to="/user/header"
+                                    to="/user/homepage"
                                     className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
                                 >
                                     <span className="home-icon"><House size={18} /></span> Homepage
