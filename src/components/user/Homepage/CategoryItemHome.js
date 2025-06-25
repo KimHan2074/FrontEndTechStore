@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "../../../pages/user/HomePage/HomePage.css";
+// import "../../../pages/user/HomePage/HomePage.css";
 export default class CategoryItemHome extends Component {
   categories = [
     { id: 1, name: "Computer & Laptop", icon: "💻", color: "#8B5CF6" },

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import "../../../pages/user/HomePage/HomePage.css";
+// import "../../../pages/user/HomePage/HomePage.css";
 import { ShoppingCart, Heart, Eye,ArrowRight } from "lucide-react";
 
 const BestDealSection = () => {
