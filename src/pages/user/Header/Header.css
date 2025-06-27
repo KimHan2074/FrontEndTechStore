@@ -267,3 +267,60 @@
 .phone-number {
   margin-left: 5px;
 }
+
+.category-dropdown {
+  position: relative;
+}
+
+.dropdown-btn {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 16px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-menu.horizontal-menu {
+  display: flex;
+  flex-direction: row; 
+  gap: 20px; 
+  background: #fff;
+  padding: 15px; 
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+}
+
+.dropdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.category-image {
+  width: 80px; 
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px; 
+  margin-bottom: 10px; 
+}
+
+.dropdown-item span {
+  font-size: 16px; 
+  font-weight: bold; 
+}

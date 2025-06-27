@@ -6,7 +6,7 @@ const ProductSidebar = ({ selectedCategoryId, setSelectedCategoryId, onSearch  }
   const [products, setProducts] = useState([]);
   const [galleryImages, setGalleryImages] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  // const [searchQuery, setSearchQuery] = useState("");
 
   const fetchTopProducts = async () => {
     try {
@@ -16,22 +16,19 @@ const ProductSidebar = ({ selectedCategoryId, setSelectedCategoryId, onSearch  }
       console.error("Error fetching top products:", err);
     }
   };
-
-  const fetchGalleryImages = async () => {
+const fetchGalleryImages = async () => {
   try {
     const response = await axios.get("http://127.0.0.1:8000/api/products/top-images");
-    console.log("Products data:", response.data.data); 
+    console.log("Products data:", response.data); 
 
-    const images = response.data.data.flatMap(product => {
-      console.log("Product images:", product.images); 
-      return product.images?.map(image => image.image_url) || [];
-    });
+    const images = response.data.map(item => item.image_url);
 
-    setGalleryImages(images.slice(0, 12)); 
+    setGalleryImages(images.slice(0, 12));
   } catch (err) {
     console.error("Error fetching gallery images:", err);
   }
 };
+
 
 
 
@@ -68,10 +65,10 @@ const ProductSidebar = ({ selectedCategoryId, setSelectedCategoryId, onSearch  }
       console.error("Error fetching products by category:", err);
     }
   };
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    onSearch(searchQuery);
-  };
+  // const handleSearchSubmit = (e) => {
+  //   e.preventDefault();
+  //   onSearch(searchQuery);
+  // };
   
 
   return (
