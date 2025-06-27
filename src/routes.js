@@ -18,7 +18,6 @@ import Wishlist from "./pages/user/Wishlist/Wishlist.js";
 import Product from './pages/user/Product/Product';
 import Header from "./components/user/Header/Header.js";
 import ContentBlog from "./components/user/Blog/ContentBlog.js";
-import HomePage from "./pages/user/HomePage/HomePage.js";
 
 function AppRoutes() {
   return (
@@ -26,7 +25,7 @@ function AppRoutes() {
       <Routes>
         {/* Auth layout */}
         <Route element={<AuthLayout />}>
-          <Route index element={<SignUp />} /> {/* <- Đây là route khớp "/" */}
+          <Route index element={<SignUp />} />
           <Route path="/callback" element={<AuthCallback />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
@@ -42,25 +41,6 @@ function AppRoutes() {
           <Route path="Product" element={<Product />} />
           <Route path="*" element={<NotFound />} />
         </Route>
-    <Routes>
-      {/* Auth layout */}
-      <Route element={<AuthLayout />}>
-        <Route index element={<SignUp />} /> 
-        <Route path="/callback" element={<AuthCallback />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/resetpassword" element={<ResetPassword />} />
-      </Route>
-
-      {/* User layout */}
-      <Route element={<UserLayout />}>
-        <Route path="*" element={<NotFound />} />
-        <Route path="/user/homepage" element={<HomePage/>} />
-        <Route path="/user/about-us" element={<AboutUs />} />
-        <Route path="/user/blog" element={<Blog />} />
-        <Route path="/user/profile" element={<Profile />} />
-        <Route path="/user/header" element={<Header />} />
-        <Route path="/blog/content" element={<ContentBlog />} />
-      </Route>
 
         {/* Admin layout */}
         <Route path="/admin" element={<AdminLayout />}>
