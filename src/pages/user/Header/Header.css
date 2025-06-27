@@ -90,7 +90,6 @@
 
 .main-nav {
   background-color: #0e4f7a;
-  padding: 15px 0;
 }
 
 .nav-content {
@@ -183,7 +182,6 @@
 
 .category-nav {
   background-color: #f5f5f5;
-  border-bottom: 1px solid #e0e0e0;
   padding: 10px 0;
 }
 
@@ -317,63 +315,59 @@
   background-color: #f0f0f0;
 }
 
-.dropdown-menu {
-  list-style: none;
-  padding: 5px 0;
-  margin: 0;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  top: 100%;
-  right: 0;
-  min-width: 140px;
-  z-index: 1000;
-}
-
-.dropdown-menu li a {
-  display: block;
-  padding: 10px 15px;
-  text-decoration: none;
-  color: #333;
-  font-size: 14px;
-}
-
-.dropdown-menu li a:hover {
-  background-color: #f2f2f2;
-}
-
 .category-dropdown {
   position: relative;
 }
 
-.category-dropdown .category-menu {
-  display: none;
+.dropdown-btn {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 16px;
+}
+
+.dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
-  background: white;
+  background-color: #fff;
   border: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  min-width: 180px;
-  z-index: 1000;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
-.category-dropdown:hover .category-menu {
-  display: block;
+.dropdown-menu.horizontal-menu {
+  display: flex;
+  flex-direction: row; /* Hiển thị theo chiều ngang */
+  gap: 20px; /* Khoảng cách giữa các mục */
+  background: #fff;
+  padding: 15px; /* Tăng padding */
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
 }
 
-.category-menu li a {
-  display: block;
-  padding: 10px 15px;
-  text-decoration: none;
-  color: #333;
+.dropdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.category-menu li a:hover {
-  background-color: #f2f2f2;
+.category-image {
+  width: 80px; /* Tăng kích thước hình ảnh */
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px; /* Bo góc nhẹ */
+  margin-bottom: 10px; /* Khoảng cách giữa hình và text */
+}
+
+.dropdown-item span {
+  font-size: 16px; /* Tăng kích thước chữ */
+  font-weight: bold; /* Chữ đậm hơn */
 }
