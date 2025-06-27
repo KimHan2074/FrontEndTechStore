@@ -1,3 +1,8 @@
+import { useState } from "react"
+import { NavLink } from "react-router-dom"
+import "../../../pages/user/Header/Header.css"
+import { useCart } from "../../../context/CartContext"
+
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import "../../../pages/user/Header/Header.css";
@@ -8,6 +13,23 @@ import {
   Twitter, Facebook, Youtube, Instagram, MessageCircleHeart,
   CreditCard, House, AlignJustify, Archive
 } from "lucide-react";
+
+function Header( onSearch){
+
+    const { cartItems } = useCart()
+    const itemCount = cartItems?.length || 0
+    const token = localStorage.getItem("token"); // ✅ kiểm tra login
+
+    const [searchQuery, setSearchQuery] = useState("")
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    onSearch(searchQuery);
+  };
 
 function Header() {
   const [categories, setCategories] = useState([]);
@@ -80,6 +102,43 @@ function Header() {
               <img src="/assets/images/logo.png" alt="Logo" style={{ width: "100px", height: "50px" }} />
             </div>
 
+                    <div className="search-container">
+                         <form onSubmit={handleSearchSubmit}>
+              <input
+                type="text"
+                placeholder="Search for anything..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="search-input"
+              />
+              <button type="submit" className="search-button">
+                <Search size={18} />
+              </button>
+            </form>
+                    </div>
+
+                    <div className="nav-icons">
+                        {/* <a href="/user/shopping_cart" className="icon-link">
+                            <ShoppingCart size={20} />
+                            <span className="badge">2</span>
+                        </a> */}
+
+                        <a href="/user/shopping_cart" className="icon-link">
+                            <ShoppingCart size={20} />
+                              {token && itemCount > 0 && (
+                                <span className="badge">{itemCount}</span>
+                                )}
+                        </a>
+                        <a href="/user/wishlist" className="icon-link">
+                            <Heart size={20} />
+                            <span className="badge">3</span>
+                        </a>
+                        <a href="/user/profile" className="icon-link">
+                            <User size={20} />
+                        </a>
+                    </div>
+                </div>
+            </div>
             <SearchBar
               onResults={(results, query) => {
                 setSearchResults(results);
@@ -136,6 +195,37 @@ function Header() {
               </ul>
             </div>
 
+
+                    <nav className="main-menu">
+                        <ul className="menu-items">
+                            <li className="menu-item">
+                                <NavLink
+                                    to="/user/homepage"
+                                    className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
+                                >
+                                    <span className="home-icon"><House size={18} /></span> Homepage
+                                </NavLink>
+                            </li>
+
+                            <li className="menu-item">
+                                <NavLink
+                                    to="/user/product"
+                                    className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
+                                >
+                                    <span className="list-icon"><AlignJustify size={18} /></span> Product List
+                                </NavLink>
+                            </li>
+
+                            <li className="menu-item">
+                                <NavLink
+                                    to="/user/blog"
+                                    className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
+                                >
+                                    <span className="blog-icon"><Archive size={18} /></span> Blog
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </nav>
             <nav className="main-menus">
               <ul className="menu-items">
                 <li className="menu-item-header">
