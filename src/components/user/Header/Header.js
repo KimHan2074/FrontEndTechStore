@@ -37,9 +37,6 @@ function Header({ onSearch }) {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
-const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const today = new Date();
-const currentDay = weekdays[today.getDay()];
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (onSearch) onSearch(searchQuery);
@@ -53,7 +50,7 @@ const currentDay = weekdays[today.getDay()];
           <div className="container banner-content">
             <div className="black-friday-label">
               <span className="black-label">Black</span>
-               <span className="friday-label">{currentDay}</span>
+               <span className="friday-label">Friday</span>
             </div>
             <div className="promo-text">Up to <span className="discount-percentage">59%</span> OFF</div>
             <button className="shop-now-btn">SHOP NOW</button>
