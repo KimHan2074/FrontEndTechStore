@@ -1,11 +1,15 @@
 .not-found-container {
+    max-width: 1080px;
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     text-align: center;
-    background-color: #f9fafb;
-    font-family: Arial, sans-serif;
+}
+.not-found-container {
+  padding-top: 100px; 
+  padding-bottom: 100px; 
 }
 
 .not-found-image {
