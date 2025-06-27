@@ -1,60 +1,31 @@
-import { useState } from "react"
-import { NavLink } from "react-router-dom"
-import "../../../pages/user/Header/Header.css"
-import { useCart } from "../../../context/CartContext"
-
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "../../../pages/user/Header/Header.css";
+import { useCart } from "../../../context/CartContext";
 import axios from "axios";
 import SearchBar from "./SearchBar";
+import logout from "../../auth/logout/Logout";
 import {
   ShoppingCart, Heart, User, ChevronDown, Phone,
   Twitter, Facebook, Youtube, Instagram, MessageCircleHeart,
-  CreditCard, House, AlignJustify, Archive
+  CreditCard, House, AlignJustify, Archive, Search,
 } from "lucide-react";
 
-function Header( onSearch){
+function Header({ onSearch }) {
+  const { cartItems } = useCart();
+  const itemCount = cartItems?.length || 0;
+  const token = localStorage.getItem("token");
 
-    const { cartItems } = useCart()
-    const itemCount = cartItems?.length || 0
-    const token = localStorage.getItem("token"); // ✅ kiểm tra login
-
-    const [searchQuery, setSearchQuery] = useState("")
-
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    onSearch(searchQuery);
-  };
-
-function Header() {
   const [categories, setCategories] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!token);
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/user/product/categories");
-
-        if (Array.isArray(response.data.data)) {
-          setCategories(response.data.data);
-        } else {
-          console.warn("Categories is not an array:", response.data.data);
-          setCategories([]);
-        }
-
-        console.log("Fetched categories:", response.data.data);
+        setCategories(Array.isArray(response.data.data) ? response.data.data : []);
       } catch (err) {
         console.error("Error fetching categories:", err);
         setCategories([]);
@@ -63,16 +34,26 @@ function Header() {
     fetchCategories();
   }, []);
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const today = new Date();
+const currentDay = weekdays[today.getDay()];
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (onSearch) onSearch(searchQuery);
+  };
+
   return (
     <>
       <header className="store-header">
 
-        {/* Promo banner */}
         <div className="promo-banner">
           <div className="container banner-content">
             <div className="black-friday-label">
               <span className="black-label">Black</span>
-              <span className="friday-label">Friday</span>
+               <span className="friday-label">{currentDay}</span>
             </div>
             <div className="promo-text">Up to <span className="discount-percentage">59%</span> OFF</div>
             <button className="shop-now-btn">SHOP NOW</button>
@@ -102,59 +83,30 @@ function Header() {
               <img src="/assets/images/logo.png" alt="Logo" style={{ width: "100px", height: "50px" }} />
             </div>
 
-                    <div className="search-container">
-                         <form onSubmit={handleSearchSubmit}>
-              <input
-                type="text"
-                placeholder="Search for anything..."
-                value={searchQuery}
-                onChange={handleSearchChange}
-                className="search-input"
+            <div className="search-container">
+
+              <SearchBar
+                onResults={(results, query) => {
+                  setSearchResults(results);
+                  setSearchQuery(query);
+                }}
               />
-              <button type="submit" className="search-button">
-                <Search size={18} />
-              </button>
-            </form>
-                    </div>
-
-                    <div className="nav-icons">
-                        {/* <a href="/user/shopping_cart" className="icon-link">
-                            <ShoppingCart size={20} />
-                            <span className="badge">2</span>
-                        </a> */}
-
-                        <a href="/user/shopping_cart" className="icon-link">
-                            <ShoppingCart size={20} />
-                              {token && itemCount > 0 && (
-                                <span className="badge">{itemCount}</span>
-                                )}
-                        </a>
-                        <a href="/user/wishlist" className="icon-link">
-                            <Heart size={20} />
-                            <span className="badge">3</span>
-                        </a>
-                        <a href="/user/profile" className="icon-link">
-                            <User size={20} />
-                        </a>
-                    </div>
-                </div>
             </div>
-            <SearchBar
-              onResults={(results, query) => {
-                setSearchResults(results);
-                setSearchQuery(query);
-              }}
-            />
-
-            {/* Icons */}
             <div className="nav-icons">
-              <a href={isLoggedIn ? "/cart" : "#"} onClick={(e) => {
-                if (!isLoggedIn) {
-                  e.preventDefault();
-                  window.location.href = "/signin";
-                }
-              }} className="icon-link">
-                <ShoppingCart size={20} /><span className="badge">2</span>
+              <a
+                href={isLoggedIn ? "/user/shopping_cart" : "#"}
+                onClick={(e) => {
+                  if (!isLoggedIn) {
+                    e.preventDefault();
+                    window.location.href = "/signin";
+                  }
+                }}
+                className="icon-link"
+              >
+                <ShoppingCart size={20} />
+                {isLoggedIn && itemCount > 0 && (
+                  <span className="badge">{itemCount}</span>
+                )}
               </a>
 
               <a href={isLoggedIn ? "/wishlist" : "#"} onClick={(e) => {
@@ -166,17 +118,19 @@ function Header() {
                 <Heart size={20} /><span className="badge">3</span>
               </a>
 
-             <li className="user-dropdown">
-  <a href={isLoggedIn ? "/user/profile" : "/signin"} className="icon-link">
-    <User size={20} />
-  </a>
-  {isLoggedIn && (
-    <ul className="dropdown-menu">
-      <li><a href="/logout">Logout</a></li>
-    </ul>
-  )}
-</li>
+              <li className="user-dropdown">
+                <a href={isLoggedIn ? "/user/profile" : "/signin"} className="icon-link">
+                  <User size={20} />
+                </a>
+                {isLoggedIn && (
+                  <ul className="dropdown-menu">
+                    <li>
+                      <a href="#" onClick={(e) => { e.preventDefault(); logout(); }}>Logout</a>
 
+                    </li>
+                  </ul>
+                )}
+              </li>
             </div>
           </div>
         </div>
@@ -188,44 +142,19 @@ function Header() {
               <NavLink to="#" className="dropdown-btn">
                 All Category <ChevronDown size={16} />
               </NavLink>
-              <ul className="category-menu">
-               {categories.slice(0, 10).map((cat)  => (
-                  <li key={cat.id}><a href={`/category/${cat.id}`}>{cat.name}</a></li>
-                ))}
-              </ul>
+
+              {isLoggedIn && (
+                <ul className="category-menu">
+                  {categories.slice(0, 10).map((cat) => (
+                    <li key={cat.id}>
+                      <a href={`/category/${cat.id}`}>{cat.name}</a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
-
-                    <nav className="main-menu">
-                        <ul className="menu-items">
-                            <li className="menu-item">
-                                <NavLink
-                                    to="/user/homepage"
-                                    className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
-                                >
-                                    <span className="home-icon"><House size={18} /></span> Homepage
-                                </NavLink>
-                            </li>
-
-                            <li className="menu-item">
-                                <NavLink
-                                    to="/user/product"
-                                    className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
-                                >
-                                    <span className="list-icon"><AlignJustify size={18} /></span> Product List
-                                </NavLink>
-                            </li>
-
-                            <li className="menu-item">
-                                <NavLink
-                                    to="/user/blog"
-                                    className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
-                                >
-                                    <span className="blog-icon"><Archive size={18} /></span> Blog
-                                </NavLink>
-                            </li>
-                        </ul>
-                    </nav>
+            {/* Auth menu */}
             <nav className="main-menus">
               <ul className="menu-items">
                 <li className="menu-item-header">
@@ -239,7 +168,7 @@ function Header() {
                   </NavLink>
                 </li>
                 <li className="menu-item-header">
-                  <NavLink to={isLoggedIn ? "/user/product/list" : "#"} onClick={(e) => {
+                  <NavLink to={isLoggedIn ? "/user/Product" : "#"} onClick={(e) => {
                     if (!isLoggedIn) {
                       e.preventDefault();
                       window.location.href = "/signin";
@@ -268,10 +197,11 @@ function Header() {
           </div>
         </div>
       </header>
-
       {searchResults.length > 0 && (
         <div className="search-results-container">
-          <h3 style={{ marginLeft: "1rem" }}>Search results for: "{searchQuery}"</h3>
+          <h3 style={{ marginLeft: "1rem" }}>
+            Search results for: "{searchQuery}"
+          </h3>
           <div className="results-grid">
             {searchResults.map((item) => (
               <div key={item.id} className="result-card">
@@ -283,6 +213,7 @@ function Header() {
           </div>
         </div>
       )}
+
     </>
   );
 }

@@ -53,13 +53,15 @@ const MacbookProAdBanner = () => {
             <span className="price-tag">
               <span>${product.price}</span>
             </span>
-            <div className="macbook-single">
-              <img
-                src={product.image_url || "https://via.placeholder.com/300"}
-                alt={product.name}
-                className="macbook-image"
-              />
-            </div>
+            <img
+  src={product.image_url || "/assets/images/default-image.png"}
+  alt={product.name}
+  className="macbook-image"
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = "/assets/images/default-image.png";
+  }}
+/>
           </div>
         </>
       )}
