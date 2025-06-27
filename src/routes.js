@@ -16,6 +16,8 @@ import Profile from './pages/user/Profile/Profile';
 import ShoppingCart from "./pages/user/Cart/Cart.js";
 import Wishlist from "./pages/user/Wishlist/Wishlist.js";
 import Product from './pages/user/Product/Product';
+import Header from "./components/user/Header/Header.js";
+import ContentBlog from "./components/user/Blog/ContentBlog.js";
 
 function AppRoutes() {
   return (
@@ -23,7 +25,7 @@ function AppRoutes() {
       <Routes>
         {/* Auth layout */}
         <Route element={<AuthLayout />}>
-          <Route index element={<SignUp />} /> {/* <- Đây là route khớp "/" */}
+          <Route index element={<SignUp />} />
           <Route path="/callback" element={<AuthCallback />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/resetpassword" element={<ResetPassword />} />

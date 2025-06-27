@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
-import "../../../pages/user/Blog/Blog.css";
-import { ArrowRight,ArrowLeft } from "lucide-react";
+import { ArrowRight, ArrowLeft } from "lucide-react";
 
 const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
   const [cards, setCards] = useState([]);
@@ -11,20 +11,21 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
   const [isDataFetched, setIsDataFetched] = useState(false);
   const cardsPerPage = 9;
 
-  useEffect(() => {
-    const fetchData = () => {
-      axios
-        .get("http://localhost:8000/api/blogs")
-        .then((response) => {
-          setCards(response.data);
-          setIsDataFetched(true);
-        })
-        .catch((error) => console.error("Error fetching blogs:", error));
-    };
+  const location = useLocation();
+  const searchQueryFromBar = location.state?.searchQuery || "";
 
-    fetchData();
-    const interval = setInterval(fetchData, 5000);
-    return () => clearInterval(interval);
+  useEffect(() => {
+    setSearchItem(searchQueryFromBar);
+  }, [searchQueryFromBar]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/api/user/blogs/index")
+      .then((res) => {
+        setCards(res.data);
+        setIsDataFetched(true);
+      })
+      .catch((err) => console.error("Error fetching blogs:", err));
   }, []);
 
   const filteredCards = cards.filter((card) => {
@@ -117,35 +118,34 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
       </div>
 
       {totalPages > 1 && (
-<div className="pagination-blog">
-  <button
-    className="pagination-button"
-    onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
-  >
-    <ArrowLeft className="arrow-icon" size={16}/>
-  </button>
-  {Array.from({ length: totalPages }, (_, i) => {
-    const pageNum = (i + 1).toString().padStart(2, '0');
-    return (
-      <button
-        key={pageNum}
-        onClick={() => handlePageChange(i + 1)}
-        className={`pagination-button ${currentPage === i + 1 ? "active-page" : ""}`}
-      >
-        {pageNum}
-      </button>
-    );
-  })}
-  <button
-    className="pagination-button"
-    onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
-  >
-    <ArrowRight className="arrow-icon" size={16} />
-  </button>
-</div>
-
-
-
+        <div className="pagination-blog">
+          <button
+            className="pagination-button"
+            onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+          >
+            <ArrowLeft className="arrow-icon" size={16} />
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => {
+            const pageNum = (i + 1).toString().padStart(2, "0");
+            return (
+              <button
+                key={pageNum}
+                onClick={() => handlePageChange(i + 1)}
+                className={`pagination-button ${
+                  currentPage === i + 1 ? "active-page" : ""
+                }`}
+              >
+                {pageNum}
+              </button>
+            );
+          })}
+          <button
+            className="pagination-button"
+            onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
+          >
+            <ArrowRight className="arrow-icon" size={16} />
+          </button>
+        </div>
       )}
     </div>
   );

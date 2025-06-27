@@ -1,40 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-// import "../../../pages/user/HomePage/HomePage.css";
-import {ArrowRight} from "lucide-react";
+import { ArrowRight } from 'lucide-react';
+
 const FeaturedProductSection = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
-  const categories = [
-    { id: 'laptop', name: 'Laptop' },
-    { id: 'smartphone', name: 'Smart Phone' },
-    { id: 'headphone', name: 'Headphone' },
-    { id: 'tv', name: 'TV' },
-  ];
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/api/user/product/promoted");
+        const allPromoted = res.data?.data || [];
 
-  const products = [
-    {
-      id: 1,
-      name: 'USD 15 True Wireless Earbuds Bluetooth Headphone',
-      price: '$74',
-      originalPrice: '$99',
-      rating: 5,
-      image: 'https://inkythuatso.com/uploads/thumbnails/800/2023/02/hinh-anh-cho-con-de-thuong-chay-tung-tang-1-24-11-43-28.jpg',
-      category: 'headphone',
-      onSale: true,
-    },
-    {
-      id: 2,
-      name: 'USD 15 True Wireless Control Bluetooth Headphone',
-      price: '$74',
-      originalPrice: '$99',
-      rating: 3,
-      image: 'https://inkythuatso.com/uploads/thumbnails/800/2023/02/hinh-anh-cho-con-de-thuong-chay-tung-tang-1-24-11-43-28.jpg',
-      category: 'tv',
-      onSale: false,
-    },
-  ];
+        const featured = allPromoted
+          .filter((product) => product.promotion_type === 'featured product')
+          .map((product) => ({
+            ...product,
+            image: product.images?.[0]?.image_url || 'https://placehold.co/300x200',
+            onSale: true,
+            rating: product.rating || 0,
+            category: product.category?.slug || ''
+          }));
+
+        setProducts(featured);
+      } catch (error) {
+        console.error("❌ Lỗi lấy featured product:", error);
+      }
+    };
+    fetchFeaturedProducts();
+
+    const interval = setInterval(fetchFeaturedProducts, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(categoryId);
@@ -46,16 +45,15 @@ const FeaturedProductSection = () => {
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
-      <span key={index} className={`star-featured ${index < rating ? 'filled-featured' : ''}`}>
+      <span key={index} className={`star-featured ${index < Math.round(rating) ? 'filled-featured' : ''}`}>
         ★
       </span>
     ));
   };
 
-  const filteredProducts =
-    selectedCategory === 'all'
-      ? products
-      : products.filter((p) => p.category === selectedCategory);
+  const filteredProducts = selectedCategory === 'all'
+    ? products
+    : products.filter((p) => p.category === selectedCategory);
 
   return (
     <div className="product-showcase-featured">
@@ -65,30 +63,23 @@ const FeaturedProductSection = () => {
             <div className="category-tabs-featured">
               <h2 className="featured-title-featured">Featured Products</h2>
               <div className="category-buttons-featured">
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    className={`category-tab-featured ${selectedCategory === category.id ? 'active-featured' : ''}`}
-                    onClick={() => handleCategoryClick(category.id)}
-                  >
-                    {category.name}
-                  </button>
-                ))}
                 <button
-                  className="category-tab-featured browse-all-btn-featured" 
+                  className="category-tab-featured browse-all-btn-featured"
                   onClick={handleBrowseAll}
                 >
-                  Browse All Product
-                <span> <ArrowRight className="arrow-icon-featured" size={16}/></span>
+                  Browse All Product <ArrowRight className="arrow-icon-featured" size={16} />
                 </button>
               </div>
             </div>
           </div>
 
           <div className="products-grid-featured">
-            {filteredProducts.map((product) => (
+            {filteredProducts.slice(0, 10).map((product) => (
               <div key={product.id} className="product-card-featured">
-                {product.onSale && <div className="sale-badge-featured">SALE</div>}
+                {product.status && product.status !== "null" && (
+                  <div className="sale-badge-featured">{product.status}</div>
+                )}
+
                 <div className="product-image-featured">
                   <img src={product.image} alt={product.name} />
                 </div>
@@ -98,15 +89,16 @@ const FeaturedProductSection = () => {
                   </div>
                   <h3 className="product-name-featured">{product.name}</h3>
                   <div className="product-price-featured">
-                    <span className="current-price-featured">{product.price}</span>
-                    {product.originalPrice && (
-                      <span className="original-price-featured">{product.originalPrice}</span>
+                    <span className="current-price-featured">${product.price}</span>
+                    {product.old_price && (
+                      <span className="original-price-featured">${product.old_price}</span>
                     )}
                   </div>
                 </div>
               </div>
             ))}
           </div>
+
         </div>
       </div>
     </div>
