@@ -232,3 +232,7 @@ body {
   cursor: not-allowed;
   opacity: 0.5;
 }
+
+.dropdown-menu li a {
+  padding: 0;
+}

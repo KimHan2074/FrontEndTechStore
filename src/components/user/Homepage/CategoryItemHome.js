@@ -8,8 +8,9 @@ const CategoryItemHome = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const categoryRes = await axios.get("http://localhost:8000/api/user/blogs/categories");
-        setCategories(categoryRes.data);
+        const categoryRes = await axios.get("http://localhost:8000/api/user/product/categories");
+        setCategories(categoryRes.data.data);
+         console.log("Clicked category:", categoryRes);
       } catch (err) {
         console.error("Error fetching categories:", err);
       }

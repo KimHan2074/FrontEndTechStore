@@ -15,15 +15,12 @@ import Profile from './pages/user/Profile/Profile';
 import ShoppingCart from "./pages/user/Cart/Cart.js";
 import Wishlist from "./pages/user/Wishlist/Wishlist.js";
 import Product from './pages/user/Product/Product';
-import Header from "./components/user/Header/Header.js";
-import ContentBlog from "./components/user/Blog/ContentBlog.js";
 import HomePage from "./pages/user/HomePage/HomePage";
 
 function AppRoutes() {
   return (
     <>
       <Routes>
-        {/* Auth layout */}
         <Route element={<AuthLayout />}>
           <Route index element={<SignUp />} />
           <Route path="/callback" element={<AuthCallback />} />
@@ -42,7 +39,6 @@ function AppRoutes() {
           <Route path="*" element={<NotFound />} />
         </Route>
 
-        {/* Admin layout */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
         </Route>
