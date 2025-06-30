@@ -159,7 +159,7 @@ function Header({ onSearch }) {
 
               {isDropdownOpen && (
                 <div className="dropdown-menu horizontal-menu">
-                  {categories.map((category) => (
+                  {Array.isArray(categories) && categories.map((category) => (
                     <div key={category.id} className="dropdown-item">
                       <img
                         src={category.image_url || "https://via.placeholder.com/50"}
