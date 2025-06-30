@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../../../pages/user/Blog/Blog.css";
 
 const BlogSlideBar = ({ selectedCategoryId, setSelectedCategoryId }) => {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -10,10 +9,10 @@ const BlogSlideBar = ({ selectedCategoryId, setSelectedCategoryId }) => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const latestRes = await axios.get("http://localhost:8000/api/blogs/status");
+        const latestRes = await axios.get("http://localhost:8000/api/user/blogs/status");
         setBlogPosts(latestRes.data);
-
-        const allBlogRes = await axios.get("http://localhost:8000/api/blogs");
+ console.log("Latest blog data:", latestRes.data); 
+        const allBlogRes = await axios.get("http://localhost:8000/api/user/blogs/index");
         const allImages = allBlogRes.data.filter(blog => blog.image_url);
         const shuffled = [...allImages].sort(() => 0.5 - Math.random());
         setGalleryImages(shuffled.slice(0, 6));
@@ -24,7 +23,7 @@ const BlogSlideBar = ({ selectedCategoryId, setSelectedCategoryId }) => {
 
     const fetchCategories = async () => {
       try {
-        const categoryRes = await axios.get("http://localhost:8000/api/blogs/categories");
+        const categoryRes = await axios.get("http://localhost:8000/api/user/blogs/categories");
         setCategories(categoryRes.data);
       } catch (err) {
         console.error("Error fetching categories:", err);

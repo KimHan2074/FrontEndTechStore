@@ -1,58 +1,127 @@
-import React from "react"
-// import "../../../pages/user/HomePage/HomePage.css"
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { useNavigate } from "react-router-dom";
 
 const PromoBanner = () => {
-    return (
-        <div className="showcase-container-banner">
-            <div className="main-product-banner">
-                <div className="product-content-banner">
-                    <div className="product-text-banner">
-                        <h2 className="product-title-banner">- THE BEST PLACE TO PLAY</h2>
-                        <h3 className="product-subtitle-banner">Xbox</h3>
-                        <p className="product-description-banner">
-                            Save up to 50% on select Xbox games.
-                            Get 3 months of PC
-                            Game Pass for $2 USD.
-                        </p>
-                        <button className="buy-button-banner">SHOW NOW</button>
-                    </div>
-                    <div className="product-image-banner">
-                        <img src="https://i.pinimg.com/736x/b9/8c/fd/b98cfd0f58ef0b34017cc705dc6ac675.jpg" alt="Xbox Console with Controller" />
-                    </div>
+  const [products, setProducts] = useState([]);
+  const [summerSaleProduct, setSummerSaleProduct] = useState(null);
+  const navigate = useNavigate();
+   const handleShopNow = () => {
+     navigate("/shoping-cart");
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [productRes, promotedRes] = await Promise.all([
+          axios.get("http://localhost:8000/api/user/product/index"),
+          axios.get("http://localhost:8000/api/user/product/promoted"),
+        ]);
+
+        const productData = productRes.data?.data || [];
+        const promotedData = promotedRes.data?.data || [];
+
+        setProducts(productData.slice(0, 3));
+
+        const summerSale = promotedData.find(p => p.promotion_type === "summer sale");
+        setSummerSaleProduct(summerSale || null);
+      } catch (error) {
+        console.error("❌ Lỗi gọi API:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 800,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 4000,
+  };
+
+  const formatPrice = (price) => {
+    const num = parseFloat(price);
+    return isNaN(num) ? "0.00" : num.toLocaleString("en-US", { minimumFractionDigits: 2 });
+  };
+
+  const fallback = {
+    name: "No Summer Sale",
+    price: 0,
+    old_price: 0,
+    images: [{ image_url: "https://placehold.co/300x200?text=No+Image" }]
+  };
+
+  const displayProduct = summerSaleProduct || fallback;
+
+  return (
+    <div className="showcase-container-banner">
+      <div className="main-product-banner">
+        <Slider {...settings}>
+          {products.map((product) => (
+            <div key={product.id}>
+              <div className="product-content-banner">
+                <div className="product-text-banner">
+                  <h2 className="product-title-banner">{product.name}</h2>
+                  <h3 className="product-subtitle-banner">Xbox</h3>
+                  <p className="product-description-banner">{product.description}</p>
+                  <button className="buy-button-banner" onClick={handleShopNow}>SHOW NOW</button>
                 </div>
-            </div>
-
-            <div className="side-products-banner">
-                <div className="product-card-banner">
-
-                    <div className="card-overlay-content">
-                        <div className="promotion-title">
-                            <span className="sale-badge-banner">SUMMER SALES</span>
-                            <p className="sale-badge-banner-description">New Google Pix6 Pro</p>
-                            <button className="buy-button-banner">SHOP NOW</button>
-                        </div>
-                        <div className="promotion-image"> <img
-                            src="https://i.pinimg.com/736x/b9/8c/fd/b98cfd0f58ef0b34017cc705dc6ac675.jpg"
-                            alt="Mobile Device"
-                            className="card-image-banner"
-                        /></div>
-                    </div>
-
-                    <div className="product-card-banner-bottom">
-                        <div className="card-content-banner-bottom">
-                            <img src="https://i.pinimg.com/736x/b9/8c/fd/b98cfd0f58ef0b34017cc705dc6ac675.jpg" alt="AirPods Pro" className="card-image-banner" />
-
-                        </div>
-                        <div className="price-info-banner">
-                            <p className="sale-badge-banner-description">New Google Pix6 Pro</p>
-                            <p><span className="sale-price-banner">$199</span>
-                                <span className="original-price-banner">$299</span></p>
-                        </div>
-                    </div>
+                <div className="product-image-banner">
+                  <img
+                    src={product.images?.[0]?.image_url || "https://placehold.co/300x200"}
+                    alt={product.name}
+                  />
                 </div>
+              </div>
             </div>
+          ))}
+        </Slider>
+      </div>
+
+      {/* RIGHT: SUMMER SALES (always visible) */}
+      <div className="side-products-banner">
+        <div className="product-card-banner">
+          <div className="card-overlay-content">
+            <div className="promotion-title">
+              <span className="sale-badge-banner">SUMMER SALES</span>
+              <p className="sale-badge-banner-description">{displayProduct.name}</p>
+              <button className="buy-button-banner" onClick={handleShopNow}>SHOP NOW</button>
+            </div>
+            <div className="promotion-image">
+              <img
+                src={displayProduct.images?.[0]?.image_url}
+                alt={displayProduct.name}
+                className="card-image-banner"
+              />
+            </div>
+          </div>
+
+          <div className="product-card-banner-bottom">
+            <div className="card-content-banner-bottom">
+              <img
+                src={displayProduct.images?.[0]?.image_url}
+                alt={displayProduct.name}
+                className="card-image-banner"
+              />
+            </div>
+            <div className="price-info-banner">
+              <p className="sale-badge-banner-description">{displayProduct.name}</p>
+              <p>
+                <span className="sale-price-banner">${formatPrice(displayProduct.price)}</span>
+                <span className="original-price-banner">${formatPrice(displayProduct.old_price)}</span>
+              </p>
+            </div>
+          </div>
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};
 
-export default PromoBanner
+export default PromoBanner;
