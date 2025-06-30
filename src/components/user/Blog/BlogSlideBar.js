@@ -11,7 +11,7 @@ const BlogSlideBar = ({ selectedCategoryId, setSelectedCategoryId }) => {
       try {
         const latestRes = await axios.get("http://localhost:8000/api/user/blogs/status");
         setBlogPosts(latestRes.data);
- console.log("Latest blog data:", latestRes.data); 
+        console.log("Latest blog data:", latestRes.data);
         const allBlogRes = await axios.get("http://localhost:8000/api/user/blogs/index");
         const allImages = allBlogRes.data.filter(blog => blog.image_url);
         const shuffled = [...allImages].sort(() => 0.5 - Math.random());

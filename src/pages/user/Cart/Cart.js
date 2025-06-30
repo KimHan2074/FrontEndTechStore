@@ -178,7 +178,7 @@ export default function Cart() {
       const payload = {
         selected_items: selectedData,
         shipping_option: shippingOption,
-        coupon_code: appliedCoupon.code || null,
+        coupon_code: appliedCoupon?.code || null,
         discount: discount,
         total_amount: subtotal - discount + shippingCost
       }
