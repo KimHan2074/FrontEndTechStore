@@ -138,7 +138,7 @@ function Header({ onSearch }) {
                   <li>
                     <a href="#" onClick={async (e) => {
                       e.preventDefault();
-                      await Logout(); // đảm bảo gọi đúng
+                      await Logout();
                     }}>Logout</a>
                   </li>
                 </ul>
