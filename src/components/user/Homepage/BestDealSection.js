@@ -30,7 +30,8 @@ const BestDealSection = () => {
         const bestDeals = allPromoted.filter(p => p.promotion_type === "best deal");
 
         setDeals(bestDeals);
-
+console.log(
+  'Best Deals:', bestDeals);
         if (bestDeals.length > 0) {
           const soonest = bestDeals
             .filter(p => p.end_date)
@@ -113,7 +114,7 @@ const handleShow = ()=>{
               </div>
               <div className="product-image-container-best-deal">
                 <img
-                  src={featuredProduct.image || "/placeholder.svg"}
+                  src={featuredProduct.image_url || "/placeholder.svg"}
                   alt={featuredProduct.title}
                   className="product-image-best-deal"
                 />
@@ -150,7 +151,7 @@ const handleShow = ()=>{
                   <div className="product-badge-best-deal">{product.badge}</div>
                 )}
                 <div className="product-image-small-best-deal">
-                  <img src={product.image || "/placeholder.svg"} alt={product.title} />
+                  <img src={product.image_url || "/placeholder.svg"} alt={product.title} />
                 </div>
                 <div className="product-details-best-deal">
                   <p className="product-description-best-deal">{product.description}</p>
