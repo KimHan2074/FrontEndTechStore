@@ -13,7 +13,7 @@ function Header( onSearch){
 
     const { cartItems } = useCart()
     const itemCount = cartItems?.length || 0
-    const token = localStorage.getItem("token"); // ✅ kiểm tra login
+    const token = localStorage.getItem("token"); 
 
     const [searchQuery, setSearchQuery] = useState("")
 
@@ -82,16 +82,11 @@ function Header( onSearch){
                     </div>
 
                     <div className="nav-icons">
-                        {/* <a href="/user/shopping_cart" className="icon-link">
-                            <ShoppingCart size={20} />
-                            <span className="badge">2</span>
-                        </a> */}
-
                         <a href="/user/shopping_cart" className="icon-link">
                             <ShoppingCart size={20} />
-                              {token && itemCount > 0 && (
+                            {token && itemCount > 0 && (
                                 <span className="badge">{itemCount}</span>
-                                )}
+                            )}
                         </a>
                         <a href="/user/wishlist" className="icon-link">
                             <Heart size={20} />
@@ -131,7 +126,7 @@ function Header( onSearch){
 
                             <li className="menu-item">
                                 <NavLink
-                                    to="/user/product"
+                                    to="/user/Product"
                                     className={({ isActive }) => isActive ? "menu-link active" : "menu-link"}
                                 >
                                     <span className="list-icon"><AlignJustify size={18} /></span> Product List

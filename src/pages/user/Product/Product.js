@@ -41,7 +41,7 @@ const ProductList = ({ searchQuery }) => {
   }, [currentPage, selectedCategoryId, searchQuery]);
 
  const handlePageChange = (page) => {
-  if (page >= 1 && page <= totalPages) {
+  if (page >= 1 && page <= totalPages) { 
     setCurrentPage(page);
 
     window.scrollTo({
@@ -49,6 +49,9 @@ const ProductList = ({ searchQuery }) => {
       behavior: "smooth",
     });
   }
+
+  
+
 };
 
   if (loading) {
