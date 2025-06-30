@@ -6,7 +6,7 @@ import BestDealSection from '../../../components/user/Homepage/BestDealSection'
 import BestSellerSection from '../../../components/user/Homepage/BestSellerSection'
 import MacbookProAdBanner from '../../../components/user/Homepage/MacbookProAdBanner'
 import LatestHomePage from '../../../components/user/Homepage/LatestHomePage'
-// import "./HomePage.css";
+import "./HomePage.css";
 export default class HomePage extends Component {
   render() {
         return (
