@@ -17,14 +17,14 @@ import ShoppingCart from "./pages/user/Cart/Cart.js";
 import Wishlist from "./pages/user/Wishlist/Wishlist.js";
 import Product from './pages/user/Product/Product';
 import Header from "./components/user/Header/Header.js";
-import ContentBlog from "./components/user/Blog/ContentBlog.js";
+// import ContentBlog from "./components/user/Blog/ContentBlog.js";
 
 function AppRoutes() {
   return (
     <>
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route index element={<SignUp />} /> 
+          <Route index element={<SignUp />} />
           <Route path="/callback" element={<AuthCallback />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
@@ -40,6 +40,7 @@ function AppRoutes() {
           <Route path="Product" element={<Product />} />
           <Route path="*" element={<NotFound />} />
         </Route>
+
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
         </Route>
