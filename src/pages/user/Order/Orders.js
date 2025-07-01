@@ -19,13 +19,13 @@ const Sidebar = ({ username, email }) => {
       </div>
       <ul className="menu">
         <li className="menu-item">
-          <Link to="/profile" className="menu-link">
+          <Link to="/user/profile" className="menu-link">
             <User className="menu-icon" />
             My Profile
           </Link>
         </li>
         <li className="menu-item">
-          <Link to="/orders" className="menu-link">
+          <Link to="/user/orders" className="menu-link">
             <FileText className="menu-icon" />
             My Orders
           </Link>

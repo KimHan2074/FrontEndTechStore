@@ -1,8 +1,8 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import UserLayout from "./layouts/User/UserLayout.js";
-import AuthLayout from "./layouts/Auth/AuthLayout.js";
-import AdminLayout from "./layouts/Admin/AdminLayout.js";
+import UserLayout from './layouts/User/UserLayout.js';
+import AuthLayout from './layouts/Auth/AuthLayout.js';
+import AdminLayout from './layouts/Admin/AdminLayout.js';
 import SignUp from './pages/auth/register/SignUp';
 import SignIn from './pages/auth/login/SignIn';
 import ResetPassword from './pages/auth/login/ResetPassword';
@@ -12,10 +12,11 @@ import AboutUs from './pages/user/About_us/About_us';
 import NotFound from './pages/user/NotFound/NotFound';
 import Blog from './pages/user/Blog/Blog';
 import Profile from './pages/user/Profile/Profile';
-import ShoppingCart from "./pages/user/Cart/Cart.js";
-import Wishlist from "./pages/user/Wishlist/Wishlist.js";
+import ShoppingCart from './pages/user/Cart/Cart.js';
+import Wishlist from './pages/user/Wishlist/Wishlist.js';
 import Product from './pages/user/Product/Product';
-import HomePage from "./pages/user/HomePage/HomePage";
+import HomePage from "./pages/user/HomePage/HomePage.js";
+import Sidebar from "./pages/user/Order/Orders.js";
 
 function AppRoutes() {
   return (
@@ -36,6 +37,7 @@ function AppRoutes() {
           <Route path="shopping_cart" element={<ShoppingCart />} />
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="Product" element={<Product />} />
+          <Route path="orders" element={<Sidebar />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 
