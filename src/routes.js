@@ -7,7 +7,6 @@ import SignUp from './pages/auth/register/SignUp';
 import SignIn from './pages/auth/login/SignIn';
 import ResetPassword from './pages/auth/login/ResetPassword';
 import AuthCallback from './pages/auth/AuthCallback';
-import HomePage from './pages/user/HomePage/HomePage.js';
 import Dashboard from './pages/admin/Dashboard/Dashboard';
 import AboutUs from './pages/user/About_us/About_us';
 import NotFound from './pages/user/NotFound/NotFound';
@@ -16,14 +15,15 @@ import Profile from './pages/user/Profile/Profile';
 import ShoppingCart from './pages/user/Cart/Cart.js';
 import Wishlist from './pages/user/Wishlist/Wishlist.js';
 import Product from './pages/user/Product/Product';
-
+import HomePage from "./pages/user/HomePage/HomePage.js";
+import Sidebar from "./pages/user/Order/Orders.js";
 function AppRoutes() {
   return (
     <>
       <Routes>
         {/* Auth layout */}
         <Route element={<AuthLayout />}>
-          <Route index element={<SignUp />} /> {/* <- Đây là route khớp "/" */}
+          <Route index element={<SignUp />} />
           <Route path="/callback" element={<AuthCallback />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
@@ -37,6 +37,7 @@ function AppRoutes() {
           <Route path="shopping_cart" element={<ShoppingCart />} />
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="Product" element={<Product />} />
+          <Route path="orders" element={<Sidebar />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 

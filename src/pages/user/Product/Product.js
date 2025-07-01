@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./Product.css";
 import ProductSidebar from "../../../components/user/Product/ProductSidebar";
 import { FaShoppingCart, FaHeart, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductList = ({ searchQuery }) => {
   const [products, setProducts] = useState([]);
@@ -40,19 +43,48 @@ const ProductList = ({ searchQuery }) => {
     fetchProducts();
   }, [currentPage, selectedCategoryId, searchQuery]);
 
- const handlePageChange = (page) => {
-  if (page >= 1 && page <= totalPages) { 
-    setCurrentPage(page);
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) { 
+      setCurrentPage(page);
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  };
 
-  
+  const handleAddToCart = async (product) => {
+    if (product.stock <= 0) {
+      toast.warning("Sản phẩm đã hết hàng!");
+      return;
+    }
 
-};
+    try {
+      const response = await axios.post(
+      "/api/user/cart/add",
+      {
+        product_id: product.id,
+        quantity: 1,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json"
+        }
+      }
+    );
+      toast.success("Product added to cart successfully!");
+      console.log("Add to cart:", response.data);
+    } catch (error) {
+      if (error.response?.status === 401) {
+        toast.error("You need to log in to make a purchase.");
+      } else {
+        toast.error("Failed to add to cart!");
+      }
+      console.error("Error adding to cart:", error);
+    }
+  };
 
   if (loading) {
     return <div>Loading products...</div>;
@@ -107,9 +139,15 @@ const ProductList = ({ searchQuery }) => {
                       <span className="line-through">${product.old_price}</span>
                       <span className="text-red-500">${product.price}</span>
                     </div>
-                    <button className="bg-red-500 flex items-center justify-center gap-2">
+
+                    <button
+                      className="bg-red-500 text-white px-3 py-2 rounded flex items-center justify-center gap-2 hover:bg-red-600 transition mb-2"
+                      onClick={() => handleAddToCart(product)}
+                      disabled={product.stock <= 0}
+                    >
                       <FaShoppingCart /> ADD TO CART
                     </button>
+
                     <button className="text-gray-500 flex items-center justify-center gap-2">
                       <FaHeart /> Wishlist
                     </button>
