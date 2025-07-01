@@ -17,11 +17,11 @@ import Wishlist from './pages/user/Wishlist/Wishlist.js';
 import Product from './pages/user/Product/Product';
 import HomePage from "./pages/user/HomePage/HomePage.js";
 import Sidebar from "./pages/user/Order/Orders.js";
+
 function AppRoutes() {
   return (
     <>
       <Routes>
-        {/* Auth layout */}
         <Route element={<AuthLayout />}>
           <Route index element={<SignUp />} />
           <Route path="/callback" element={<AuthCallback />} />
@@ -41,7 +41,6 @@ function AppRoutes() {
           <Route path="*" element={<NotFound />} />
         </Route>
 
-        {/* Admin layout */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
         </Route>

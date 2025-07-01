@@ -1,0 +1,20 @@
+[33m247d89a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/23[m[33m)[m HEAD@{0}: commit: feature/23 add: logout component to handle user sign-out
+[33mbe1e7b7[m[33m ([m[1;31morigin/feature/23[m[33m)[m HEAD@{1}: commit (merge): feature/23 Fetch all products and blogs for homepage & header search; update user icon dropdown menu (Login/Logout based on auth status)
+[33md837d6d[m HEAD@{2}: commit: feature/23 Fetch all products and blogs for homepage & header search; update user icon dropdown menu (Login/Logout based on auth status)
+[33m84aaffa[m HEAD@{3}: commit (merge): feature/23: Implement homepage UI including BestDealSection, CategoryItemHome, FeaturedProductSection, and PromoBanner
+[33mf8bed75[m HEAD@{4}: commit: feature/23 Build homepage UI components: BestDealSection, CategoryItemHome, FeaturedProductSection, PromoBanner
+[33mcfe1ed7[m[33m ([m[1;31morigin/SCRUM-65-blog[m[33m, [m[1;32mSCRUM-65-blog[m[33m)[m HEAD@{5}: reset: moving to HEAD~1
+[33m49731d8[m HEAD@{6}: reset: moving to 49731d8
+[33mcfe1ed7[m[33m ([m[1;31morigin/SCRUM-65-blog[m[33m, [m[1;32mSCRUM-65-blog[m[33m)[m HEAD@{7}: reset: moving to HEAD@{1}
+[33m49731d8[m HEAD@{8}: commit: feature/65: Write API to get list of blogs, category by ID, and blog status
+[33mcfe1ed7[m[33m ([m[1;31morigin/SCRUM-65-blog[m[33m, [m[1;32mSCRUM-65-blog[m[33m)[m HEAD@{9}: checkout: moving from SCRUM-65-blog to feature/23
+[33mcfe1ed7[m[33m ([m[1;31morigin/SCRUM-65-blog[m[33m, [m[1;32mSCRUM-65-blog[m[33m)[m HEAD@{10}: commit: feature/65 implemented full UI and integrated API for blog functionality
+[33m7c448bd[m HEAD@{11}: commit (merge): feature/65 implemented full UI and integrated API for blog functionality
+[33m3f20f06[m HEAD@{12}: commit (merge): done interface and done api of blog
+[33ma8da8f0[m HEAD@{13}: commit: Implement UI for blog sidebar and main content
+[33m8d07dc8[m HEAD@{14}: reset: moving to 8d07dc8
+[33m8d07dc8[m HEAD@{15}: commit: Implement UI for blog sidebar and main content
+[33mf4cb5b7[m[33m ([m[1;32mdev[m[33m)[m HEAD@{16}: checkout: moving from dev to SCRUM-65-blog
+[33mf4cb5b7[m[33m ([m[1;32mdev[m[33m)[m HEAD@{17}: pull origin dev: Fast-forward
+[33m09c9793[m HEAD@{18}: checkout: moving from main to dev
+[33ma39a2ee[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{19}: clone: from https://github.com/HuuHau235/FrontEnd_React_TechStore.git
