@@ -17,6 +17,7 @@ import Wishlist from './pages/user/Wishlist/Wishlist.js';
 import Product from './pages/user/Product/Product';
 import HomePage from "./pages/user/HomePage/HomePage.js";
 import Sidebar from "./pages/user/Order/Orders.js";
+import PaymentConfirmation from "./pages/user/Payment/PaymentConfirmation.js";
 
 function AppRoutes() {
   return (
@@ -38,6 +39,7 @@ function AppRoutes() {
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="Product" element={<Product />} />
           <Route path="orders" element={<Sidebar />} />
+          <Route path="payment_confirmation" element={<PaymentConfirmation />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 

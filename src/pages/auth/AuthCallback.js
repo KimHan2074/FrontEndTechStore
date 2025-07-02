@@ -13,7 +13,7 @@ export default function AuthCallback() {
     const token = new URLSearchParams(location.search).get("token");
 
     if (token) {
-      localStorage.setItem("access_token", token);
+      localStorage.setItem("token", token);
       toast.success("Đăng nhập bằng Google thành công!");
       navigate("/user/homepage"); 
     } else {
