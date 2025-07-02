@@ -55,7 +55,23 @@ const ProductList = ({ searchQuery }) => {
   };
 
   const handleAddToCart = async (product) => {
-    if (product.stock <= 0) {
+    console.log("DEBUG product:", product); // ➤ Kiểm tra product là gì
+
+    const stock = Number(product?.stock);
+
+    console.log("Parsed stock:", stock, "| Raw:", product?.stock, "| Type:", typeof product?.stock);
+
+    if (!product || typeof product.stock === "undefined") {
+      toast.error("Không tìm thấy thông tin sản phẩm.");
+      return;
+    }
+
+    if (isNaN(stock)) {
+      toast.error("Không xác định được số lượng tồn kho.");
+      return;
+    }
+
+    if (stock <= 0) {
       toast.warning("Sản phẩm đã hết hàng!");
       return;
     }
@@ -85,6 +101,7 @@ const ProductList = ({ searchQuery }) => {
       console.error("Error adding to cart:", error);
     }
   };
+
 
   if (loading) {
     return <div>Loading products...</div>;
@@ -143,7 +160,6 @@ const ProductList = ({ searchQuery }) => {
                     <button
                       className="bg-red-500 text-white px-3 py-2 rounded flex items-center justify-center gap-2 hover:bg-red-600 transition mb-2"
                       onClick={() => handleAddToCart(product)}
-                      disabled={product.stock <= 0}
                     >
                       <FaShoppingCart /> ADD TO CART
                     </button>
