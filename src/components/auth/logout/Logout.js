@@ -15,7 +15,8 @@ const Logout = async () => {
   } catch (err) {
     console.log("Lỗi khi logout:", err); // ✅ Xem có lỗi không
   } finally {
-    localStorage.removeItem("token");
+    // localStorage.removeItem("token");
+    localStorage.clear();
     console.log("Xóa token và chuyển trang"); // ✅ Kiểm tra có vào đây không
     window.location.href = "/signin";
   }
