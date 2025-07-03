@@ -53,8 +53,8 @@ const Profile = () => {
     setProfile({
       username: userData.name ?? "N/A",
       email: userData.email ?? "N/A",
-      phone: userData.phone ?? "Not Provided",
-      address: userData.address ?? "Not Provided",
+      phone: userData.phone ?? "",
+      address: userData.address ?? "",
     });
     setAvatar(userData.avatar || "https://example.com/default-avatar.png"); 
     console.log("Fetched User Data:", userData);

@@ -76,44 +76,47 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
         {filteredCards.length === 0 ? (
           <p className="no-results-message">No matching articles found</p>
         ) : (
-          currentCards.map((card) => (
-            <div
-              key={card.id}
-              className={`card-blog ${card.isActive ? "active-card" : ""}`}
-            >
-              <img
-                src={card.image_url || "/placeholder.svg"}
-                alt="Blog"
-                className="card-image-blog"
-              />
-              <div className="card-meta-blog">
-                <div className="card-meta-detail">
-                  <i className="fa-solid fa-user icon-outline"></i>
-                  <span className="author">{card.author?.name}</span>
-                </div>
-                <div className="card-meta-detail">
-                  <i className="fa-solid fa-calendar icon-outline"></i>
-                  <span className="date">{card.publish_date?.slice(0, 10)}</span>
-                </div>
-              </div>
+         currentCards
+  .filter((card) => card.author) // Chỉ lấy blog có author
+  .map((card) => (
+    <div
+      key={card.id}
+      className={`card-blog ${card.isActive ? "active-card" : ""}`}
+    >
+      <img
+        src={card.image_url || "/placeholder.svg"}
+        alt="Blog"
+        className="card-image-blog"
+      />
+      <div className="card-meta-blog">
+        <div className="card-meta-detail">
+          <i className="fa-solid fa-user icon-outline"></i>
+          <span className="author">{card.author?.name}</span>
+        </div>
+        <div className="card-meta-detail">
+          <i className="fa-solid fa-calendar icon-outline"></i>
+          <span className="date">{card.publish_date?.slice(0, 10)}</span>
+        </div>
+      </div>
 
-              <h3 className={`card-title-blog ${expandedCardId === card.id ? "expanded" : ""}`}>
-                {card.title}
-              </h3>
-              <p className={`card-description-blog ${expandedCardId === card.id ? "expanded" : ""}`}>
-                {card.content}
-              </p>
-              <button
-                className="read-more-button"
-                onClick={() => setExpandedCardId(expandedCardId === card.id ? null : card.id)}
-              >
-                {expandedCardId === card.id ? "SHOW LESS" : "READ MORE"}{" "}
-                <span className="arrow-icon">
-                  <ArrowRight color="#FF9000" size={16} />
-                </span>
-              </button>
-            </div>
-          ))
+      <h3 className={`card-title-blog ${expandedCardId === card.id ? "expanded" : ""}`}>
+        {card.title}
+      </h3>
+      <p className={`card-description-blog ${expandedCardId === card.id ? "expanded" : ""}`}>
+        {card.content}
+      </p>
+      <button
+        className="read-more-button"
+        onClick={() => setExpandedCardId(expandedCardId === card.id ? null : card.id)}
+      >
+        {expandedCardId === card.id ? "SHOW LESS" : "READ MORE"}{" "}
+        <span className="arrow-icon">
+          <ArrowRight color="#FF9000" size={16} />
+        </span>
+      </button>
+    </div>
+  ))
+
         )}
       </div>
 

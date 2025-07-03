@@ -155,7 +155,7 @@ body {
 }
 
 .change-password {
-  width: 65%;
+  width: 88%;
   margin-left: 20px;
 }
 
@@ -165,7 +165,7 @@ body {
 
 .change-password .input-row {
   display: flex;
-  gap: 100px;
+  gap: 95px;
 }
 
 .change-password .input-row .input-group input {

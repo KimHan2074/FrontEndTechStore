@@ -3,15 +3,22 @@ import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../../pages/user/Header/Header.css";
-
 function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
 
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
+
+    if (!token) {
+      alert("Please sign in to use search functionality.");
+      return navigate("/signin");
+    }
+
     const trimmed = searchQuery.trim();
     if (trimmed === "") return;
 
