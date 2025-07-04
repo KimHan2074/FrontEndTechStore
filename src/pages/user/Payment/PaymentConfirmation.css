@@ -1,0 +1,364 @@
+.payment-container {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 30px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  min-height: 100vh;
+}
+
+.payment-title {
+  font-size: 30px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Steps */
+.steps-container {
+  margin-bottom: 20px;
+}
+
+.step-item {
+  background: white;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.step-item.active {
+  border-color: #e1e5e9;
+  background-color: #f0f8ff;
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.step-number.completed {
+  background-color: #e9ecef;
+  color: #6c757d;
+}
+
+.step-number.active {
+  background-color: #28E855;
+  color: white;
+}
+
+.step-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Main Card */
+.main-card {
+  background: white;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.card-content {
+  padding: 28px;
+}
+
+/* Confirmation Header */
+.confirmation-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.check-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: #28a745;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.check-icon::after {
+  content: "✓";
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.confirmation-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Order Header */
+.order-header {
+  margin-bottom: 32px;
+}
+
+.order-id-main {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.order-id-sub {
+  font-size: 16px;
+  color: #6c757d;
+}
+
+/* Section */
+.section {
+  margin-bottom: 32px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.section-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  color: #6c757d;
+}
+
+.section_title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: inherit;
+}
+
+/* Customer Info - 2x2 grid layout */
+.customer-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 32px;
+  margin-left: 30px;
+}
+
+.info-item {
+  margin-bottom: 18px;
+}
+
+.info-label {
+  font-size: 15px;
+  color: #6c757d;
+  margin-bottom: 6px;
+}
+
+.info-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Payment Method */
+.payment-method-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 30px;
+}
+
+.payment-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.processing-badge {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+  padding: 7px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Order Items */
+.order-items {
+  margin-left: 30px;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.item-image {
+  width: 64px;
+  height: 64px;
+  background-color: #e9ecef;
+  border-radius: 8px;
+  margin-right: 18px;
+  flex-shrink: 0;
+}
+
+.item-details {
+  flex: 1;
+}
+
+.item-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.item-description {
+  font-size: 15px;
+  color: #6c757d;
+  margin-bottom: 4px;
+}
+
+.item-quantity {
+  font-size: 15px;
+  color: #6c757d;
+}
+
+.item-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  text-align: right;
+}
+
+/* Price Summary */
+.price-summary {
+  border-top: 1px solid #e9ecef;
+  padding-top: 24px;
+  margin-top: 24px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.price-label {
+  font-size: 16px;
+  color: #6c757d;
+}
+
+.price-label.total {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.price-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #007bff;
+}
+
+.price-value.total {
+  font-size: 16px;
+  font-weight: 600;
+  color: #007bff;
+}
+
+/* Email Notice */
+.email-notice {
+  background-color: #e3f2fd;
+  border: 1px solid #bbdefb;
+  border-radius: 8px;
+  padding: 18px;
+  margin: 28px 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.mail-icon {
+  width: 20px;
+  height: 20px;
+  color: #1976d2;
+  margin-right: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.email-text {
+  font-size: 15px;
+  color: #1565c0;
+  line-height: 1.5;
+}
+
+/* Confirm Button */
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 28px;
+}
+
+.confirm-button {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.confirm-button:hover {
+  background-color: #333;
+}
+
+.confirm-button:active {
+  background-color: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .payment-container {
+    padding: 16px;
+  }
+
+  .customer-info {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .order-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .item-image {
+    margin-bottom: 12px;
+  }
+
+  .item-price {
+    text-align: left;
+    margin-top: 8px;
+  }
+}

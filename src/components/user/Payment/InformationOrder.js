@@ -115,11 +115,17 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
     };
 
     try {
-      const response = await fetch(`http://localhost:8000/api/user/orders/${orderId}/update-info`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/user/orders/${orderId}/update-info`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const result = await response.json();
 
@@ -145,91 +151,110 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
               <div className="step-number-information-order active">1</div>
               <h2>Order Information</h2>
             </div>
-            <div className="form-content-information-order">
-              <div className="form-row-information-order">
+
+            {/* FORM */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleContinue();
+              }}
+            >
+              <div className="form-content-information-order">
+                <div className="form-row-information-order">
+                  <div className="form-group-information-order">
+                    <label>Full Name</label>
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleInputChange}
+                      placeholder="Enter your full name..."
+                      required
+                    />
+                  </div>
+                  <div className="form-group-information-order">
+                    <label>Phone</label>
+                    <input
+                      type="text"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      placeholder="Enter your phone number..."
+                      required
+                    />
+                  </div>
+                </div>
+
                 <div className="form-group-information-order">
-                  <label>Full Name</label>
+                  <label>Address</label>
                   <input
                     type="text"
-                    name="fullName"
-                    value={formData.fullName}
+                    name="address"
+                    value={formData.address}
                     onChange={handleInputChange}
-                    placeholder="Enter your full name..."
+                    placeholder="Enter your address..."
+                    required
                   />
                 </div>
-                <div className="form-group-information-order">
-                  <label>Phone</label>
-                  <input
-                    type="text"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    placeholder="Enter your phone number..."
-                  />
-                </div>
-              </div>
 
-              <div className="form-group-information-order">
-                <label>Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  placeholder="Enter your address..."
-                />
-              </div>
+                <div className="form-row-information-order">
+                  <div className="form-group-information-order">
+                    <label>Province/City</label>
+                    <select
+                      value={formData.province}
+                      onChange={handleProvinceChange}
+                      required
+                    >
+                      <option value="">-- Select Province --</option>
+                      {locationData.map((p) => (
+                        <option key={p.code} value={String(p.code)}>
+                          {p.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group-information-order">
+                    <label>District</label>
+                    <select
+                      value={formData.district}
+                      onChange={handleDistrictChange}
+                      disabled={!formData.province}
+                      required
+                    >
+                      <option value="">-- Select District --</option>
+                      {districts.map((d) => (
+                        <option key={d.code} value={String(d.code)}>
+                          {d.codename}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group-information-order">
+                    <label>Ward/Commune</label>
+                    <select
+                      value={formData.ward}
+                      onChange={handleWardChange}
+                      disabled={!formData.district}
+                      required
+                    >
+                      <option value="">-- Select Ward --</option>
+                      {wards.map((w) => (
+                        <option key={w.code} value={String(w.code)}>
+                          {w.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
 
-              <div className="form-row-information-order">
-                <div className="form-group-information-order">
-                  <label>Province/City</label>
-                  <select value={formData.province} onChange={handleProvinceChange}>
-                    <option value="">-- Select Province --</option>
-                    {locationData.map((p) => (
-                      <option key={p.code} value={String(p.code)}>
-                        {p.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group-information-order">
-                  <label>District</label>
-                  <select
-                    value={formData.district}
-                    onChange={handleDistrictChange}
-                    disabled={!formData.province}
-                  >
-                    <option value="">-- Select District --</option>
-                    {districts.map((d) => (
-                      <option key={d.code} value={String(d.code)}>
-                        {d.codename}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group-information-order">
-                  <label>Ward/Commune</label>
-                  <select
-                    value={formData.ward}
-                    onChange={handleWardChange}
-                    disabled={!formData.district}
-                  >
-                    <option value="">-- Select Ward --</option>
-                    {wards.map((w) => (
-                      <option key={w.code} value={String(w.code)}>
-                        {w.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <button type="submit" className="continue-btn-information-order">
+                  Continue
+                </button>
               </div>
-
-              <button className="continue-btn-information-order" onClick={handleContinue}>
-                Continue
-              </button>
-            </div>
+            </form>
           </div>
 
+          {/* Steps */}
           <div className="form-section-information-order">
             <div
               className="section-header-information-order"
@@ -251,6 +276,7 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
           </div>
         </div>
 
+        {/* Right section: products */}
         <div className="right-section-information-order">
           <div className="product-section-information-order">
             <h3>Products</h3>

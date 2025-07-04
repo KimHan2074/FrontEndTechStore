@@ -17,6 +17,7 @@ function Header({ onSearch }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  
   const token = localStorage.getItem("token");
   const { cartItems } = useCart();
   const itemCount = cartItems?.length || 0;

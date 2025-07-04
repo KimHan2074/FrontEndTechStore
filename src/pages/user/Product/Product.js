@@ -2,26 +2,18 @@ import React, { useEffect, useState } from "react";
 import "./Product.css";
 import ProductSidebar from "../../../components/user/Product/ProductSidebar";
 import { FaShoppingCart, FaHeart, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const ProductList = () => {
+const ProductList = ({ searchQuery }) => {
   const [products, setProducts] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [searchMode, setSearchMode] = useState(false);
-
   const itemsPerPage = 15;
-  const location = useLocation();
-  const searchQuery = location.state?.searchQuery?.toLowerCase() || "";
-
-  useEffect(() => {
-    if (searchQuery) {
-      setSearchMode(true);
-    }
-  }, [searchQuery]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,6 +21,8 @@ const ProductList = () => {
         let url = `http://127.0.0.1:8000/api/products/list?page=${currentPage}&per_page=${itemsPerPage}`;
         if (selectedCategoryId) {
           url += `&category_id=${selectedCategoryId}`;
+        } else if (searchQuery) {
+          url += `&q=${searchQuery}`;
         }
 
         const response = await fetch(url);
@@ -37,18 +31,8 @@ const ProductList = () => {
         }
 
         const data = await response.json();
-        let filtered = data.data;
-
-        if (searchMode && searchQuery) {
-          filtered = filtered.filter(
-            (p) =>
-              p.name?.toLowerCase().includes(searchQuery) ||
-              p.description?.toLowerCase().includes(searchQuery)
-          );
-        }
-
-        setProducts(filtered);
-        setTotalPages(data.last_page);
+        setProducts(data.data); 
+        setTotalPages(data.last_page); 
       } catch (err) {
         setError(err.message);
       } finally {
@@ -57,30 +41,83 @@ const ProductList = () => {
     };
 
     fetchProducts();
-  }, [currentPage, selectedCategoryId, searchMode, searchQuery]);
+  }, [currentPage, selectedCategoryId, searchQuery]);
 
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
+    if (page >= 1 && page <= totalPages) { 
       setCurrentPage(page);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     }
   };
 
-  const handleCategoryChange = (categoryId) => {
-    setSelectedCategoryId(categoryId);
-    setSearchMode(false); // Reset chế độ tìm kiếm
-    setCurrentPage(1);
+  const handleAddToCart = async (product) => {
+    console.log("DEBUG product:", product); // ➤ Kiểm tra product là gì
+
+    const stock = Number(product?.stock);
+
+    console.log("Parsed stock:", stock, "| Raw:", product?.stock, "| Type:", typeof product?.stock);
+
+    if (!product || typeof product.stock === "undefined") {
+      toast.error("Không tìm thấy thông tin sản phẩm.");
+      return;
+    }
+
+    if (isNaN(stock)) {
+      toast.error("Không xác định được số lượng tồn kho.");
+      return;
+    }
+
+    if (stock <= 0) {
+      toast.warning("Sản phẩm đã hết hàng!");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+      "/api/user/cart/add",
+      {
+        product_id: product.id,
+        quantity: 1,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json"
+        }
+      }
+    );
+      toast.success("Product added to cart successfully!");
+      console.log("Add to cart:", response.data);
+    } catch (error) {
+      if (error.response?.status === 401) {
+        toast.error("You need to log in to make a purchase.");
+      } else {
+        toast.error("Failed to add to cart!");
+      }
+console.error("Error adding to cart:", error);
+    }
   };
 
-  if (loading) return <div>Loading products...</div>;
-  if (error) return <div>Error: {error}</div>;
+
+  if (loading) {
+    return <div>Loading products...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+  
 
   return (
     <div className="product-wrapper">
       <div className="sidebar-section">
         <ProductSidebar
           selectedCategoryId={selectedCategoryId}
-          setSelectedCategoryId={handleCategoryChange}
+          setSelectedCategoryId={setSelectedCategoryId}
         />
       </div>
 
@@ -106,25 +143,33 @@ const ProductList = () => {
                   alt={product.name}
                   className="w-24 h-24 object-cover mr-4"
                 />
+
                 <div className="product-details flex-1">
                   <h3 className="text-gray-600 text-sm">{product.category}</h3>
                   <h2 className="text-lg font-semibold">{product.name}</h2>
                   <p className="text-sm text-gray-500">{product.description}</p>
                 </div>
+
                 <div className="actions">
                   <div className="actions-container">
                     <div className="price-wrapper">
                       <span className="line-through">${product.old_price}</span>
                       <span className="text-red-500">${product.price}</span>
                     </div>
-                    <button className="bg-red-500 flex items-center justify-center gap-2">
+
+                    <button
+                      className="bg-red-500 text-white px-3 py-2 rounded flex items-center justify-center gap-2 hover:bg-red-600 transition mb-2"
+                      onClick={() => handleAddToCart(product)}
+                    >
                       <FaShoppingCart /> ADD TO CART
                     </button>
+
                     <button className="text-gray-500 flex items-center justify-center gap-2">
                       <FaHeart /> Wishlist
                     </button>
                   </div>
                 </div>
+
               </div>
             ))
           )}
@@ -138,18 +183,16 @@ const ProductList = () => {
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
-              className={currentPage === index + 1 ? "active" : ""}
+className={currentPage === index + 1 ? "active" : ""}
             >
               {index + 1}
             </button>
           ))}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
+          <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
             <FaChevronRight />
           </button>
         </div>
+
       </div>
     </div>
   );

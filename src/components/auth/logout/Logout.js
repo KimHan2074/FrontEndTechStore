@@ -15,7 +15,6 @@ const Logout = async () => {
   } catch (err) {
     console.log("Lỗi khi logout:", err);
   } finally {
-    // localStorage.removeItem("token");
     localStorage.clear();
     console.log("Xóa token và chuyển trang"); 
     window.location.href = "/signin";
