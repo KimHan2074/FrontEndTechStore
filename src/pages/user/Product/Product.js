@@ -2,15 +2,26 @@ import React, { useEffect, useState } from "react";
 import "./Product.css";
 import ProductSidebar from "../../../components/user/Product/ProductSidebar";
 import { FaShoppingCart, FaHeart, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 
-const ProductList = ({ searchQuery }) => {
+const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [searchMode, setSearchMode] = useState(false);
+
   const itemsPerPage = 15;
+  const location = useLocation();
+  const searchQuery = location.state?.searchQuery?.toLowerCase() || "";
+
+  useEffect(() => {
+    if (searchQuery) {
+      setSearchMode(true);
+    }
+  }, [searchQuery]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -18,8 +29,6 @@ const ProductList = ({ searchQuery }) => {
         let url = `http://127.0.0.1:8000/api/products/list?page=${currentPage}&per_page=${itemsPerPage}`;
         if (selectedCategoryId) {
           url += `&category_id=${selectedCategoryId}`;
-        } else if (searchQuery) {
-          url += `&q=${searchQuery}`;
         }
 
         const response = await fetch(url);
@@ -28,8 +37,18 @@ const ProductList = ({ searchQuery }) => {
         }
 
         const data = await response.json();
-        setProducts(data.data); 
-        setTotalPages(data.last_page); 
+        let filtered = data.data;
+
+        if (searchMode && searchQuery) {
+          filtered = filtered.filter(
+            (p) =>
+              p.name?.toLowerCase().includes(searchQuery) ||
+              p.description?.toLowerCase().includes(searchQuery)
+          );
+        }
+
+        setProducts(filtered);
+        setTotalPages(data.last_page);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -38,34 +57,30 @@ const ProductList = ({ searchQuery }) => {
     };
 
     fetchProducts();
-  }, [currentPage, selectedCategoryId, searchQuery]);
+  }, [currentPage, selectedCategoryId, searchMode, searchQuery]);
 
- const handlePageChange = (page) => {
-  if (page >= 1 && page <= totalPages) {
-    setCurrentPage(page);
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
-};
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategoryId(categoryId);
+    setSearchMode(false); // Reset chế độ tìm kiếm
+    setCurrentPage(1);
+  };
 
-  if (loading) {
-    return <div>Loading products...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-  
+  if (loading) return <div>Loading products...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="product-wrapper">
       <div className="sidebar-section">
         <ProductSidebar
           selectedCategoryId={selectedCategoryId}
-          setSelectedCategoryId={setSelectedCategoryId}
+          setSelectedCategoryId={handleCategoryChange}
         />
       </div>
 
@@ -91,13 +106,11 @@ const ProductList = ({ searchQuery }) => {
                   alt={product.name}
                   className="w-24 h-24 object-cover mr-4"
                 />
-
                 <div className="product-details flex-1">
                   <h3 className="text-gray-600 text-sm">{product.category}</h3>
                   <h2 className="text-lg font-semibold">{product.name}</h2>
                   <p className="text-sm text-gray-500">{product.description}</p>
                 </div>
-
                 <div className="actions">
                   <div className="actions-container">
                     <div className="price-wrapper">
@@ -112,7 +125,6 @@ const ProductList = ({ searchQuery }) => {
                     </button>
                   </div>
                 </div>
-
               </div>
             ))
           )}
@@ -131,11 +143,13 @@ const ProductList = ({ searchQuery }) => {
               {index + 1}
             </button>
           ))}
-          <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
             <FaChevronRight />
           </button>
         </div>
-
       </div>
     </div>
   );

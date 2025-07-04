@@ -16,6 +16,7 @@ import ShoppingCart from "./pages/user/Cart/Cart.js";
 import Wishlist from "./pages/user/Wishlist/Wishlist.js";
 import Product from './pages/user/Product/Product';
 import HomePage from "./pages/user/HomePage/HomePage";
+import Payment from "./pages/user/Payment/Payment.js";
 
 function AppRoutes() {
   return (
@@ -36,6 +37,7 @@ function AppRoutes() {
           <Route path="shopping_cart" element={<ShoppingCart />} />
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="Product" element={<Product />} />
+          <Route path="payment" element ={<Payment/>}/>
           <Route path="*" element={<NotFound />} />
         </Route>
 

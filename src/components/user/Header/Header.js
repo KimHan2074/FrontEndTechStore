@@ -176,36 +176,37 @@ function Header({ onSearch }) {
             <nav className="main-menus">
               <ul className="menu-items">
                 <li className="menu-item-header">
-                  <NavLink to={isLoggedIn ? "/user/homepage" : "#"} onClick={(e) => {
-                    if (!isLoggedIn) {
-                      e.preventDefault();
-                      window.location.href = "/signin";
+                  <NavLink
+                    to="/user/homepage"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link-header active" : "menu-link-header"
                     }
-                  }} className={({ isActive }) => isActive ? "menu-link-header active" : "menu-link-header"}>
+                  >
                     <House size={18} /> Homepage
                   </NavLink>
                 </li>
                 <li className="menu-item-header">
-                  <NavLink to={isLoggedIn ? "/user/Product" : "#"} onClick={(e) => {
-                    if (!isLoggedIn) {
-                      e.preventDefault();
-                      window.location.href = "/signin";
+                  <NavLink
+                    to="/user/Product"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link-header active" : "menu-link-header"
                     }
-                  }} className={({ isActive }) => isActive ? "menu-link-header active" : "menu-link-header"}>
+                  >
                     <AlignJustify size={18} /> Product List
                   </NavLink>
                 </li>
                 <li className="menu-item-header">
-                  <NavLink to={isLoggedIn ? "/user/blog" : "#"} onClick={(e) => {
-                    if (!isLoggedIn) {
-                      e.preventDefault();
-                      window.location.href = "/signin";
+                  <NavLink
+                    to="/user/blog"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link-header active" : "menu-link-header"
                     }
-                  }} className={({ isActive }) => isActive ? "menu-link-header active" : "menu-link-header"}>
+                  >
                     <Archive size={18} /> Blog
                   </NavLink>
                 </li>
               </ul>
+
             </nav>
             {/* Auth menu */}
 

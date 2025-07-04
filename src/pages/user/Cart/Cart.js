@@ -9,8 +9,7 @@ import { useNavigate } from "react-router-dom"
 import { useCart } from "../../../context/CartContext"
 
 export default function Cart() {
-  // const [cartItems, setCartItems] = useState([])
-  const {cartItems, setCartItems} =  useCart()
+  const { cartItems, setCartItems } = useCart()
   const [selectedItems, setSelectedItems] = useState([])
   const [shippingOption, setShippingOption] = useState("free")
   const [couponCode, setCouponCode] = useState("")
@@ -128,9 +127,9 @@ export default function Cart() {
         .reduce((sum, item) => sum + item.price * item.quantity, 0)
 
       if (coupon.type === "percent") {
-        setDiscount((subtotal * coupon.value) / 100)  
+        setDiscount((subtotal * coupon.value) / 100)
       } else {
-        setDiscount(Number(coupon.value))  
+        setDiscount(Number(coupon.value))
       }
 
       toast.success(`Coupon applied: ${coupon.code}`)
@@ -171,9 +170,11 @@ export default function Cart() {
         .map(item => ({
           cart_item_id: item.id,
           product_id: item.product_id,
+          name: item.name,
+          image: item.image,
           quantity: item.quantity,
           unit_price: item.price
-        }))
+        }));
 
       const payload = {
         selected_items: selectedData,
@@ -181,21 +182,37 @@ export default function Cart() {
         coupon_code: appliedCoupon?.code || null,
         discount: discount,
         total_amount: subtotal - discount + shippingCost
-      }
+      };
 
       const response = await axios.post("/api/user/cart/checkout", payload, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      })
+      });
+      const orderId = response.data?.order_id || response.data?.data?.id;
+      if (orderId) {
+        localStorage.setItem("currentOrderId", orderId);
+      } else {
+        console.warn("Không nhận được order_id từ server");
+      }
 
-      toast.success("Checkout successful! Redirecting to payment...")
-      navigate("/user/payment")
+      // Lưu dữ liệu cho trang payment
+      localStorage.setItem("checkoutData", JSON.stringify({
+        items: selectedData,
+        subtotal,
+        discount,
+        shippingCost,
+        total
+      }));
+
+      toast.success("Checkout successful! Redirecting to payment...");
+      navigate("/user/payment");
+
     } catch (error) {
-      toast.error("Checkout failed.")
-      console.error(error)
+      toast.error("Checkout failed.");
+      console.error(error);
     }
-  }
+  };
 
   const selectedCartItems = cartItems.filter(item => selectedItems.includes(item.id))
 

@@ -1,6 +1,5 @@
 .cart-container {
-  background-color: #f5f5f5;
-  padding: 40px 300px;
+  padding-top: 20px;
   display: flex;
   max-width: 1080px;
   margin: 0 auto;
