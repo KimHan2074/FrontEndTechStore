@@ -18,7 +18,6 @@ import Product from './pages/user/Product/Product';
 import HomePage from "./pages/user/HomePage/HomePage.js";
 import Sidebar from "./pages/user/Order/Orders.js";
 import PaymentConfirmation from "./pages/user/Payment/PaymentConfirmation.js";
-import HomePage from "./pages/user/HomePage/HomePage";
 import PaymentMethod from "./components/user/Payment/PaymentMethod.js";
 
 function AppRoutes() {
@@ -42,7 +41,7 @@ function AppRoutes() {
           <Route path="Product" element={<Product />} />
           <Route path="orders" element={<Sidebar />} />
           <Route path="payment_confirmation" element={<PaymentConfirmation />} />
-          <Route path="/payment_method" element={<PaymentMethod />} />
+          <Route path="payment_method" element={<PaymentMethod />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 
