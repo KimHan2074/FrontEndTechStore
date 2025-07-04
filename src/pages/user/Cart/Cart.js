@@ -8,6 +8,7 @@ import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../../context/CartContext";
 
+
 export default function Cart() {
   const { cartItems, setCartItems } = useCart();
   const [selectedItems, setSelectedItems] = useState([]);
@@ -16,6 +17,7 @@ export default function Cart() {
   const [discount, setDiscount] = useState(0);
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchCartItems = () => {
@@ -39,6 +41,7 @@ export default function Cart() {
             stock: item.product.stock !== undefined ? item.product.stock : 0,
           }));
 
+
           console.log("Fetched cart items (with stock):", items);
           setCartItems(items);
           setSelectedItems(items.filter((item) => item.stock > 0).map((item) => item.id));
@@ -48,8 +51,10 @@ export default function Cart() {
         });
     };
 
+
     fetchCartItems();
   }, []);
+
 
   useEffect(() => {
     console.log("Current cartItems state:", cartItems);
@@ -59,18 +64,29 @@ export default function Cart() {
     }
   }, [selectedItems, cartItems]);
 
+
   const handleItemSelect = (itemId) => {
     const item = cartItems.find((i) => i.id === itemId);
     console.log(`Selecting item ${itemId}, stock: ${item?.stock}`);
     if (!item || item.stock === 0 || item.stock === undefined) return;
+
 
     setSelectedItems((prev) =>
       prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId]
     );
   };
 
+
   const handleQuantityChange = (itemId, newQuantity) => {
+    const item = cartItems.find((i) => i.id === itemId);
+    if (!item) return;
+
     if (newQuantity < 1) return;
+
+    if (newQuantity > item.stock) {
+      toast.error(`⚠️ Số lượng vượt quá tồn kho (${item.stock}) của sản phẩm "${item.name}"`);
+      return;
+    }
 
     axios
       .put(
@@ -83,40 +99,24 @@ export default function Cart() {
         }
       )
       .then((response) => {
-        console.log("Full API response for quantity change:", response);
-        console.log("Response data:", response.data);
-        console.log("Updated item:", response.data);
-
         const updatedItem = response.data;
-        if (!updatedItem) {
-          throw new Error("Dữ liệu trả về từ server thiếu 'data' hoặc 'data.data' không tồn tại");
-        }
-        if (typeof updatedItem !== "object" || updatedItem === null) {
-          throw new Error(`Dữ liệu 'data.data' không phải là object hợp lệ. Kiểu: ${typeof updatedItem}`);
-        }
 
-        const newQuantityValue = updatedItem.quantity !== undefined ? updatedItem.quantity : newQuantity;
-        const newStockValue = updatedItem.stock !== undefined ? updatedItem.stock : undefined;
+        const newQuantityValue =
+          updatedItem.quantity !== undefined ? updatedItem.quantity : newQuantity;
+        const newStockValue =
+          updatedItem.stock !== undefined ? updatedItem.stock : item.stock;
 
-        if (newQuantityValue === undefined) {
-          console.warn("Thiếu thuộc tính 'quantity' trong response. Sử dụng giá trị gửi đi.");
-        }
-
-        setCartItems((prev) => {
-          const prevState = [...prev];
-          console.log("Previous cartItems:", prevState);
-          const newCartItems = prev.map((item) =>
+        setCartItems((prev) =>
+          prev.map((item) =>
             item.id === itemId
               ? {
-                  ...item,
-                  quantity: newQuantityValue,
-                  stock: newStockValue !== undefined ? newStockValue : item.stock,
-                }
+                ...item,
+                quantity: newQuantityValue,
+                stock: newStockValue,
+              }
               : item
-          );
-          console.log("New cartItems after update:", newCartItems);
-          return newCartItems;
-        });
+          )
+        );
 
         toast.success("Cập nhật số lượng thành công!");
       })
@@ -125,7 +125,9 @@ export default function Cart() {
 
         let errorMessage = "Không thể cập nhật số lượng do lỗi không xác định!";
         if (error.response) {
-          errorMessage = error.response.data?.message || `Lỗi server: ${error.response.statusText} (Mã: ${error.response.status})`;
+          errorMessage =
+            error.response.data?.message ||
+            `Lỗi server: ${error.response.statusText} (Mã: ${error.response.status})`;
         } else if (error.request) {
           errorMessage = "Không thể kết nối đến server. Vui lòng kiểm tra mạng!";
         } else {
@@ -135,6 +137,7 @@ export default function Cart() {
         toast.error(errorMessage);
       });
   };
+
 
   const handleRemoveItem = (itemId) => {
     axios
@@ -153,13 +156,16 @@ export default function Cart() {
       });
   };
 
+
   const handleShippingChange = (e) => {
     setShippingOption(e.target.value);
   };
 
+
   const handleCouponChange = (e) => {
     setCouponCode(e.target.value);
   };
+
 
   const handleApplyCoupon = () => {
     axios
@@ -176,15 +182,18 @@ export default function Cart() {
         const coupon = response.data.coupon;
         setAppliedCoupon(coupon);
 
+
         const subtotal = cartItems
           .filter((item) => selectedItems.includes(item.id))
           .reduce((sum, item) => sum + item.price * item.quantity, 0);
+
 
         if (coupon.type === "percent") {
           setDiscount((subtotal * coupon.value) / 100);
         } else {
           setDiscount(Number(coupon.value));
         }
+
 
         toast.success(`Coupon applied: ${coupon.code}`);
       })
@@ -195,8 +204,10 @@ export default function Cart() {
       });
   };
 
+
   const handleEmptyCart = () => {
     if (!window.confirm("Are you sure you want to empty your cart?")) return;
+
 
     axios
       .delete("/api/user/cart", {
@@ -214,17 +225,21 @@ export default function Cart() {
       });
   };
 
+
   const handleSelectAll = () => {
     const availableIds = cartItems.filter((item) => item.stock > 0).map((item) => item.id);
     setSelectedItems(availableIds);
   };
 
-  const handleProceedToCheckout = () => {
+
+  const handleProceedToCheckout = async () => {
     const selectedData = cartItems
-      .filter((item) => selectedItems.includes(item.id))
-      .map((item) => ({
+      .filter(item => selectedItems.includes(item.id))
+      .map(item => ({
         cart_item_id: item.id,
         product_id: item.product_id,
+        name: item.name,
+        image: item.image,
         quantity: item.quantity,
         unit_price: item.price,
       }));
@@ -237,26 +252,43 @@ export default function Cart() {
       total_amount: subtotal - discount + shippingCost,
     };
 
-    axios
-      .post("/api/user/cart/checkout", payload, {
+    try {
+      const response = await axios.post("/api/user/cart/checkout", payload, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      })
-      .then((response) => {
-        toast.success("Checkout successful! Redirecting to payment...");
-        navigate("/user/payment_confirmation");
-      })
-      .catch((error) => {
-        toast.error("Checkout failed.");
-        console.error(error);
       });
+
+      const orderId = response.data?.order_id || response.data?.data?.id;
+      if (orderId) {
+        localStorage.setItem("currentOrderId", orderId);
+      } else {
+        console.warn("⚠️ Không nhận được order_id từ server");
+      }
+
+      localStorage.setItem("checkoutData", JSON.stringify({
+        items: selectedData,
+        subtotal,
+        discount,
+        shippingCost,
+        total: subtotal - discount + shippingCost,
+      }));
+
+      toast.success("✅ Checkout successful! Redirecting to payment...");
+      navigate("/user/payment");
+    } catch (error) {
+      toast.error("❌ Checkout failed.");
+      console.error(error);
+    }
   };
+
+
 
   const selectedCartItems = cartItems.filter((item) => selectedItems.includes(item.id));
   const subtotal = selectedCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shippingCost = shippingOption === "local" ? 5.0 : shippingOption === "flat" ? 15.0 : 0.0;
   const total = subtotal - discount + shippingCost;
+
 
   return (
     <>

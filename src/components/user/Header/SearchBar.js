@@ -7,40 +7,37 @@ function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
-
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
 
-    if (!token) {
-      alert("Please sign in to use search functionality.");
-      return navigate("/signin");
-    }
-
     const trimmed = searchQuery.trim();
     if (trimmed === "") return;
 
     try {
-      const blogsRes = await axios.get("http://localhost:8000/api/user/blogs/index");
-      const keyword = trimmed.toLowerCase();
+      const res = await axios.get("http://127.0.0.1:8000/api/products/list");
+      const products = res.data?.data || []; 
 
-      const blogMatch = blogsRes.data.find(
-        (b) =>
-          b.title.toLowerCase().includes(keyword) ||
-          b.content.toLowerCase().includes(keyword)
+      const keyword = trimmed.toLowerCase();
+      
+      const productMatch = products.find(
+        (p) =>
+          p.name?.toLowerCase().includes(keyword) ||
+          p.description?.toLowerCase().includes(keyword)
       );
 
-      if (blogMatch) {
-        console.log("✅ Tìm thấy bài viết:", blogMatch);
-        return navigate("/user/blog", { state: { searchQuery: trimmed } });
+      if (productMatch) {
+        console.log("✅ Tìm thấy sản phẩm:", productMatch);
+        return navigate("/user/Product", {
+          state: { searchQuery: trimmed },
+        });
       }
 
-      alert("Không tìm thấy bài viết phù hợp.");
+      alert("Không tìm thấy sản phẩm phù hợp.");
     } catch (error) {
-      console.error("Lỗi khi tìm kiếm:", error);
-      alert("Đã xảy ra lỗi khi tìm kiếm bài viết.");
+      console.error("❌ Lỗi khi tìm kiếm sản phẩm:", error);
+      alert("Đã xảy ra lỗi khi tìm kiếm sản phẩm.");
     }
   };
 
@@ -48,7 +45,7 @@ function SearchBar() {
     <form onSubmit={handleSearchSubmit} className="search-container">
       <input
         type="text"
-        placeholder="Search..."
+        placeholder="Search products..."
         value={searchQuery}
         onChange={handleSearchChange}
         className="search-input"
