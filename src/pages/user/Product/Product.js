@@ -98,7 +98,7 @@ const ProductList = ({ searchQuery }) => {
       } else {
         toast.error("Failed to add to cart!");
       }
-      console.error("Error adding to cart:", error);
+console.error("Error adding to cart:", error);
     }
   };
 
@@ -183,7 +183,7 @@ const ProductList = ({ searchQuery }) => {
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
-              className={currentPage === index + 1 ? "active" : ""}
+className={currentPage === index + 1 ? "active" : ""}
             >
               {index + 1}
             </button>

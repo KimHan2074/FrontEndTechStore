@@ -15,6 +15,7 @@ import Profile from './pages/user/Profile/Profile';
 import ShoppingCart from './pages/user/Cart/Cart.js';
 import Wishlist from './pages/user/Wishlist/Wishlist.js';
 import Product from './pages/user/Product/Product';
+import Payment from "./pages/user/Payment/Payment.js";
 import HomePage from "./pages/user/HomePage/HomePage.js";
 import Sidebar from "./pages/user/Order/Orders.js";
 import PaymentConfirmation from "./pages/user/Payment/PaymentConfirmation.js";
@@ -39,6 +40,7 @@ function AppRoutes() {
           <Route path="shopping_cart" element={<ShoppingCart />} />
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="Product" element={<Product />} />
+          <Route path="payment" element ={<Payment/>}/>
           <Route path="orders" element={<Sidebar />} />
           <Route path="payment_confirmation" element={<PaymentConfirmation />} />
           <Route path="payment_method" element={<PaymentMethod />} />
