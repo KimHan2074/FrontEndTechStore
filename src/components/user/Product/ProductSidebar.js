@@ -117,7 +117,7 @@ const fetchGalleryImages = async () => {
               />
               <div className="product-content">
                 <p className="product-name">{product.name}</p>
-                <p className="product-price">{product.price}₫</p>
+                <p className="product-price">{product.price}$</p>
               </div>
             </div>
           ))}

@@ -208,10 +208,10 @@ VALUES
 (4, 'Bàn phím', 'https://cdn.hoanghamobile.com/i/productlist/ts/Uploads/2023/03/03/asus-tuf-k1-1.png', NOW(), NOW()),
 (5, 'Chuột máy tính', 'https://cdn.hoanghamobile.com/i/productlist/ts/Uploads/2021/11/26/221-2.png', NOW(), NOW()),
 (6, 'Camera', 'https://cdn.hoanghamobile.com/i/productlist/ts/Uploads/2022/10/21/image-removebg-preview-77.png', NOW(), NOW()),
-(7, 'Đồng hồ thông minh', 'https://cdn.hoanghamobile.com/default/Uploads/2025/02/10/cap-sac-yeslink-type-c-to-type-c-c-c.jpg', NOW(), NOW()),
-(8, 'Phụ kiện sạc', 'https://cdn.hoanghamobile.com/default/Uploads/2025/02/10/cap-sac-yeslink-type-c-to-type-c-c-c.jpg', NOW(), NOW()),
-(9, 'Tivi', 'https://cdn.hoanghamobile.com/i/productlist/ts/Uploads/MayLanh/4843/Slider/2-chieu-gree-inverter-2-hp-charm18hi2.jpg', NOW(), NOW()),
-(10, 'Điều hòa và thiết bị khác', 'https://cdn.hoanghamobile.com/i/productlist/ts/Uploads/MayLanh/4843/Slider/2-chieu-gree-inverter-2-hp-charm18hi2.jpg', NOW(), NOW());
+(7, 'Đồng hồ thông minh', 'https://cdn.hoanghamobile.com/i/productlist/ts/Uploads/2024/07/01/image-removebg-preview-1.png', NOW(), NOW()),
+(8, 'Phụ kiện sạc', 'https://cdn.hoanghamobile.com/default/Uploads', NOW(), NOW()),
+(9, 'Tivi', 'https://st.meta.vn/img/thumb.ashx/200x200x95/Data/image/2024/05/16/tivi-lg-65ut7350psb.jpg', NOW(), NOW()),
+(10, 'Điều hòa và thiết bị khác', 'https://cdn.hoanghamobile.com/i/productlist', NOW(), NOW());
 
 // product_image
 INSERT INTO product_image (id, product_id, image_url, created_at, updated_at) 
@@ -843,61 +843,61 @@ INSERT INTO blogs (
 ) VALUES
 (1, 1, 'Thế Giới Di Động', 
  'Thế Giới Di Động là hệ thống bán lẻ điện thoại di động, laptop, thiết bị gia dụng, và các sản phẩm công nghệ lớn nhất Việt Nam. Với hơn 2.000 cửa hàng trên cả nước, nơi đây cung cấp sản phẩm chất lượng cao, chế độ bảo hành tốt, và dịch vụ khách hàng uy tín.', 
- 'https://example.com/images/thegioididong.jpg', 
+ 'https://tttctt.1cdn.vn/2025/01/24/mwg.jpg', 
  'https://www.thegioididong.com', 
  'active', 1, '2025-06-26', '2025-06-26 10:00:00', '2025-06-26 10:00:00'),
 
 (2, 2, 'CellphoneS', 
  'CellphoneS là nhà phân phối các thiết bị di động như điện thoại, máy tính bảng, laptop và phụ kiện công nghệ. Được biết đến với giá cả cạnh tranh và các chương trình ưu đãi hấp dẫn, CellphoneS là điểm đến yêu thích của người tiêu dùng công nghệ.', 
- 'https://example.com/images/cellphones.jpg', 
+ 'https://cellphones.com.vn/sforum/wp-content/uploads/2021/12/TT-Laptop-Smarthome-CellphoneS-0.jpg', 
  'https://www.cellphones.com.vn', 
  'active', 2, '2025-06-26', '2025-06-26 10:10:00', '2025-06-26 10:10:00'),
 
 (3, 3, 'Điện Máy Xanh', 
  'Điện Máy Xanh là chuỗi cửa hàng điện máy hàng đầu tại Việt Nam, chuyên cung cấp tivi, tủ lạnh, máy giặt, và nhiều thiết bị gia dụng khác. Với mạng lưới rộng khắp, Điện Máy Xanh cam kết mang đến trải nghiệm mua sắm tiện lợi và sản phẩm chất lượng.', 
- 'https://example.com/images/dienmayxanh.jpg', 
+ 'https://cdn.thegioididong.com/Files/2020/07/10/1269407/sieu-thi-dien-may-xanh-thac-gian-thanh-khe-da-nang-1.jpg', 
  'https://www.dienmayxanh.com', 
  'active', 3, '2025-06-26', '2025-06-26 10:20:00', '2025-06-26 10:20:00'),
 
 (4, 4, 'FPT Shop', 
  'FPT Shop là hệ thống bán lẻ thuộc Tập đoàn FPT, chuyên kinh doanh các sản phẩm công nghệ chính hãng như điện thoại, laptop, máy tính bảng và phụ kiện. Với hơn 700 cửa hàng trên cả nước, FPT Shop mang lại sự an tâm cho khách hàng với chính sách bảo hành chính hãng.', 
- 'https://example.com/images/fptshop.jpg', 
+ 'https://media.vneconomy.vn/w800/images/upload/2021/04/27/frt.jpeg', 
  'https://www.fptshop.com.vn', 
  'active', 4, '2025-06-26', '2025-06-26 10:30:00', '2025-06-26 10:30:00'),
 
 (5, 5, 'Hoàng Hà Mobile', 
  'Hoàng Hà Mobile là nhà bán lẻ chuyên các sản phẩm công nghệ với mức giá cạnh tranh nhất trên thị trường. Tại đây, bạn có thể tìm thấy điện thoại di động, máy tính bảng, phụ kiện và nhiều sản phẩm công nghệ khác với chính sách bảo hành chuyên nghiệp.', 
- 'https://example.com/images/hoanghamobile.jpg', 
+ 'https://baotayninh.vn/image/fckeditor/upload/2023/20230927/images/hh%202.png', 
  'https://www.hoanghamobile.com', 
  'active', 5, '2025-06-26', '2025-06-26 10:40:00', '2025-06-26 10:40:00'),
 
 (6, 6, 'Shopee', 
  'Shopee là sàn thương mại điện tử lớn nhất Đông Nam Á với hàng triệu sản phẩm thuộc nhiều danh mục khác nhau, bao gồm cả thiết bị điện tử. Shopee Mall cam kết cung cấp các sản phẩm chính hãng cùng chính sách hoàn tiền hấp dẫn.', 
- 'https://example.com/images/shopee.jpg', 
+ 'https://deo.shopeemobile.com/shopee/shopee-careers-live-vn/assets/img/mobile_cover.423848e3.jpg', 
  'https://shopee.vn', 
  'active', 6, '2025-06-26', '2025-06-26 10:50:00', '2025-06-26 10:50:00'),
 
 (7, 7, 'Lazada', 
  'Lazada là một trong những nền tảng mua sắm trực tuyến hàng đầu Việt Nam, nổi bật với các chương trình khuyến mãi, flash sale hấp dẫn và giao hàng nhanh. Đây là nơi lý tưởng để tìm kiếm các sản phẩm điện tử và công nghệ.', 
- 'https://example.com/images/lazada.jpg', 
+ 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStB4qrw8KnypXBs_-p7yemDkFGX3sXqEVm8A&s', 
  'https://www.lazada.vn', 
  'active', 7, '2025-06-26', '2025-06-26 11:00:00', '2025-06-26 11:00:00'),
 
 (8, 8, 'Tiki', 
  'Tiki là sàn thương mại điện tử nổi bật với chính sách giao hàng nhanh 2 giờ tại nhiều thành phố lớn. Chuyên cung cấp sản phẩm chất lượng cao, Tiki là điểm đến lý tưởng cho những ai yêu thích mua sắm trực tuyến an toàn và tiện lợi.', 
- 'https://example.com/images/tiki.jpg', 
+ 'https://maisonoffice.vn/wp-content/uploads/2023/10/tiki-la-gi.jpg', 
  'https://www.tiki.vn', 
  'active', 8, '2025-06-26', '2025-06-26 11:10:00', '2025-06-26 11:10:00'),
 
 (9, 9, 'Sendo', 
  'Sendo là một trong những sàn thương mại điện tử lớn tại Việt Nam với hàng triệu sản phẩm thuộc nhiều ngành hàng. Với ưu điểm vận hành bởi FPT, Sendo mang đến sự tin cậy và tiện lợi cho khách hàng trên khắp cả nước.', 
- 'https://example.com/images/sendo.jpg', 
+ 'https://jtexpress.vn/storage/app/uploads/public/image_old/images/hoi-nghi-tri-an-kh/cover-1.jpg', 
  'https://www.sendo.vn', 
  'active', 9, '2025-06-26', '2025-06-26 11:20:00', '2025-06-26 11:20:00'),
 
 (10, 10, 'Meta.vn', 
  'Meta.vn là trang thương mại điện tử chuyên cung cấp các thiết bị văn phòng, công cụ lao động, linh kiện điện tử và các sản phẩm gia dụng. Đây là địa chỉ tin cậy cho các doanh nghiệp và cá nhân có nhu cầu mua sắm chuyên dụng.', 
- 'https://example.com/images/meta.jpg', 
+ 'https://vcdn1-english.vnecdn.net/2024/10/02/meta3of365451727786146-1727832-7611-2320-1727833200.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=_d9drutKDyPt3ABORb7aYg', 
  'https://www.meta.vn', 
  'active', 10, '2025-06-26', '2025-06-26 11:30:00', '2025-06-26 11:30:00');
 
@@ -1300,4 +1300,27 @@ VALUES
 (392, 196, 'Black', NOW(), NOW());
 
 
+// Reviews
+INSERT INTO reviews (id, user_id, product_id, rating, image_url, comment, review_date, created_at, updated_at) 
+VALUES
+(1, 1, 1, 5, 'https://media.viez.vn/prod/2021/10/24/duy_tham_youtuber_review_cong_nghe_noi_tieng_nhat_nhi_viet_nam_8d1_6093401_b32425ab5c.jpg', 'Sản phẩm rất tốt, tôi rất hài lòng!', '2025-06-20', NOW(), NOW()),
+(2, 102, 1, 4, 'https://vatvostudio.vn/wp-content/uploads/2022/08/Phu%CC%9Bo%CC%9Bng-Anh-Payo-1.jpeg', 'Chất lượng ổn định, giá hợp lý.', '2025-06-21', NOW(), NOW()),
+(3, 103, 1, 3, 'https://cellphones.com.vn/sforum/wp-content/uploads/2018/11/IMG_20180922_114251.jpg', 'Cần cải thiện thêm về độ bền.', '2025-06-22', NOW(), NOW()),
+(4, 4, 3, 5, 'https://kenh14cdn.com/2019/3/14/photo-1-1552539698336127949611-1552539716584139033902.png', 'Đóng gói rất cẩn thận, sản phẩm đúng như quảng cáo.', '2025-06-23', NOW(), NOW()),
+(5, 105, 3, 4, 'https://hocnhanh.vn/wp-content/uploads/2022/08/reviewer-review-do-cong-nghe.jpg', 'Giao hàng nhanh, sản phẩm như mô tả.', '2025-06-24', NOW(), NOW()),
+(6, 106, 3, 2, 'https://cdn.tgdd.vn/Files/2020/03/20/1243382/thinkview_800x450.jpg', 'Không hài lòng với chất lượng.', '2025-06-25', NOW(), NOW()),
+(7, 107, 4, 1, 'https://govi.vn/wp-content/uploads/2022/08/10-Thiet-bi-cong-nghe-ho-tro-giup-viec-review-hieu-qua.jpg', 'Sản phẩm không như mong đợi.', '2025-06-26', NOW(), NOW()),
+(8, 6, 7, 5, 'https://marketingai.mediacdn.vn/wp-content/uploads/2023/06/nghe-review-thiet-bi-cong-nghe.jpg', 'Thực sự rất tuyệt vời, sẽ mua thêm!', '2025-06-27', NOW(), NOW()),
+(9, 5, 3, 4, 'https://media.viez.vn/prod/2021/10/24/Thiet_ke_khong_ten_98_81cea3a265.png', 'Rất đáng giá với số tiền bỏ ra.', '2025-06-28', NOW(), NOW()),
+(10, 110, 2, 3, 'https://cdnphoto.dantri.com.vn/OARHz_26OrxFhCBtV8bucArI8d4=/thumb_w/680/2023/04/15/reviewdocx-1681532660594.jpeg', 'Cần cải thiện giao hàng.', '2025-06-29', NOW(), NOW()),
+(11, 111, 2, 5, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS1_dXimeRMLEnoZhG6KxYUNZWZ8WGjsjOtadj6Ix4dHwTtp3qsbB0tN8cfONU528YJbo&usqp=CAU', 'Tuyệt vời, 5 sao.', '2025-06-20', NOW(), NOW()),
+(12, 112, 4, 4, 'https://images.ctfassets.net/o78em1y1w4i4/3KAgEiDm6RFbCDqpBNxwmA/d3a4cd7b045157097573d25229bdba4e/Reviewer_laptop_banner.jpg?fm=webp&w=2119&q=75', 'Hài lòng với sản phẩm.', '2025-06-21', NOW(), NOW()),
+(13, 113, 3, 3, 'https://www.ziprecruiter.com/svc/fotomat/public-ziprecruiter/cms/1085333208OnlineReviewer.jpg=ws1280x960', 'Bình thường, không quá nổi bật.', '2025-06-22', NOW(), NOW()),
+(14, 114, 6, 2, 'https://www.outboundengine.com/wp-content/uploads/shutterstock_744389821.jpg', 'Giao hàng chậm, chất lượng kém.', '2025-06-23', NOW(), NOW()),
+(15, 115, 2, 1, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQccvoN8dqNA4cGCbzIsaUwGQm-hNjBkzy30-WNMg7sJmhfx35sscdhEGrfmwhxCXTFb0g&usqp=CAU', 'Không đáng tiền.', '2025-06-24', NOW(), NOW()),
+(16, 116, 6, 5, 'https://weareroast.com/wp-content/uploads/2024/01/shutterstock_1654957381-725x500.jpg', 'Rất đáng tiền, tôi rất thích.', '2025-06-25', NOW(), NOW()),
+(17, 117, 6, 4, 'https://www.shutterstock.com/image-photo/online-customer-satisfaction-survey-service-260nw-2529900265.jpg', 'Tốt, giao hàng nhanh.', '2025-06-26', NOW(), NOW()),
+(18, 118, 4, 3, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh9uA-PDAPjOY4E2m2Rhe1m_cRRHV-jT9RcLLDFOHdEU91rkf6Tbzm9PEBTGdCAX4nYUI&usqp=CAU', 'Ổn, nhưng cần cải thiện.', '2025-06-27', NOW(), NOW()),
+(19, 119, 7, 2, 'https://cdnphoto.dantri.com.vn/OARHz_26OrxFhCBtV8bucArI8d4=/thumb_w/680/2023/04/15/reviewdocx-1681532660594.jpeg', 'Không đúng như kỳ vọng.', '2025-06-28', NOW(), NOW()),
+(20, 120, 4, 1, 'https://cdnphoto.dantri.com.vn/OARHz_26OrxFhCBtV8bucArI8d4=/thumb_w/680/2023/04/15/reviewdocx-1681532660594.jpeg', 'Chất lượng kém.', '2025-06-29', NOW(), NOW());
 
