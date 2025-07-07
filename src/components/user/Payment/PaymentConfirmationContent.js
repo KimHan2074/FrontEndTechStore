@@ -131,20 +131,6 @@ const PaymentConfirmation = ({
               <h3 className="section_title">Order</h3>
             </div>
             <div className="order-items">
-              {/* {orderItems.map((item, index) => (
-                <div key={index} className="order-item">
-                  <div className="item-image">
-                    <img src={item.image} alt={item.name} />
-                  </div>
-                  <div className="item-details">
-                    <div className="item-name">{item.name}</div>
-                    <div className="item-description">Color: {item.color}</div>
-                    <div className="item-quantity">Qty: {item.quantity}</div>
-                  </div>
-                  <div className="item-price">${(item.price * item.quantity).toLocaleString()}</div>
-                </div>
-              ))} */}
-
               {orderItems.map((item) => {
                 const unitPrice = parseFloat(item.price?.toString().replace(/,/g, "") || 0);
                 const totalItemPrice = unitPrice * item.quantity;
@@ -152,7 +138,7 @@ const PaymentConfirmation = ({
                 return (
                   <div key={item.id} className="order-item">
                     <div className="item-image">
-                      <img src={item.image} alt={item.name} />
+                      <img src={item.image} alt={item.name} style={{ width: '64px', height: '64px' }} />
                     </div>
                     <div className="item-details">
                       <div className="item-name">{item.name}</div>
@@ -169,12 +155,6 @@ const PaymentConfirmation = ({
           </div>
 
           {/* Price Summary */}
-          {/* <div className="price-summary">
-            <div className="price-row"><span className="price-label">Subtotal</span><span className="price-value">${subtotal}</span></div>
-            <div className="price-row"><span className="price-label">Shipping Fee</span><span className="price-value">${shippingFee}</span></div>
-            <div className="price-row"><span className="price-label">Discount</span><span className="price-value">-${discount}</span></div>
-            <div className="price-row"><span className="price-label total">Total</span><span className="price-value total">${total}</span></div>
-          </div> */}
           <div className="price-summary">
             <div className="price-row">
               <span className="price-label">Subtotal</span>
