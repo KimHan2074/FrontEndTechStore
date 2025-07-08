@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ArrowRight } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 
 const renderStars = (rating) => {
   return Array.from({ length: 5 }, (_, index) => (
@@ -14,8 +14,8 @@ const renderStars = (rating) => {
   ));
 };
 
-const ProductCard = ({ product }) => (
-  <div className="product-card-best-seller">
+const ProductCard = ({ product, onClick }) => (
+  <div className="product-card-best-seller" onClick={() => onClick(product.id)}>
     {product.badge && (
       <div className={`badge-best-seller badge-${product.badgeType}-best-seller`}>
         {product.badge}
@@ -27,7 +27,6 @@ const ProductCard = ({ product }) => (
     <div className="product-info-best-seller">
       <h3 className="product-name-best-seller">{product.name}</h3>
       <div className="product-rating-featured">
-        
         <span className="rating-number">{renderStars(product.rating)}</span>
       </div>
       <div className="product-price-best-seller">
@@ -40,11 +39,15 @@ const ProductCard = ({ product }) => (
   </div>
 );
 
-const PromoCard = ({ product }) => {
+
+const PromoCard = ({ product, onClick }) => {
   if (!product) return null;
 
   return (
-    <div className="promo-card-best-seller">
+    <div
+      className="promo-card-best-seller product-card-featured"
+      onClick={() => onClick(product.id)}
+    >
       <div className="promo-content-best-seller">
         <div className="promo-image-best-seller">
           <img
@@ -74,7 +77,7 @@ const PromoCard = ({ product }) => {
 
 const BestSellerSection = () => {
   const [products, setProducts] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchBestDeals = async () => {
       try {
@@ -92,7 +95,9 @@ const BestSellerSection = () => {
     const interval = setInterval(fetchBestDeals, 5000);
     return () => clearInterval(interval);
   }, []);
-
+  const handleProductClick = (productId) => {
+    navigate(`/user/product-detail/${productId}`);
+  };
   return (
     <div className="container-best-seller">
       <div className="header-best-seller">
@@ -110,13 +115,13 @@ const BestSellerSection = () => {
               <p className="no-products-message">Không có sản phẩm khuyến mãi nào!</p>
             ) : (
               products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} onClick={handleProductClick} />
               ))
             )}
           </div>
         </div>
         <div className="promo-section-best-seller">
-          <PromoCard product={products[0]} />
+          <PromoCard product={products[0]} onClick={handleProductClick} />
         </div>
       </div>
     </div>

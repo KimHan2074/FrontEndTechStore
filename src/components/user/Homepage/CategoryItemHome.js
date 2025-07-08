@@ -10,7 +10,7 @@ const CategoryItemHome = () => {
       try {
         const categoryRes = await axios.get("http://localhost:8000/api/user/product/categories");
         setCategories(categoryRes.data.data);
-         console.log("Clicked category:", categoryRes);
+        console.log("Clicked category:", categoryRes);
       } catch (err) {
         console.error("Error fetching categories:", err);
       }
@@ -27,13 +27,12 @@ const CategoryItemHome = () => {
       });
     }, 120000);
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, [categories]);
 
   const handleCategoryClick = (category) => {
     console.log("Clicked category:", category);
-        navigate("/user/product-list");
-
+    navigate("/user/Product");
   };
 
   const visibleCategories = categories.slice(currentIndex, currentIndex + 6);
