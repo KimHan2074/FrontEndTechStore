@@ -88,6 +88,8 @@ const BestDealSection = () => {
         const bestDeals = allPromoted.filter((p) => p.promotion_type === "best deal");
 
         setDeals(bestDeals);
+        console.log(
+          'Best Deals:', bestDeals);
 
         if (bestDeals.length > 0) {
           const soonest = bestDeals
@@ -131,6 +133,10 @@ const BestDealSection = () => {
     return () => clearInterval(interval);
   }, [featuredProduct]);
 
+  const handleProductClick = (productId) => {
+    navigate(`/user/product-detail/${productId}`);
+  };
+
   const handleShow = () => {
     navigate("shopping-cart");
   };
@@ -158,7 +164,11 @@ const BestDealSection = () => {
 
       <div className="content-wrapper-best-deal">
         {featuredProduct && (
-          <div className="featured-product-section-best-deal">
+          <div
+            className="featured-product-section-best-deal"
+            key={featuredProduct.id}
+            onClick={() => handleProductClick(featuredProduct.id)}
+          >
             <div className="featured-product-card-best-deal">
               <div className="product-badges-best-deal">
                 {featuredProduct.discount && (
@@ -209,7 +219,7 @@ const BestDealSection = () => {
         <div className="product-grid-section-best-deal">
           <div className="products-grid-best-deal">
             {deals.map((product) => (
-              <div key={product.id} className="product-card-best-deal">
+              <div key={product.id} className="product-card-best-deal" onClick={() => handleProductClick(product.id)}>
                 {product.badge && (
                   <div className="product-badge-best-deal">{product.badge}</div>
                 )}

@@ -273,7 +273,6 @@ body {
 .thumbnail-gallery-product-detail {
   display: flex;
   gap: 10px;
-  justify-content: space-between;
 }
 
 .thumbnail-product-detail {
@@ -306,7 +305,7 @@ body {
   font-size: 24px;
   font-weight: 600;
   color: #2c5aa0;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   line-height: 1.4;
 }
 
