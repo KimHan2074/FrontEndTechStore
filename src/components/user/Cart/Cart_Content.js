@@ -79,11 +79,12 @@ export default function ShoppingCart({
                       </svg>
                     </button>
                     <span className="cart-quantity-number">{currentQuantity}</span>
-                    <button
-                      className="cart-quantity-btn cart-quantity-plus"
-                      onClick={() => handleQuantityChange(item.id, currentQuantity + 1)}
-                      disabled={item.stock === 0 || item.stock === undefined || currentQuantity >= item.stock}
-                    >
+                 <button
+  className="cart-quantity-btn cart-quantity-plus"
+  onClick={() => handleQuantityChange(item.id, currentQuantity + 1)}
+  disabled={item.stock === 0 || item.stock === undefined}
+>
+
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>

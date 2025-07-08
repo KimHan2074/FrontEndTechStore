@@ -16,36 +16,39 @@ export default function Wishlist() {
   const [loading, setLoading] = useState(true);
 
   const handleBuyNow = async (product) => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("Token not found");
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("Token not found");
 
-      const res = await axios.post(
-        "http://127.0.0.1:8000/api/user/orders/create",
-        {
-          user_id: userId,
-          products: [
-            {
-              product_id: product.id,
-              quantity: 1,
-              unit_price: product.price,
-            },
-          ],
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true,
-        }
-      );
+    const res = await axios.post(
+      "http://127.0.0.1:8000/api/user/orders/create",
+      {
+        user_id: userId,
+        products: [
+          {
+            product_id: product.id,
+            quantity: 1,
+            unit_price: product.price,
+          },
+        ],
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      }
+    );
 
-      const orderId = res.data.order_id; 
+    const orderId = res.data.order_id;
 
-      navigate(`/payment/${orderId}`);
-    } catch (error) {
-      console.error("Order creation failed:", error.response?.data || error.message);
-      alert("Failed to create order. Try again.");
-    }
-  };
+    localStorage.setItem("currentOrderId", orderId);
+
+    navigate(`/user/payment/`);
+  } catch (error) {
+    console.error("Order creation failed:", error.response?.data || error.message);
+    alert("Failed to create order. Try again.");
+  }
+};
+
 
   useEffect(() => {
   const fetchUserDataAndWishlist = async () => {
@@ -90,6 +93,32 @@ export default function Wishlist() {
 
   fetchUserDataAndWishlist();
 }, []);
+const handleRemoveFromWishlist = async (item) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("Token not found");
+
+    await axios.delete(
+      `http://127.0.0.1:8000/api/user/delete/wishlist/${item.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    // Xóa khỏi danh sách wishlist trong frontend
+    setWishlistItems((prev) =>
+      prev.filter((wishItem) => wishItem.id !== item.id)
+    );
+  } catch (error) {
+    console.error("Failed to remove from wishlist:", error.response?.data || error.message);
+    alert("Failed to remove item from wishlist.");
+  }
+};
+
   if (loading) {
   return <LoadingSpinner />;
 }
@@ -135,7 +164,13 @@ export default function Wishlist() {
                 Buy Now
               </button>              
               <button className="add-to-cart-btn">Add To Cart</button>
-              <span className="heart-icon">❤️</span>
+              <button
+                  className="heart-icon"
+                  onClick={() => handleRemoveFromWishlist(item)}
+                  title="Remove from wishlist"
+                >
+                  ❤️
+              </button>
             </div>
           </div>
         ))}

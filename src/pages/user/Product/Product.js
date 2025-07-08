@@ -99,9 +99,43 @@ const ProductList = ({ searchQuery }) => {
       } else {
         toast.error("Failed to add to cart!");
       }
-      console.error("Error adding to cart:", error);
+console.error("Error adding to cart:", error);
     }
   };
+  
+  const handleAddToWishlist = async (productId) => {
+  try {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+
+    if (!token || !userId) {
+      toast.error("Bạn cần đăng nhập để thêm vào wishlist");
+      return;
+    }
+
+    await axios.post(
+      "http://localhost:8000/api/user/wishlist/add",
+      {
+        user_id: userId,
+        product_id: productId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    toast.success("Đã thêm vào wishlist!");
+
+    // ✅ Gửi sự kiện cập nhật để header cập nhật số lượng wishlist
+    window.dispatchEvent(new CustomEvent("wishlist-updated"));
+  } catch (error) {
+    console.error("Lỗi thêm wishlist:", error.response?.data || error);
+    toast.error("Thêm vào wishlist thất bại");
+  }
+};
+
   
   if (error) {
     return <div>Error: {error}</div>;
@@ -162,7 +196,10 @@ const ProductList = ({ searchQuery }) => {
                       <FaShoppingCart /> ADD TO CART
                     </button>
 
-                    <button className="text-gray-500 flex items-center justify-center gap-2">
+                    <button
+                      className="text-gray-500 flex items-center justify-center gap-2 hover:text-red-500 transition"
+                      onClick={() => handleAddToWishlist(product.id)}
+                    >
                       <FaHeart /> Wishlist
                     </button>
                   </div>
@@ -181,7 +218,7 @@ const ProductList = ({ searchQuery }) => {
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
-              className={currentPage === index + 1 ? "active" : ""}
+className={currentPage === index + 1 ? "active" : ""}
             >
               {index + 1}
             </button>

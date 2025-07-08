@@ -127,3 +127,16 @@
   color: #ff4f00;
   cursor: pointer;
 }
+
+.heart-icon {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: red;
+  transition: color 0.3s;
+}
+
+.heart-icon.heart-removed {
+  color: white;
+}
