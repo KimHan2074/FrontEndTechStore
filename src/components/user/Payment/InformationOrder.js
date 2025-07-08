@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import "../../../pages/user/Payment/Payment.css";
+import LoadingSpinner from "../../../components/common/LoadingSpinner";
+import { data } from "react-router-dom";
 
 const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
   const [formData, setFormData] = useState({
@@ -20,12 +22,16 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
   const [shippingFee, setShippingFee] = useState(0);
   const [total, setTotal] = useState(0);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [locationData, setLocationData] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
-
+  const [order, setOrder] = useState(null);
+  const orderId = localStorage.getItem("currentOrderId");
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("checkoutData"));
+    console.log("data", data);
     if (data) {
       setProducts(data.items || []);
       setSubtotal(data.subtotal || 0);
@@ -34,6 +40,51 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
       setTotal(data.total || 0);
     }
   }, []);
+  useEffect(() => {
+  if (!products || products.length === 0) return;
+
+  const subtotalCalc = products.reduce((sum, item) => {
+    const price = Number(item.unit_price) || 0;
+    const qty = Number(item.quantity) || 0;
+    return sum + price * qty;
+  }, 0);
+
+  setSubtotal(subtotalCalc);
+  setTotal(subtotalCalc + shippingFee - discount); // cập nhật luôn total nếu cần
+}, [products, shippingFee, discount]);
+
+  useEffect(() => {
+    const fetchOrder = async () => {
+      setIsLoading(true); 
+      try {
+        const res = await fetch(`http://localhost:8000/api/user/orders/${orderId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          setOrder(data.order);
+          setProducts(data.order.order_details);
+          setShippingFee(data.order.shipping_fee || 0);  // nếu backend có
+          setDiscount(data.order.discount || 0);         // nếu backend có
+          setTotal(Number(data.order.total_amount) || 0);
+        } else {
+          alert("Failed to load order data.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error loading order details.");
+      } finally {
+        setIsLoading(false); 
+      }
+    };
+    if (orderId && token) {
+      fetchOrder();
+    }
+  }, [orderId, token]);
 
   useEffect(() => {
     fetch("https://provinces.open-api.vn/api/?depth=3")
@@ -140,7 +191,9 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
       alert("An error occurred while submitting the information.");
     }
   };
-
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
     <div className="payment-container-information-order">
       <h1 className="payment-title-information-order">Payment</h1>
