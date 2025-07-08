@@ -58,7 +58,7 @@ const ReviewsTab = () => {
 
   return (
     <div className="reviews-container">
-      <h3 className="reviews-title">🗨️ Đánh giá từ khách hàng</h3>
+      <h3 className="reviews-title">🗨️ Customer Reviews</h3>
 
       <div className="reviews-scrollable">
         {reviews.map((review, index) => (
