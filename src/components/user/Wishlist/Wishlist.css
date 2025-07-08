@@ -1,0 +1,142 @@
+.wishlist-container {
+  width: 68%;
+  margin: 30px auto;
+  font-family: Arial, sans-serif;
+}
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  border: 1px solid #f1f1f1;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.profile-image {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.profile-role {
+  color: #666;
+  font-size: 14px;
+}
+
+.wishlist-title {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.wishlist-table {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.wishlist-header,
+.wishlist-row {
+  display: grid;
+  grid-template-columns: 1fr 180px 220px; /* 👈 đã nhích qua phải */
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  gap: 10px;
+}
+
+
+.wishlist-header {
+  background-color: #fafafa;
+  font-weight: bold;
+  text-align: center;
+}
+
+.col-product {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.item-img {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.item-title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.item-description {
+  font-size: 12px;
+  color: #999;
+}
+
+.col-price {
+  color: black;
+  font-weight: bold;
+  display: flex;
+}
+
+.item-prices {
+  color: #ff2200; 
+}
+
+.col-action {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* 👈 khoảng cách giữa các nút */
+}
+
+
+.buy-now-btn,
+.add-to-cart-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #ccc;         /* Viền mờ nhẹ */
+  background-color: white;        /* Mặc định nền trắng */
+  color: black;                   /* Mặc định chữ đen */
+  min-width: 100px;
+  transition: all 0.3s ease;      /* Mượt khi hover */
+}
+
+/* Hover hiệu ứng màu cam */
+.buy-now-btn:hover,
+.add-to-cart-btn:hover {
+  background-color: #ff4f00;
+  color: white;
+  border-color: #ff4f00;
+}
+
+.heart-icon {
+  font-size: 18px;
+  color: #ff4f00;
+  cursor: pointer;
+}
+
+.heart-icon {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: red;
+  transition: color 0.3s;
+}
+
+.heart-icon.heart-removed {
+  color: white;
+}

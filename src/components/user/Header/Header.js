@@ -12,6 +12,7 @@ import {
 import Logout from "../../auth/logout/Logout";
 
 function Header({ onSearch }) {
+  const [wishlistCount, setWishlistCount] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,6 +36,34 @@ function Header({ onSearch }) {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, []);
+
+  useEffect(() => {
+  const fetchWishlistCount = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+
+      if (!token || !userId) return;
+
+      const res = await axios.get(`http://localhost:8000/api/user/wishlist/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setWishlistCount(res.data.length); // hoặc res.data.data.length tùy cấu trúc
+    } catch (error) {
+      console.error("Failed to fetch wishlist count:", error);
+    }
+  };
+
+  fetchWishlistCount();
+
+  const handleWishlistUpdate = () => fetchWishlistCount();
+  window.addEventListener("wishlist-updated", handleWishlistUpdate);
+
+  return () => {
+    window.removeEventListener("wishlist-updated", handleWishlistUpdate);
+  };
+}, []);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -122,13 +151,13 @@ function Header({ onSearch }) {
                 <span className="badge">{itemCount}</span>
               )}
             </a>
-            <a href={isLoggedIn ? "user/wishlist" : "#"} onClick={(e) => {
+            <a href={isLoggedIn ? "/user/wishlist" : "#"} onClick={(e) => {
               if (!isLoggedIn) {
                 e.preventDefault();
                 window.location.href = "/signin";
               }
             }} className="icon-link">
-              <Heart size={20} /><span className="badge">3</span>
+              <Heart size={20} /><span className="badge">{wishlistCount}</span>
             </a>
             <li className="user-dropdown">
               <a href={isLoggedIn ? "/user/profile" : "/signin"} className="icon-link">
