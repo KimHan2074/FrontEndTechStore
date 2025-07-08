@@ -5,6 +5,7 @@ import { FaShoppingCart, FaHeart, FaChevronLeft, FaChevronRight } from "react-ic
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingSpinner from "../../../components/common/LoadingSpinner";
 
 const ProductList = ({ searchQuery }) => {
   const [products, setProducts] = useState([]);
@@ -101,16 +102,13 @@ const ProductList = ({ searchQuery }) => {
       console.error("Error adding to cart:", error);
     }
   };
-
-
-  if (loading) {
-    return <div>Loading products...</div>;
-  }
-
+  
   if (error) {
     return <div>Error: {error}</div>;
   }
-  
+  if (loading) {
+  return <LoadingSpinner />;
+}
 
   return (
     <div className="product-wrapper">

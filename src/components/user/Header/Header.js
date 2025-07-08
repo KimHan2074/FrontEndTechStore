@@ -122,7 +122,7 @@ function Header({ onSearch }) {
                 <span className="badge">{itemCount}</span>
               )}
             </a>
-            <a href={isLoggedIn ? "/wishlist" : "#"} onClick={(e) => {
+            <a href={isLoggedIn ? "/user/wishlist" : "#"} onClick={(e) => {
               if (!isLoggedIn) {
                 e.preventDefault();
                 window.location.href = "/signin";
