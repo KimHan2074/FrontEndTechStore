@@ -6,7 +6,6 @@ import axios from "axios";
 const paymentMap = {
   cash: "COD",
   momo: "Momo",
-  vnpay: "VNPay",
   qr: "QR",
 };
 
@@ -117,7 +116,6 @@ const PaymentMethod = () => {
   };
 
   const paymentMethods = [
-    { id: "vnpay", name: "VNPay", description: "Payment via VNPay", icon: "card" },
     { id: "momo", name: "MoMo", description: "Payment via MoMo", icon: "phone" },
     { id: "cash", name: "Cash", description: "Payment via Cash", icon: "cash" },
     { id: "qr", name: "QR", description: "Payment via QR", icon: "qr" },

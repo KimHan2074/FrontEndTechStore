@@ -31,8 +31,8 @@ const ProductList = ({ searchQuery }) => {
         }
 
         const data = await response.json();
-        setProducts(data.data); 
-        setTotalPages(data.last_page); 
+        setProducts(data.data);
+        setTotalPages(data.last_page);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -44,7 +44,7 @@ const ProductList = ({ searchQuery }) => {
   }, [currentPage, selectedCategoryId, searchQuery]);
 
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) { 
+    if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
 
       window.scrollTo({
@@ -55,7 +55,7 @@ const ProductList = ({ searchQuery }) => {
   };
 
   const handleAddToCart = async (product) => {
-    console.log("DEBUG product:", product); // ➤ Kiểm tra product là gì
+    console.log("DEBUG product:", product);
 
     const stock = Number(product?.stock);
 
@@ -78,18 +78,18 @@ const ProductList = ({ searchQuery }) => {
 
     try {
       const response = await axios.post(
-      "/api/user/cart/add",
-      {
-        product_id: product.id,
-        quantity: 1,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          Accept: "application/json"
+        "/api/user/cart/add",
+        {
+          product_id: product.id,
+          quantity: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json"
+          }
         }
-      }
-    );
+      );
       toast.success("Product added to cart successfully!");
       console.log("Add to cart:", response.data);
     } catch (error) {
@@ -98,7 +98,7 @@ const ProductList = ({ searchQuery }) => {
       } else {
         toast.error("Failed to add to cart!");
       }
-console.error("Error adding to cart:", error);
+      console.error("Error adding to cart:", error);
     }
   };
 
@@ -110,7 +110,7 @@ console.error("Error adding to cart:", error);
   if (error) {
     return <div>Error: {error}</div>;
   }
-  
+
 
   return (
     <div className="product-wrapper">
@@ -183,7 +183,7 @@ console.error("Error adding to cart:", error);
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
-className={currentPage === index + 1 ? "active" : ""}
+              className={currentPage === index + 1 ? "active" : ""}
             >
               {index + 1}
             </button>

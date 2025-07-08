@@ -26,7 +26,7 @@ const FeaturedProductSection = () => {
 
         setProducts(featured);
       } catch (error) {
-        console.error("❌ Lỗi lấy featured product:", error);
+        console.error("❌ Error fetching featured products:", error);
       }
     };
     fetchFeaturedProducts();
@@ -40,7 +40,11 @@ const FeaturedProductSection = () => {
   };
 
   const handleBrowseAll = () => {
-    navigate('/blog');
+    navigate('/user/Product');
+  };
+
+  const handleProductClick = (productId) => {
+    navigate(`/user/product-detail/${productId}`);
   };
 
   const renderStars = (rating) => {
@@ -75,7 +79,12 @@ const FeaturedProductSection = () => {
 
           <div className="products-grid-featured">
             {filteredProducts.slice(0, 10).map((product) => (
-              <div key={product.id} className="product-card-featured">
+              <div
+                key={product.id}
+                className="product-card-featured"
+                onClick={() => handleProductClick(product.id)}
+                style={{ cursor: 'pointer' }}
+              >
                 {product.status && product.status !== "null" && (
                   <div className="sale-badge-featured">{product.status}</div>
                 )}
