@@ -41,21 +41,21 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
     }
   }, []);
   useEffect(() => {
-  if (!products || products.length === 0) return;
+    if (!products || products.length === 0) return;
 
-  const subtotalCalc = products.reduce((sum, item) => {
-    const price = Number(item.unit_price) || 0;
-    const qty = Number(item.quantity) || 0;
-    return sum + price * qty;
-  }, 0);
+    const subtotalCalc = products.reduce((sum, item) => {
+      const price = Number(item.unit_price) || 0;
+      const qty = Number(item.quantity) || 0;
+      return sum + price * qty;
+    }, 0);
 
-  setSubtotal(subtotalCalc);
-  setTotal(subtotalCalc + shippingFee - discount); // cập nhật luôn total nếu cần
-}, [products, shippingFee, discount]);
+    setSubtotal(subtotalCalc);
+    setTotal(subtotalCalc + shippingFee - discount); // cập nhật luôn total nếu cần
+  }, [products, shippingFee, discount]);
 
   useEffect(() => {
     const fetchOrder = async () => {
-      setIsLoading(true); 
+      setIsLoading(true);
       try {
         const res = await fetch(`http://localhost:8000/api/user/orders/${orderId}`, {
           headers: {
@@ -78,7 +78,7 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
         console.error("Error:", error);
         alert("Error loading order details.");
       } finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     };
     if (orderId && token) {
@@ -334,8 +334,8 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
           <div className="product-section-information-order">
             <h3>Products</h3>
             <div className="product-list-information-order">
-              {products.map((product) => (
-                <div key={product.cart_item_id} className="product-item-information-order">
+              {products.map((product, index) => (
+                <div key={`${product.id || product.cart_item_id}-${index}`} className="product-item-information-order">
                   <img
                     src={product.image || "/placeholder.svg"}
                     alt={product.name}

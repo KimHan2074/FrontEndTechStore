@@ -39,24 +39,23 @@ const CategoryItemHome = () => {
 
   return (
     <div className="categories-container">
-      <div className="categories-wrapper">
-        {visibleCategories.map((category) => (
-          <div
-            key={category.id}
-            className="category-item"
-            onClick={() => handleCategoryClick(category)}
-          >
-            <div className="category-icon">
-              <img
-                src={category.image}
-                alt={category.name}
-                className="category-image"
-              />
-            </div>
-            <span className="category-name">{category.name}</span>
-          </div>
-        ))}
-      </div>
+      {visibleCategories.map((category, index) => (
+  <div
+    key={`${category.id}-${index}`}
+    className="category-item"
+    onClick={() => handleCategoryClick(category)}
+  >
+    <div className="category-icon">
+      <img
+        src={category.image}
+        alt={category.name}
+        className="category-image"
+      />
+    </div>
+    <span className="category-name">{category.name}</span>
+  </div>
+))}
+
     </div>
   );
 };
