@@ -262,7 +262,7 @@ body {
 .main-image-product-detail {
   width: 80%;
   height: 350px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 8px;
   margin: 0 auto 15px;
   /* căn giữa theo chiều ngang + cách dưới 15px */
@@ -273,12 +273,13 @@ body {
 .thumbnail-gallery-product-detail {
   display: flex;
   gap: 10px;
+  margin-left: 55px;
 }
 
 .thumbnail-product-detail {
   width: 80px;
   height: 60px;
-  object-fit: cover;
+  object-fit: scale-down;
   border: 2px solid transparent;
   border-radius: 4px;
   cursor: pointer;
@@ -333,9 +334,14 @@ body {
   margin-bottom: 20px;
 }
 
-.option-label-product-detail {
+.option-label-color-product-detail {
   font-weight: 600;
   margin-bottom: 8px;
+  display: block;
+}
+
+.option-label-quantity-product-detail {
+  font-weight: 600;
   display: block;
 }
 
@@ -421,7 +427,7 @@ body {
   justify-content: center;
   gap: 8px;
   transition: background-color 0.3s;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .add-to-cart-btn-product-detail:hover {

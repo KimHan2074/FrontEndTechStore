@@ -59,7 +59,10 @@ export default function ShoppingCart({
                     />
 
                     <span className="cart-item-name">
-                      {item.name}
+                      <div>{item.name}</div>
+                      <div className="cart-item-color" style={{ fontSize: "0.875rem", color: "#6b7280" }}>
+                        Color: {item.color || 'Default'}
+                      </div>
                       {(item.stock === 0 || item.stock === undefined) && (
                         <span className="out-of-stock-label">(Hết hàng)</span>
                       )}
@@ -79,11 +82,11 @@ export default function ShoppingCart({
                       </svg>
                     </button>
                     <span className="cart-quantity-number">{currentQuantity}</span>
-                 <button
-  className="cart-quantity-btn cart-quantity-plus"
-  onClick={() => handleQuantityChange(item.id, currentQuantity + 1)}
-  disabled={item.stock === 0 || item.stock === undefined}
->
+                  <button
+                    className="cart-quantity-btn cart-quantity-plus"
+                    onClick={() => handleQuantityChange(item.id, currentQuantity + 1)}
+                    disabled={item.stock === 0 || item.stock === undefined}
+                  >
 
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <line x1="12" y1="5" x2="12" y2="19"></line>

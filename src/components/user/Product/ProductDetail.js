@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../../pages/user/Product/Product.css";
 import DescriptionTab from "./DescriptionTab";
@@ -30,18 +30,24 @@ const ProductDetail = () => {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const scrollRef = useRef(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/api/user/products/${id}`);
-        const data = res.data?.data;
+        const response = await axios.get(`/api/product/${id}/detail`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
+        const data = response.data;
         setProduct(data);
-        setMainImage(data.images?.[0]?.image_url || "/placeholder.svg");
+        setMainImage(Array.isArray(data.images) && data.images.length > 0 ? data.images[0] : "/placeholder.svg");
         setSelectedColor(data.colors?.[0] || "Black");
       } catch (err) {
-        console.error("❌ Failed to fetch product:", err);
+        toast.error("Unable to retrieve product information.");
       } finally {
         setLoading(false);
       }
@@ -100,63 +106,163 @@ const ProductDetail = () => {
       setQuantity(newQuantity);
     }
   };
- const handleAddToCart = async (product) => {
-    console.log("DEBUG product:", product);
 
+  const handleAddToCart = async (product) => {
     const stock = Number(product?.stock);
 
-    console.log("Parsed stock:", stock, "| Raw:", product?.stock, "| Type:", typeof product?.stock);
-
     if (!product || typeof product.stock === "undefined") {
-      toast.error("Không tìm thấy thông tin sản phẩm.");
+      toast.error("Unable to find product information.");
       return;
     }
 
     if (isNaN(stock)) {
-      toast.error("Không xác định được số lượng tồn kho.");
+      toast.error("Unable to determine stock quantity.");
       return;
     }
 
     if (stock <= 0) {
-      toast.warning("Sản phẩm đã hết hàng!");
+      toast.warning("The product is out of stock!");
       return;
     }
 
     try {
-      const response = await axios.post(
-        "/api/user/cart/add",
+      await axios.post(
+        "/api/product/add-to-cart",
         {
           product_id: product.id,
-          quantity: 1,
+          quantity,
+          color: selectedColor,
         },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-            Accept: "application/json"
-          }
+          },
         }
       );
-      toast.success("Product added to cart successfully!");
-      console.log("Add to cart:", response.data);
+
+      toast.success("Added to cart!");
     } catch (error) {
+      const message = error.response?.data?.message || "Failed to add to cart.";
+      const stock = error.response?.data?.stock;
+      const in_cart = error.response?.data?.in_cart;
+
+      console.log("DEBUG error:", message, stock, in_cart);
+
       if (error.response?.status === 401) {
         toast.error("You need to log in to make a purchase.");
+      } else if (
+        error.response?.status === 400 &&
+        message.toLowerCase().includes("exceeds available stock")
+      ) {
+        if (typeof stock !== "undefined" && typeof in_cart !== "undefined") {
+          toast.warning(`Only ${stock} item(s) left in stock, and you already have ${in_cart} in your cart.`);
+        } else {
+          toast.warning("Quantity exceeds available stock.");
+        }
+      } else if (
+        error.response?.status === 400 &&
+        message.toLowerCase().includes("product not found")
+      ) {
+        toast.error("The product does not exist.");
       } else {
-        toast.error("Failed to add to cart!");
+        toast.error("Failed to add to cart.");
       }
-      console.error("Error adding to cart:", error);
+
+      console.error("Failed to add item to cart:", error);
     }
   };
 
-  const renderStars = (rating) => {
-    return (
-      <div className="star-rating">
-        {Array.from({ length: 5 }, (_, i) => (
-          <span key={i} className={`star ${i < Math.round(rating) ? "filled" : ""}`}>★</span>
-        ))}
-      </div>
-    );
+  const handleToggleWishlist = async () => {
+    try {
+      const url = isFavorite
+        ? "/api/product/remove-from-wishlist" 
+        : "/api/product/add-to-wishlist";     
+
+      await axios.post(
+        url,
+        {
+          product_id: product.id,
+          color: selectedColor,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setIsFavorite(!isFavorite);
+      toast.success(isFavorite ? "Removed from favorites." : "Item has been added to your favorites.");
+    } catch (error) {
+      console.error("Error processing favorite status:", error);
+      toast.error("Unable to change favorite status.");
+    }
   };
+
+  const handleBuyNow = async () => {
+    const stock = Number(product?.stock);
+
+    if (!product || typeof stock === "undefined") {
+      toast.error("Unable to find product information.");
+      return;
+    }
+
+    if (isNaN(stock)) {
+      toast.error("Unable to determine stock quantity.");
+      return;
+    }
+
+    if (stock <= 0) {
+      toast.warning("The product is out of stock! Please choose another product.");
+      console.warn("DEBUG: Product is out of stock."); // gỡ sau khi test
+      return;
+    }
+
+    if (quantity > stock) {
+      toast.warning(`Only ${stock} item(s) left in stock. Please select a smaller quantity.`);
+      return;
+    }
+
+    try {
+      await axios.post(
+        "/api/product/buy-now",
+        {
+          product_id: product.id,
+          quantity,
+          color: selectedColor,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      toast.success("Order placed successfully!");
+      navigate("/user/payment");
+    } catch (error) {
+      const message = error.response?.data?.message || "Failed to complete the purchase.";
+
+      if (
+        error.response?.status === 400 &&
+        message.toLowerCase().includes("out of stock")
+      ) {
+        toast.warning("The product is out of stock.");
+      } else if (
+        error.response?.status === 400 &&
+        message.toLowerCase().includes("Only ... left")
+      ) {
+        toast.warning(message); // ví dụ: "Chỉ còn lại 3 sản phẩm trong kho."
+      } else if (error.response?.status === 401) {
+        toast.error("You need to log in to make a purchase.");
+      } else {
+        toast.error("Unable to complete the purchase.");
+      }
+
+      console.error("Error while placing the order:", error);
+    }
+  };
+
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -170,13 +276,33 @@ const ProductDetail = () => {
         return null;
     }
   };
-  const relatedProducts = [
-    { id: 1, name: "Product 1", price: "1.000.000", originalPrice: "1.200.000", image: "https://cdn.tgdd.vn/Files/2019/10/27/1212736/cach-chon-mua-man-hinh-may-tinh-tot-ben-dep-va-phu-hop-nhu-cau-26.jpg", promotion_type: "hot", rating: 4 },
-    { id: 2, name: "Product 2", price: "1.200.000", originalPrice: "1.200.000", image: "https://mccvietnam.vn/media/lib/14-12-2022/bpcmccv13mncasekm.jpg", promotion_type: "hot", rating: 5 },
-    { id: 3, name: "Product 3", price: "1.500.000", originalPrice: "1.200.000", image: "https://cdn.tgdd.vn/Files/2019/10/27/1212736/cach-chon-mua-man-hinh-may-tinh-tot-ben-dep-va-phu-hop-nhu-cau-26.jpg", promotion_type: "hot", rating: 3 },
-    { id: 4, name: "Product 4", price: "1.800.000", originalPrice: "1.200.000", image: "https://mccvietnam.vn/media/lib/14-12-2022/bpcmccv13mncasekm.jpg", promotion_type: "hot", rating: 4 },
-    { id: 5, name: "Product 5", price: "2.000.000", originalPrice: "1.200.000", image: "https://cdn.tgdd.vn/Files/2019/10/27/1212736/cach-chon-mua-man-hinh-may-tinh-tot-ben-dep-va-phu-hop-nhu-cau-26.jpg", promotion_type: "hot", rating: 4 }
-  ];
+
+  const handleProductClick = (productId) => {
+    navigate(`/user/product-detail/${productId}`);
+  };
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchRelatedProducts = async () => {
+      try {
+        const res = await axios.get(`/api/product/${id}/related`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        console.log("Related products response:", res.data);
+        setRelatedProducts(Array.isArray(res.data.data) ? res.data.data : []); // đảm bảo là mảng
+      } catch (error) {
+        console.error("Error fetching related products:", error);
+        toast.error("Unable to load related products");
+      }
+    };
+
+    fetchRelatedProducts();
+  }, [id]);
+    
   if (loading) return <div className="loading"><LoadingSpinner/>.</div>;
   if (!product) return <div className="error">Product not found.</div>;
 
@@ -193,10 +319,12 @@ const ProductDetail = () => {
             {product.images?.map((img, index) => (
               <img
                 key={index}
-                src={img.image_url}
+                src={img}
                 alt={`Thumbnail ${index + 1}`}
-                className={`thumbnail-product-detail ${mainImage === img.image_url ? "active-product-detail" : ""}`}
-                onClick={() => setMainImage(img.image_url)}
+                className={`thumbnail-product-detail ${
+                  mainImage === img ? "active-product-detail" : ""
+                }`}
+                onClick={() => setMainImage(img)}
               />
             ))}
           </div>
@@ -204,10 +332,6 @@ const ProductDetail = () => {
 
         <div className="product-info-product-detail">
           <h1 className="product-title-product-detail">{product.name}</h1>
-
-          <div className="product-rating-product-detail">
-            {renderStars(product.rating || 0)}
-          </div>
 
           <div className="price-section-product-detail">
             <span className="current-price-product-detail">${product.price}</span>
@@ -218,13 +342,16 @@ const ProductDetail = () => {
 
           <div className="product-options-product-detail">
             <div className="option-group-product-detail">
-              <label className="option-label-product-detail">Color:</label>
+              <label className="option-label-color-product-detail">Color:</label>
               <div className="color-options-product-detail">
                 {(product.colors || ["Black", "White"]).map((color) => (
                   <button
                     key={color}
                     className={`color-option-product-detail ${selectedColor === color ? "active-product-detail" : ""}`}
-                    onClick={() => setSelectedColor(color)}
+                    onClick={() => {
+                      setSelectedColor(color);
+                      console.log("Selected color:", color); // 👉 kiểm tra log này khi click
+                    }}
                   >
                     {color}
                   </button>
@@ -234,7 +361,7 @@ const ProductDetail = () => {
           </div>
 
           <div className="quantity-section-product-detail">
-            <label className="option-label-product-detail">Quantity:</label>
+            <label className="option-label-quantity-product-detail">Quantity:</label>
             <div className="quantity-controls-product-detail">
               <button className="quantity-btn-product-detail" onClick={() => handleQuantityChange(-1)}>
                 -
@@ -262,14 +389,12 @@ const ProductDetail = () => {
               Add to Cart
             </button>
             <div className="secondary-actions-product-detail">
-              <button className="secondary-btn-product-detail">
+              <button className="secondary-btn-product-detail" onClick={handleBuyNow}>
                 <CreditCard size={18} color="#000000" style={{ marginRight: 8 }} />
                 Buy Now
               </button>
-              <button
-                className="secondary-btn-product-detail"
-                onClick={() => setIsFavorite(!isFavorite)}
-              >
+
+              <button className="secondary-btn-product-detail" onClick={handleToggleWishlist}>
                 <Heart
                   size={18}
                   color={isFavorite ? "#FF0000" : "#000000"}
@@ -336,10 +461,14 @@ const ProductDetail = () => {
 
       {isReviewModalOpen && <ReviewModal onClose={() => setIsReviewModalOpen(false)} />}
       <div className="related-products-product-detail">
-        <h2 className="section-title-product-detail">Product Related</h2>
+        <h2 className="section-title-product-detail">Related Products</h2>
         <div className="products-grid-product-detail" ref={scrollRef}>
           {relatedProducts.map((product) => (
-            <div key={product.id} className="product-card-product-detail">
+            <div 
+              key={product.id} 
+              onClick={() => handleProductClick(product.id)} 
+              className="product-card-product-detail"
+            >
               {product.promotion_type && (
                 <div className="promotion_type-badge-product-detail">
                   {product.promotion_type}
@@ -347,10 +476,16 @@ const ProductDetail = () => {
               )}
               <img src={product.image} alt={product.name} />
               <h4>{product.name}</h4>
-              <div className="star-product-detail">{renderStars(product.rating)}</div>
+
               <div className="price-product-detail">
-                <span className="current-price">${product.price}</span>
-                <span className="original-price">${product.originalPrice}</span>
+                <span className="current-price">
+                  {Number(product.price).toLocaleString("vi-VN")}₫
+                </span>
+                {product.old_price && (
+                  <span className="original-price">
+                    {Number(product.old_price).toLocaleString("vi-VN")}₫
+                  </span>
+                )}
               </div>
             </div>
           ))}
