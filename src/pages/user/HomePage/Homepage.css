@@ -270,6 +270,10 @@
 /* CategoryItemHome */
 .categories-container {
   padding: 40px 20px;
+  display: flex;
+  max-width: 1080px;
+  margin: 0 auto;
+   justify-content: space-between;
 }
 
 .categories-wrapper {
@@ -451,6 +455,7 @@
 .category-item[data-category="tv"] .category-icon {
   color: #1f2937;
 }
+
 /* FeaturedProductSection */
 .product-showcase-featured {
   margin-top: 50px;
@@ -490,6 +495,7 @@
   align-items: center;
   gap: 6px;
 }
+
 .browse-all-btn-featured:active {
   color: #FA8232;
   font-weight: 600;
@@ -521,7 +527,7 @@
   background-color: #fff;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -538,6 +544,7 @@
   justify-content: space-between;
   /* height: 140px;  */
 }
+
 .sale-badge-featured {
   position: absolute;
   top: 10px;
@@ -567,11 +574,13 @@
 .product-rating-featured {
   text-align: left;
 }
+
 .star-featured {
   color: #ccc;
   font-size: 18px;
   margin-right: 2px;
 }
+
 .stars-best-deal .star-featured {
   color: #ccc;
   font-size: 25px;
@@ -714,6 +723,7 @@
   padding: 20px;
   position: relative;
 }
+
 /* ///////////////////// */
 
 .featured-product-section-best-deal {
@@ -738,6 +748,7 @@
   justify-content: center;
   margin-bottom: 15px;
 }
+
 .product-image-best-deal {
   width: 100%;
   height: 100%;
@@ -758,7 +769,8 @@
   line-height: 1.6;
   color: #666;
   margin: 12px 0;
-  min-height: 60px; /* giữ độ cao để không bị lồi lõm khi thiếu nội dung */
+  min-height: 60px;
+  /* giữ độ cao để không bị lồi lõm khi thiếu nội dung */
 }
 
 /* Price styling */
@@ -778,6 +790,7 @@
   text-decoration: line-through;
   color: #999;
 }
+
 .add-to-cart-btn-best-deal {
   background-color: #2da5f3;
   color: white;
@@ -897,7 +910,7 @@
 .action-buttons-best-deal {
   display: flex;
   justify-content: space-between;
-   display: flex;
+  display: flex;
   gap: 10px;
 }
 
@@ -1114,12 +1127,13 @@
 
 .main-content-best-seller {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 24px;
 }
 
 .products-section-best-seller {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .products-grid-best-seller {
@@ -1129,14 +1143,12 @@
 }
 
 .product-card-best-seller {
-  flex-grow: 0;
-  flex-shrink: 0;
-  box-sizing: border-box;
-  background: #fff;
-  padding: 16px;
-  border-radius: 8px;
-  transition: transform 0.2s ease;
-  border: 1px solid #ccc;
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-card-best-seller:hover {
@@ -1185,11 +1197,8 @@
 
 .product-image-best-seller img {
   width: 100%;
-  border-radius: 5px;
-  height: 200px;
-  margin-bottom: 10px;
-  object-fit: cover;
-  border-radius: 8px;
+  min-height: 80%;
+  object-fit: contain;
 }
 
 .product-info-best-seller {
@@ -1317,7 +1326,7 @@
   margin-bottom: 24px;
 }
 
-.promo-button-best-seller{
+.promo-button-best-seller {
   background-color: #FA8232;
   color: white;
   border: none;
@@ -1329,6 +1338,7 @@
   width: 50%;
   transition: background-color 0.2s;
 }
+
 .promo-button-best-sellers {
   background-color: #FA8232;
   color: white;
@@ -1443,6 +1453,7 @@
   line-height: 1.6;
   margin-bottom: 35px;
 }
+
 .price-tag {
   position: absolute;
   top: 10px;
@@ -1541,14 +1552,16 @@
     padding: 8px 16px;
   }
 }
+
 .content-right {
   position: relative;
   display: inline-block;
 }
+
 .macbook-showcase {
   width: 100%;
   max-width: 1080px;
-  height: 400px; 
+  height: 400px;
   margin: 40px auto;
   display: flex;
   justify-content: space-between;
@@ -1598,13 +1611,14 @@
 }
 
 /* LatestHomePage */
-.last-home-container{
+.last-home-container {
   font-family: 'Poppins', sans-serif;
   max-width: 1080px;
   margin: 0 auto;
   cursor: pointer;
   margin-bottom: 50px;
 }
+
 .cards-container-last-home {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -1646,6 +1660,7 @@
   flex-wrap: wrap;
   gap: 10px;
 }
+
 .card-meta-last-home .icon-outline-last-home {
   border: 1px solid #FA8232;
   color: #FA8232;
@@ -1708,21 +1723,20 @@
 }
 
 .read-more-button-last-home {
-background-color: transparent;
-    border: 1px solid #FF9000;
-    border-radius: 10px;
-    padding: 8px 20px;
-    color: #FF9000;
-    font-size: 12px;
-    display: flex
-;
-    align-items: center;
-    justify-content: center;
-    align-self: flex-start;
-    outline: none;
-    cursor: pointer;
-    gap: 5px;
-      margin: 16px 20px 20px;
+  background-color: transparent;
+  border: 1px solid #FF9000;
+  border-radius: 10px;
+  padding: 8px 20px;
+  color: #FF9000;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  outline: none;
+  cursor: pointer;
+  gap: 5px;
+  margin: 16px 20px 20px;
 
 }
 
@@ -1752,22 +1766,22 @@ background-color: transparent;
   .last-home-container {
     padding: 20px 15px;
   }
-  
+
   .cards-container-last-home {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .card-meta-last-home {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .card-title-last-home {
     font-size: 16px;
   }
-  
+
   .card-description-last-home {
     font-size: 13px;
   }
@@ -1777,25 +1791,26 @@ background-color: transparent;
   .card-image-last-home {
     height: 160px;
   }
-  
+
   .card-title-last-home {
     padding: 12px 16px 6px;
     font-size: 15px;
   }
-  
+
   .card-description-last-home {
     padding: 0 16px;
     font-size: 12px;
   }
-  
+
   .card-meta-last-home {
     padding: 12px 16px 0;
   }
-  
+
   .read-more-button-last-home {
     margin: 12px 16px 16px;
   }
 }
+
 .card-image-last-home {
   width: 80%;
   height: 200px;
