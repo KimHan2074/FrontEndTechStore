@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Sidebar from "../../../pages/user/Sidebar/Sidebar";
 import axios from "axios";
+import LoadingSpinner from "../../../components/common/LoadingSpinner.js";
+
 
 const UserProfile = () => {
   const [showPasswords, setShowPasswords] = useState({
@@ -27,44 +29,45 @@ const UserProfile = () => {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    const fetchUserIdAndData = async () => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("Token not found. Please log in first.");
+  const fetchUserIdAndData = async () => {
+    setLoading(true); // ⏳ Bắt đầu loading
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token not found. Please log in first.");
+      }
+
+      const userIdResponse = await axios.get("http://127.0.0.1:8000/api/user/getUserId", {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      });
+
+      const fetchedUserId = userIdResponse.data.userId;
+      setUserId(fetchedUserId);
+
+      const userResponse = await axios.get(`http://127.0.0.1:8000/api/user/${fetchedUserId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      });
+
+      const userData = userResponse.data.data;
+      setProfile({
+        username: userData.name ?? "N/A",
+        email: userData.email ?? "N/A",
+        phone: userData.phone ?? "Not Provided",
+        address: userData.address ?? "Not Provided",
+      });
+      setAvatar(userData.avatar || "https://example.com/default-avatar.png"); 
+    } catch (error) {
+      console.error("Error fetching data:", error.response?.data || error.message);
+    } finally {
+      setLoading(false); // ✅ Dừng loading bất kể có lỗi hay không
     }
+  };
 
-    const userIdResponse = await axios.get("http://127.0.0.1:8000/api/user/getUserId", {
-      headers: { Authorization: `Bearer ${token}` },
-      withCredentials: true,
-    });
+  fetchUserIdAndData();
+}, []);
 
-    const fetchedUserId = userIdResponse.data.userId;
-    setUserId(fetchedUserId);
-    console.log("Fetched User ID:", fetchedUserId);
-
-    const userResponse = await axios.get(`http://127.0.0.1:8000/api/user/${fetchedUserId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-      withCredentials: true,
-    });
-
-    const userData = userResponse.data.data;
-    setProfile({
-      username: userData.name ?? "N/A",
-      email: userData.email ?? "N/A",
-      phone: userData.phone ?? "Not Provided",
-      address: userData.address ?? "Not Provided",
-    });
-    setAvatar(userData.avatar || "https://example.com/default-avatar.png"); 
-    console.log("Fetched User Data:", userData);
-  } catch (error) {
-    console.error("Error fetching data:", error.response?.data || error.message);
-  }
-};
-
-
-    fetchUserIdAndData();
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -106,6 +109,7 @@ const UserProfile = () => {
       alert(err.response?.data?.message || "Failed to update profile");
     }
   };
+  const [loading, setLoading] = useState(false);
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
@@ -196,6 +200,10 @@ const UserProfile = () => {
   const togglePasswordVisibility = (field) => {
     setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
   };
+  if (loading) {
+  return <LoadingSpinner />;
+}
+
   return (
     <div className="profile-container">
       <Sidebar

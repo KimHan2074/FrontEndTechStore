@@ -14,27 +14,86 @@ const renderStars = (rating) => {
   ));
 };
 
-
 const BestDealSection = () => {
+  const [userId, setUserId] = useState(null);
   const [deals, setDeals] = useState([]);
   const [featuredProduct, setFeaturedProduct] = useState(null);
   const [timeLeft, setTimeLeft] = useState({
-    days: 0, hours: 0, minutes: 0, seconds: 0,
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
   });
+  const [addedToWishlist, setAddedToWishlist] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    } else {
+      const fetchUserId = async () => {
+        try {
+          const token = localStorage.getItem("token");
+          const res = await axios.get("http://localhost:8000/api/user/getUserId", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const fetchedUserId = res.data.userId;
+          localStorage.setItem("userId", fetchedUserId);
+          setUserId(fetchedUserId);
+        } catch (err) {
+          console.error("Failed to fetch user ID:", err);
+        }
+      };
+      fetchUserId();
+    }
+  }, []);
+
+  const handleAddToWishlist = async (productId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const finalUserId = userId || localStorage.getItem("userId");
+
+      if (!finalUserId) {
+        alert("User ID not found");
+        return;
+      }
+
+      await axios.post(
+        "http://localhost:8000/api/user/wishlist/add",
+        {
+          user_id: finalUserId,
+          product_id: productId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setAddedToWishlist(true);
+      alert("Đã thêm vào wishlist");
+    } catch (error) {
+      console.error("Lỗi khi thêm wishlist:", error.response?.data || error.message);
+      alert("Thêm thất bại");
+    }
+  };
+
   useEffect(() => {
     const fetchBestDeals = async () => {
       try {
         const res = await axios.get("http://localhost:8000/api/user/product/promoted");
         const allPromoted = res.data?.data || [];
-        const bestDeals = allPromoted.filter(p => p.promotion_type === "best deal");
+        const bestDeals = allPromoted.filter((p) => p.promotion_type === "best deal");
 
         setDeals(bestDeals);
         console.log(
           'Best Deals:', bestDeals);
+
         if (bestDeals.length > 0) {
           const soonest = bestDeals
-            .filter(p => p.end_date)
+            .filter((p) => p.end_date)
             .sort((a, b) => new Date(a.end_date) - new Date(b.end_date))[0];
           setFeaturedProduct(soonest);
         } else {
@@ -79,8 +138,9 @@ const BestDealSection = () => {
   };
 
   const handleShow = () => {
-    navigate("shopping-cart")
-  }
+    navigate("shopping-cart");
+  };
+
   return (
     <div className="best-deals-container-best-deal">
       <div className="header-section-best-deal">
@@ -138,11 +198,18 @@ const BestDealSection = () => {
                 </div>
                 <p className="product-description-best-deal">{featuredProduct.description}</p>
                 <div className="action-buttons-best-deal">
-                  <button className="wishlist-btn-best-deal"><Heart /></button>
+                  <button
+                    className={`wishlist-btn-best-deal ${addedToWishlist ? "added" : ""}`}
+                    onClick={() => handleAddToWishlist(featuredProduct.id)}
+                  >
+                    <Heart color={addedToWishlist ? "red" : "gray"} />
+                  </button>
                   <button className="add-to-cart-btn-best-deal" onClick={handleShow}>
                     <ShoppingCart color="#ffffff" /> ADD TO CART
                   </button>
-                  <button className="view-btn-best-deal"><Eye /></button>
+                  <button className="view-btn-best-deal">
+                    <Eye />
+                  </button>
                 </div>
               </div>
             </div>
