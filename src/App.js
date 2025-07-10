@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -29,6 +28,7 @@ function App() {
           quantity: item.quantity,
           image: item.product.first_image?.image_url || "",
           stock: item.product.stock,
+          color: item.color
         }));
 
         setCartItems(items);
