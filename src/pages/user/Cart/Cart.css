@@ -93,6 +93,12 @@
   font-weight: 500;
 }
 
+.cart-item-color {
+  font-size: 14px;
+  color: #6b7280; 
+  margin-top: 2px;
+}
+
 .cart-item-price,
 .cart-item-subtotal {
   font-size: 16px;
