@@ -4,14 +4,12 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
-
+import BuyNow from "../Button/BuyNow";
 const PromoBanner = () => {
   const [products, setProducts] = useState([]);
   const [summerSaleProduct, setSummerSaleProduct] = useState(null);
   const navigate = useNavigate();
-   const handleShopNow = () => {
-     navigate("/shoping-cart");
-  };
+   
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -63,14 +61,15 @@ const PromoBanner = () => {
     <div className="showcase-container-banner">
       <div className="main-product-banner">
         <Slider {...settings}>
-          {products.map((product) => (
+          {products.map((product, index) => (
             <div key={product.id}>
               <div className="product-content-banner">
                 <div className="product-text-banner">
                   <h2 className="product-title-banner">{product.name}</h2>
                   <h3 className="product-subtitle-banner">Xbox</h3>
                   <p className="product-description-banner">{product.description}</p>
-                  <button className="buy-button-banner" onClick={handleShopNow}>SHOW NOW</button>
+                  {/* <button className="buy-button-banner" onClick={handleShopNow}>SHOW NOW</button> */}
+                 <BuyNow className="buy-button-banner" product={product} label="SHOW NOW" />
                 </div>
                 <div className="product-image-banner">
                   <img
@@ -91,7 +90,7 @@ const PromoBanner = () => {
             <div className="promotion-title">
               <span className="sale-badge-banner">SUMMER SALES</span>
               <p className="sale-badge-banner-description">{displayProduct.name}</p>
-              <button className="buy-button-banner" onClick={handleShopNow}>SHOP NOW</button>
+             <BuyNow className="buy-button-banner" product={displayProduct} label="SHOW NOW" />
             </div>
             <div className="promotion-image">
               <img

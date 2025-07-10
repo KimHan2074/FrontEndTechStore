@@ -8,7 +8,8 @@ import ReviewsTab from "./ReviewsTab";
 import ReviewModal from "./ReviewModal";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../common/LoadingSpinner";
-
+import AddToCart from "../Button/AddToCart";
+import AddToWishlist from "../Button/AddToWishlist";
 import {
   ShoppingCart,
   Heart,
@@ -100,53 +101,6 @@ const ProductDetail = () => {
       setQuantity(newQuantity);
     }
   };
- const handleAddToCart = async (product) => {
-    console.log("DEBUG product:", product);
-
-    const stock = Number(product?.stock);
-
-    console.log("Parsed stock:", stock, "| Raw:", product?.stock, "| Type:", typeof product?.stock);
-
-    if (!product || typeof product.stock === "undefined") {
-      toast.error("Không tìm thấy thông tin sản phẩm.");
-      return;
-    }
-
-    if (isNaN(stock)) {
-      toast.error("Không xác định được số lượng tồn kho.");
-      return;
-    }
-
-    if (stock <= 0) {
-      toast.warning("Sản phẩm đã hết hàng!");
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        "/api/user/cart/add",
-        {
-          product_id: product.id,
-          quantity: 1,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            Accept: "application/json"
-          }
-        }
-      );
-      toast.success("Product added to cart successfully!");
-      console.log("Add to cart:", response.data);
-    } catch (error) {
-      if (error.response?.status === 401) {
-        toast.error("You need to log in to make a purchase.");
-      } else {
-        toast.error("Failed to add to cart!");
-      }
-      console.error("Error adding to cart:", error);
-    }
-  };
 
   const renderStars = (rating) => {
     return (
@@ -177,7 +131,7 @@ const ProductDetail = () => {
     { id: 4, name: "Product 4", price: "1.800.000", originalPrice: "1.200.000", image: "https://mccvietnam.vn/media/lib/14-12-2022/bpcmccv13mncasekm.jpg", promotion_type: "hot", rating: 4 },
     { id: 5, name: "Product 5", price: "2.000.000", originalPrice: "1.200.000", image: "https://cdn.tgdd.vn/Files/2019/10/27/1212736/cach-chon-mua-man-hinh-may-tinh-tot-ben-dep-va-phu-hop-nhu-cau-26.jpg", promotion_type: "hot", rating: 4 }
   ];
-  if (loading) return <div className="loading"><LoadingSpinner/>.</div>;
+  if (loading) return <div className="loading"><LoadingSpinner />.</div>;
   if (!product) return <div className="error">Product not found.</div>;
 
   return (
@@ -257,26 +211,31 @@ const ProductDetail = () => {
           </div>
 
           <div className="action-buttons-product-detail">
-            <button className="add-to-cart-btn-product-detail" onClick={() => handleAddToCart(product)}>
+            <AddToCart
+              className="add-to-cart-btn-product-detail"
+              product={product}
+              quantity={quantity}
+            >
               <ShoppingCart color="#fff" size={25} style={{ marginRight: 8 }} />
               Add to Cart
-            </button>
+            </AddToCart>
+
             <div className="secondary-actions-product-detail">
               <button className="secondary-btn-product-detail">
                 <CreditCard size={18} color="#000000" style={{ marginRight: 8 }} />
                 Buy Now
               </button>
-              <button
+              <AddToWishlist
+                item={product.id}
                 className="secondary-btn-product-detail"
-                onClick={() => setIsFavorite(!isFavorite)}
               >
                 <Heart
                   size={18}
-                  color={isFavorite ? "#FF0000" : "#000000"}
                   style={{ marginRight: 8 }}
                 />
-                {isFavorite ? "Favorited" : "Add to Favorites"}
-              </button>
+                Favorited
+              </AddToWishlist>
+
             </div>
           </div>
 

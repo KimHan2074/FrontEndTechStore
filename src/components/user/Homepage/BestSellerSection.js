@@ -39,17 +39,13 @@ const ProductCard = ({ product, onClick }) => (
   </div>
 );
 
-
-const PromoCard = ({ product, onClick }) => {
+const PromoCard = ({ product, onClick, onBuyNow }) => {
   if (!product) return null;
 
   return (
-    <div
-      className="promo-card-best-seller product-card-featured"
-      onClick={() => onClick(product.id)}
-    >
+    <div className="promo-card-best-seller product-card-featured">
       <div className="promo-content-best-seller">
-        <div className="promo-image-best-seller">
+        <div className="promo-image-best-seller" onClick={() => onClick(product.id)}>
           <img
             src={product.image_url || "/placeholder.svg"}
             alt={product.name}
@@ -67,9 +63,11 @@ const PromoCard = ({ product, onClick }) => {
           <div className="promo-label-best-seller">Only for</div>
           <div className="promo-price-best-seller">${product.price}</div>
         </div>
-        <h3 className="promo-title-best-seller">{product.name}</h3>
-        <p className="promo-description-best-seller">{product.description}</p>
-        <button className="promo-button-best-sellers">SHOP NOW</button>
+        <h3 className="promo-title-best-seller" onClick={() => onClick(product.id)}>{product.name}</h3>
+        <p className="promo-description-best-seller" onClick={() => onClick(product.id)}>{product.description}</p>
+        <button className="promo-button-best-sellers" onClick={() => onBuyNow(product)}>
+          SHOP NOW
+        </button>
       </div>
     </div>
   );
@@ -78,6 +76,11 @@ const PromoCard = ({ product, onClick }) => {
 const BestSellerSection = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
+
+  const handleProductClick = (productId) => {
+    navigate(`/user/product-detail/${productId}`);
+  };
+
   useEffect(() => {
     const fetchBestDeals = async () => {
       try {
@@ -95,9 +98,7 @@ const BestSellerSection = () => {
     const interval = setInterval(fetchBestDeals, 5000);
     return () => clearInterval(interval);
   }, []);
-  const handleProductClick = (productId) => {
-    navigate(`/user/product-detail/${productId}`);
-  };
+
   return (
     <div className="container-best-seller">
       <div className="header-best-seller">
@@ -114,14 +115,14 @@ const BestSellerSection = () => {
             {products.length === 0 ? (
               <p className="no-products-message">Không có sản phẩm khuyến mãi nào!</p>
             ) : (
-              products.map((product) => (
-                <ProductCard key={product.id} product={product} onClick={handleProductClick} />
+              products.map((product, index) => (
+                <ProductCard key={`${product.id}-${index}`} product={product} onClick={handleProductClick} />
               ))
             )}
           </div>
         </div>
         <div className="promo-section-best-seller">
-          <PromoCard product={products[0]} onClick={handleProductClick} />
+          <PromoCard product={products[0]} onClick={handleProductClick}/>
         </div>
       </div>
     </div>
