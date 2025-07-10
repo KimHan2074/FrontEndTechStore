@@ -112,36 +112,47 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(false);
 
   const handleChangePassword = async (e) => {
-    e.preventDefault();
-    if (passwords.new !== passwords.confirm) {
-      alert("New password and confirmation do not match!");
-      return;
-    }
-    if (!userId) {
-      alert("User ID not found. Please try again.");
-      return;
-    }
-    try {
-      const response = await axios.put(
-        `http://127.0.0.1:8000/api/user/change-password/${userId}`,
-        {
-          current_password: passwords.current,
-          new_password: passwords.new,
-          new_password_confirmation: passwords.confirm,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+  e.preventDefault();
 
-      alert("Password changed successfully!");
-      setPasswords({ current: "", new: "", confirm: "" });
-    } catch (err) {
-      console.error("Error changing password:", err.response?.data || err.message);
-      alert("Failed to change password:\n" + err.message);
+  if (passwords.new !== passwords.confirm) {
+    alert("New password and confirmation do not match!");
+    return;
+  }
+
+  if (!userId) {
+    alert("User ID not found. Please try again.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/user/change-password/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // tương đương withCredentials: true trong axios
+      body: JSON.stringify({
+        current_password: passwords.current,
+        new_password: passwords.new,
+        new_password_confirmation: passwords.confirm,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error changing password:", errorData);
+      alert("Failed to change password:\n" + (errorData.message || "Unknown error"));
+      return;
     }
-  };
+
+    alert("Password changed successfully!");
+    setPasswords({ current: "", new: "", confirm: "" });
+  } catch (err) {
+    console.error("Network error:", err);
+    alert("Network error:\n" + err.message);
+  }
+};
+
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];

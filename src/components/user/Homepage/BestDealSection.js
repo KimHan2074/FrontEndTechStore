@@ -180,13 +180,13 @@ const BestDealSection = () => {
                   {featuredProduct.description}
                 </p>
                 <div className="action-buttons-best-deal">
-                <AddToWishlist
-  className={`wishlist-btn-best-deal ${addedToWishlist ? "added" : ""}`}
-  item={featuredProduct}
-  addedToWishlist={false}
->
-  <Heart color={addedToWishlist ? "red" : "gray"} />
-</AddToWishlist>
+                  <AddToWishlist
+                    className={`wishlist-btn-best-deal ${addedToWishlist ? "added" : ""}`}
+                    item={featuredProduct}
+                    addedToWishlist={false}
+                  >
+                    <Heart color={addedToWishlist ? "red" : "gray"} />
+                  </AddToWishlist>
 
 
                   <AddToCart

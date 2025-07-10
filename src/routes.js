@@ -20,8 +20,10 @@ import HomePage from "./pages/user/HomePage/HomePage.js";
 import Sidebar from "./pages/user/Order/Orders.js";
 import PaymentConfirmation from "./pages/user/Payment/PaymentConfirmation.js";
 import PaymentMethod from "./components/user/Payment/PaymentMethod.js";
-import ProductSpecs from "./components/user/Product/ProductSpecs.js";
+// import ProductSpecs from "./components/user/Product/ProductSpecs.js";
 import ProductDetailPage from "./pages/user/Product/ProductDetailPage.js";
+import AdminSidebar from "./layouts/Admin/AdminSidebar.js";
+import UserManagement from "./pages/admin/User_managemet/User_management.js";
 
 function AppRoutes() {
   return (
@@ -52,6 +54,8 @@ function AppRoutes() {
 
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="adminsidebar" element={<AdminSidebar />} />
+          <Route path="usermanagement" element={<UserManagement/>} />
         </Route>
       </Routes>
     </>
