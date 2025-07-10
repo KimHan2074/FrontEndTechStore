@@ -8,7 +8,8 @@ import ReviewsTab from "./ReviewsTab";
 import ReviewModal from "./ReviewModal";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../common/LoadingSpinner";
-
+import AddToCart from "../Button/AddToCart";
+import AddToWishlist from "../Button/AddToWishlist";
 import {
   ShoppingCart,
   Heart,
@@ -106,72 +107,6 @@ const ProductDetail = () => {
       setQuantity(newQuantity);
     }
   };
-
-  const handleAddToCart = async (product) => {
-    const stock = Number(product?.stock);
-
-    if (!product || typeof product.stock === "undefined") {
-      toast.error("Unable to find product information.");
-      return;
-    }
-
-    if (isNaN(stock)) {
-      toast.error("Unable to determine stock quantity.");
-      return;
-    }
-
-    if (stock <= 0) {
-      toast.warning("The product is out of stock!");
-      return;
-    }
-
-    try {
-      await axios.post(
-        "/api/product/add-to-cart",
-        {
-          product_id: product.id,
-          quantity,
-          color: selectedColor,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-
-      toast.success("Added to cart!");
-    } catch (error) {
-      const message = error.response?.data?.message || "Failed to add to cart.";
-      const stock = error.response?.data?.stock;
-      const in_cart = error.response?.data?.in_cart;
-
-      console.log("DEBUG error:", message, stock, in_cart);
-
-      if (error.response?.status === 401) {
-        toast.error("You need to log in to make a purchase.");
-      } else if (
-        error.response?.status === 400 &&
-        message.toLowerCase().includes("exceeds available stock")
-      ) {
-        if (typeof stock !== "undefined" && typeof in_cart !== "undefined") {
-          toast.warning(`Only ${stock} item(s) left in stock, and you already have ${in_cart} in your cart.`);
-        } else {
-          toast.warning("Quantity exceeds available stock.");
-        }
-      } else if (
-        error.response?.status === 400 &&
-        message.toLowerCase().includes("product not found")
-      ) {
-        toast.error("The product does not exist.");
-      } else {
-        toast.error("Failed to add to cart.");
-      }
-
-      console.error("Failed to add item to cart:", error);
-    }
-  };
-
   const handleToggleWishlist = async () => {
     try {
       const url = isFavorite
@@ -384,24 +319,32 @@ const ProductDetail = () => {
           </div>
 
           <div className="action-buttons-product-detail">
-            <button className="add-to-cart-btn-product-detail" onClick={() => handleAddToCart(product)}>
+            <AddToCart
+              className="add-to-cart-btn-product-detail"
+              product={product}
+              quantity={quantity}
+            >
               <ShoppingCart color="#fff" size={25} style={{ marginRight: 8 }} />
               Add to Cart
-            </button>
+            </AddToCart>
+
             <div className="secondary-actions-product-detail">
               <button className="secondary-btn-product-detail" onClick={handleBuyNow}>
                 <CreditCard size={18} color="#000000" style={{ marginRight: 8 }} />
                 Buy Now
               </button>
+              <AddToWishlist
+                item={product.id}
+                className="secondary-btn-product-detail"
+              >
 
-              <button className="secondary-btn-product-detail" onClick={handleToggleWishlist}>
                 <Heart
                   size={18}
-                  color={isFavorite ? "#FF0000" : "#000000"}
                   style={{ marginRight: 8 }}
                 />
-                {isFavorite ? "Favorited" : "Add to Favorites"}
-              </button>
+                Favorited
+              </AddToWishlist>
+
             </div>
           </div>
 

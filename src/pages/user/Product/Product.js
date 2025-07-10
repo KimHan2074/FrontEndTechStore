@@ -5,8 +5,10 @@ import { FaShoppingCart, FaHeart, FaChevronLeft, FaChevronRight } from "react-ic
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+import AddToWishlist from "../../../components/user/Button/AddToWishlist";
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
-
+import AddToCart from "../../../components/user/Button/AddToCart";
 const ProductList = ({ searchQuery }) => {
   const [products, setProducts] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
@@ -15,7 +17,10 @@ const ProductList = ({ searchQuery }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 15;
-
+  const navigate = useNavigate();
+  const handleProductClick = (productId) => {
+    navigate(`/user/product-detail/${productId}`);
+  };
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -55,94 +60,46 @@ const ProductList = ({ searchQuery }) => {
     }
   };
 
-  const handleAddToCart = async (product) => {
-    console.log("DEBUG product:", product);
+  //   const handleAddToWishlist = async (productId) => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const userId = localStorage.getItem("userId");
 
-    const stock = Number(product?.stock);
+  //     if (!token || !userId) {
+  //       toast.error("Bạn cần đăng nhập để thêm vào wishlist");
+  //       return;
+  //     }
 
-    console.log("Parsed stock:", stock, "| Raw:", product?.stock, "| Type:", typeof product?.stock);
+  //     await axios.post(
+  //       "http://localhost:8000/api/user/wishlist/add",
+  //       {
+  //         user_id: userId,
+  //         product_id: productId,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
 
-    if (!product || typeof product.stock === "undefined") {
-      toast.error("Không tìm thấy thông tin sản phẩm.");
-      return;
-    }
+  //     toast.success("Đã thêm vào wishlist!");
 
-    if (isNaN(stock)) {
-      toast.error("Không xác định được số lượng tồn kho.");
-      return;
-    }
+  //     // ✅ Gửi sự kiện cập nhật để header cập nhật số lượng wishlist
+  //     window.dispatchEvent(new CustomEvent("wishlist-updated"));
+  //   } catch (error) {
+  //     console.error("Lỗi thêm wishlist:", error.response?.data || error);
+  //     toast.error("Thêm vào wishlist thất bại");
+  //   }
+  // };
 
-    if (stock <= 0) {
-      toast.warning("Sản phẩm đã hết hàng!");
-      return;
-    }
 
-    try {
-      const response = await axios.post(
-        "/api/user/cart/add",
-        {
-          product_id: product.id,
-          quantity: 1,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            Accept: "application/json"
-          }
-        }
-      );
-      toast.success("Product added to cart successfully!");
-      console.log("Add to cart:", response.data);
-    } catch (error) {
-      if (error.response?.status === 401) {
-        toast.error("You need to log in to make a purchase.");
-      } else {
-        toast.error("Failed to add to cart!");
-      }
-      console.error("Error adding to cart:", error);
-    }
-  };
-  
-  const handleAddToWishlist = async (productId) => {
-  try {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
-
-    if (!token || !userId) {
-      toast.error("Bạn cần đăng nhập để thêm vào wishlist");
-      return;
-    }
-
-    await axios.post(
-      "http://localhost:8000/api/user/wishlist/add",
-      {
-        user_id: userId,
-        product_id: productId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    toast.success("Đã thêm vào wishlist!");
-
-    // ✅ Gửi sự kiện cập nhật để header cập nhật số lượng wishlist
-    window.dispatchEvent(new CustomEvent("wishlist-updated"));
-  } catch (error) {
-    console.error("Lỗi thêm wishlist:", error.response?.data || error);
-    toast.error("Thêm vào wishlist thất bại");
-  }
-};
-
-  
   if (error) {
     return <div>Error: {error}</div>;
   }
   if (loading) {
-  return <LoadingSpinner />;
-}
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="product-wrapper">
@@ -174,7 +131,9 @@ const ProductList = ({ searchQuery }) => {
                   }
                   alt={product.name}
                   className="w-24 h-24 object-cover mr-4"
+                  onClick={() => handleProductClick(product.id)}
                 />
+
 
                 <div className="product-details flex-1">
                   <h3 className="text-gray-600 text-sm">{product.category}</h3>
@@ -189,19 +148,22 @@ const ProductList = ({ searchQuery }) => {
                       <span className="text-red-500">${product.price}</span>
                     </div>
 
-                    <button
+                    <AddToCart
+                      product={product}
                       className="bg-red-500 text-white px-3 py-2 rounded flex items-center justify-center gap-2 hover:bg-red-600 transition mb-2"
-                      onClick={() => handleAddToCart(product)}
                     >
                       <FaShoppingCart /> ADD TO CART
-                    </button>
+                    </AddToCart>
 
-                    <button
+
+                    
+                    <AddToWishlist
                       className="text-gray-500 flex items-center justify-center gap-2 hover:text-red-500 transition"
-                      onClick={() => handleAddToWishlist(product.id)}
+                      item={product}
                     >
                       <FaHeart /> Wishlist
-                    </button>
+                    </AddToWishlist>
+
                   </div>
                 </div>
 
@@ -214,15 +176,17 @@ const ProductList = ({ searchQuery }) => {
           <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
             <FaChevronLeft />
           </button>
-          {[...Array(totalPages)].map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handlePageChange(index + 1)}
-              className={currentPage === index + 1 ? "active" : ""}
-            >
-              {index + 1}
-            </button>
-          ))}
+          {Number.isInteger(totalPages) && totalPages > 0 &&
+            [...Array(totalPages)].map((_, index) => (
+              <button
+                key={`page-${index}`}
+                onClick={() => handlePageChange(index + 1)}
+                className={currentPage === index + 1 ? "active" : ""}
+              >
+                {index + 1}
+              </button>
+            ))
+          }
           <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
             <FaChevronRight />
           </button>

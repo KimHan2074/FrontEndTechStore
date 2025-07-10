@@ -17,6 +17,7 @@ const DescriptionTab = () => {
           },
         });
 
+
         setDescriptionData(res.data);
       } catch (error) {
         console.error("Error fetching product description:", error);
