@@ -107,6 +107,7 @@ const ProductDetail = () => {
       setQuantity(newQuantity);
     }
   };
+
   const handleToggleWishlist = async () => {
     try {
       const url = isFavorite
@@ -187,7 +188,7 @@ const ProductDetail = () => {
         error.response?.status === 400 &&
         message.toLowerCase().includes("Only ... left")
       ) {
-        toast.warning(message); // ví dụ: "Chỉ còn lại 3 sản phẩm trong kho."
+        toast.warning(message);
       } else if (error.response?.status === 401) {
         toast.error("You need to log in to make a purchase.");
       } else {
@@ -228,7 +229,7 @@ const ProductDetail = () => {
         });
 
         console.log("Related products response:", res.data);
-        setRelatedProducts(Array.isArray(res.data.data) ? res.data.data : []); // đảm bảo là mảng
+        setRelatedProducts(Array.isArray(res.data.data) ? res.data.data : []); 
       } catch (error) {
         console.error("Error fetching related products:", error);
         toast.error("Unable to load related products");
@@ -237,7 +238,7 @@ const ProductDetail = () => {
 
     fetchRelatedProducts();
   }, [id]);
-    
+  
   if (loading) return <div className="loading"><LoadingSpinner/>.</div>;
   if (!product) return <div className="error">Product not found.</div>;
 
@@ -314,7 +315,7 @@ const ProductDetail = () => {
               </button>
             </div>
             <span className="stock-info-product-detail">
-              Only {product.stock || 100} item(s)
+              Only {product.stock} item(s)
             </span>
           </div>
 
