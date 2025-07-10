@@ -39,8 +39,8 @@ export default function Cart() {
               item.product.first_image?.image_url ||
               "https://bizweb.dktcdn.net/100/450/808/products/anh-chup-man-hinh-2022-10-05-luc-10-26-02-1664940394276.png?v=1679732596117",
             stock: item.product.stock !== undefined ? item.product.stock : 0,
+            color: item.color,
           }));
-
 
           console.log("Fetched cart items (with stock):", items);
           setCartItems(items);

@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { ShoppingCart, Heart, Eye, ArrowRight } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
+import AddToCart from "../Button/AddToCart";
+import AddToWishlist from "../Button/AddToWishlist";
 const renderStars = (rating) => {
   return Array.from({ length: 5 }, (_, index) => (
     <span
@@ -49,50 +51,25 @@ const BestDealSection = () => {
     }
   }, []);
 
-  const handleAddToWishlist = async (productId) => {
-    try {
-      const token = localStorage.getItem("token");
-      const finalUserId = userId || localStorage.getItem("userId");
-
-      if (!finalUserId) {
-        alert("User ID not found");
-        return;
-      }
-
-      await axios.post(
-        "http://localhost:8000/api/user/wishlist/add",
-        {
-          user_id: finalUserId,
-          product_id: productId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setAddedToWishlist(true);
-      alert("Đã thêm vào wishlist");
-    } catch (error) {
-      console.error("Lỗi khi thêm wishlist:", error.response?.data || error.message);
-      alert("Thêm thất bại");
-    }
-  };
-
   useEffect(() => {
     const fetchBestDeals = async () => {
       try {
         const res = await axios.get("http://localhost:8000/api/user/product/promoted");
         const allPromoted = res.data?.data || [];
         const bestDeals = allPromoted.filter((p) => p.promotion_type === "best deal");
+        const uniqueDeals = Array.from(new Map(bestDeals.map(p => [p.id, p])).values());
+        setDeals(uniqueDeals);
+        const idMap = {};
+        uniqueDeals.forEach((item) => {
+          idMap[item.id] = (idMap[item.id] || 0) + 1;
+        });
+        const duplicated = Object.entries(idMap).filter(([id, count]) => count > 1);
+        if (duplicated.length > 0) {
+          console.warn("⚠️ ID trùng trong deals:", duplicated);
+        }
 
-        setDeals(bestDeals);
-        console.log(
-          'Best Deals:', bestDeals);
-
-        if (bestDeals.length > 0) {
-          const soonest = bestDeals
+        if (uniqueDeals.length > 0) {
+          const soonest = uniqueDeals
             .filter((p) => p.end_date)
             .sort((a, b) => new Date(a.end_date) - new Date(b.end_date))[0];
           setFeaturedProduct(soonest);
@@ -136,11 +113,6 @@ const BestDealSection = () => {
   const handleProductClick = (productId) => {
     navigate(`/user/product-detail/${productId}`);
   };
-
-  const handleShow = () => {
-    navigate("shopping-cart");
-  };
-
   return (
     <div className="best-deals-container-best-deal">
       <div className="header-section-best-deal">
@@ -164,11 +136,7 @@ const BestDealSection = () => {
 
       <div className="content-wrapper-best-deal">
         {featuredProduct && (
-          <div
-            className="featured-product-section-best-deal"
-            key={featuredProduct.id}
-            onClick={() => handleProductClick(featuredProduct.id)}
-          >
+          <div className="featured-product-section-best-deal">
             <div className="featured-product-card-best-deal">
               <div className="product-badges-best-deal">
                 {featuredProduct.discount && (
@@ -183,31 +151,51 @@ const BestDealSection = () => {
                   src={featuredProduct.image_url || "/placeholder.svg"}
                   alt={featuredProduct.title}
                   className="product-image-best-deal"
+                  onClick={() => handleProductClick(featuredProduct.id)}
                 />
               </div>
               <div className="product-info-best-deal">
                 <div className="rating-container-best-deal">
                   <div className="stars-best-deal">{renderStars(featuredProduct.rating)}</div>
                 </div>
-                <h3 className="product-title-best-deal">{featuredProduct.title}</h3>
-                <div className="price-container-best-deal">
+                <h3
+                  className="product-title-best-deal"
+                  onClick={() => handleProductClick(featuredProduct.id)}
+                >
+                  {featuredProduct.title}
+                </h3>
+                <div
+                  className="price-container-best-deal"
+                  onClick={() => handleProductClick(featuredProduct.id)}
+                >
                   <span className="sale-price-best-deal">${featuredProduct.price}</span>
                   {featuredProduct.old_price && (
                     <span className="original-price-best-deal">${featuredProduct.old_price}</span>
                   )}
                 </div>
-                <p className="product-description-best-deal">{featuredProduct.description}</p>
+                <p
+                  className="product-description-best-deal"
+                  onClick={() => handleProductClick(featuredProduct.id)}
+                >
+                  {featuredProduct.description}
+                </p>
                 <div className="action-buttons-best-deal">
-                  <button
+                  <AddToWishlist
                     className={`wishlist-btn-best-deal ${addedToWishlist ? "added" : ""}`}
-                    onClick={() => handleAddToWishlist(featuredProduct.id)}
+                    item={featuredProduct}
+                    addedToWishlist={false}
                   >
                     <Heart color={addedToWishlist ? "red" : "gray"} />
-                  </button>
-                  <button className="add-to-cart-btn-best-deal" onClick={handleShow}>
+                  </AddToWishlist>
+
+
+                  <AddToCart
+                    product={featuredProduct}
+                    className="add-to-cart-btn-best-deal"
+                  >
                     <ShoppingCart color="#ffffff" /> ADD TO CART
-                  </button>
-                  <button className="view-btn-best-deal">
+                  </AddToCart>
+                  <button className="view-btn-best-deal" onClick={() => handleProductClick(featuredProduct.id)}>
                     <Eye />
                   </button>
                 </div>
@@ -218,8 +206,12 @@ const BestDealSection = () => {
 
         <div className="product-grid-section-best-deal">
           <div className="products-grid-best-deal">
-            {deals.map((product) => (
-              <div key={product.id} className="product-card-best-deal" onClick={() => handleProductClick(product.id)}>
+            {deals.map((product, index) => (
+              <div
+                key={`${product.id}-${index}`}
+                className="product-card-best-deal"
+                onClick={() => handleProductClick(product.id)}
+              >
                 {product.badge && (
                   <div className="product-badge-best-deal">{product.badge}</div>
                 )}

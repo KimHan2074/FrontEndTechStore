@@ -61,7 +61,7 @@ const UserProfile = () => {
     } catch (error) {
       console.error("Error fetching data:", error.response?.data || error.message);
     } finally {
-      setLoading(false); // ✅ Dừng loading bất kể có lỗi hay không
+      setLoading(false); 
     }
   };
 
