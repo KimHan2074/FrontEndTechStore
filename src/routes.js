@@ -24,6 +24,8 @@ import PaymentMethod from "./components/user/Payment/PaymentMethod.js";
 import ProductDetailPage from "./pages/user/Product/ProductDetailPage.js";
 import AdminSidebar from "./layouts/Admin/AdminSidebar.js";
 import UserManagement from "./pages/admin/User_managemet/User_management.js";
+import ReviewManagement from "./pages/admin/Review_management/ReviewManagement.js";
+import OrderManagement from "./pages/admin/Order_Management/OrderManagement.js";
 
 function AppRoutes() {
   return (
@@ -56,6 +58,8 @@ function AppRoutes() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="adminsidebar" element={<AdminSidebar />} />
           <Route path="usermanagement" element={<UserManagement/>} />
+          <Route path="reviewmanagement" element={<ReviewManagement/>} />
+          <Route path="ordermanagement" element={<OrderManagement/>} />
         </Route>
       </Routes>
     </>

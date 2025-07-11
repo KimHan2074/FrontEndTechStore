@@ -1,0 +1,81 @@
+.review-management {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.review-management h2 {
+  margin-bottom: 5px;
+}
+
+.review-management p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border: 2px solid #1976d2;
+  border-radius: 8px;
+}
+
+.review-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.review-table th,
+.review-table td {
+  padding: 6px 8px;
+  height: 40px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.review-table th {
+  background-color: #0d47a1;
+  color: white;
+}
+
+.review-table tr:nth-child(even) {
+  background-color: #f3f3f3;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  gap: 8px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.delete-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  transform: translateY(20px); 
+  color: #f44336;
+}
+
+
