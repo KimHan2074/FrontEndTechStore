@@ -1,7 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // <-- Thêm dòng này
 import "./AdminSidebar.css";
 
 const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
+  const navigate = useNavigate(); // <-- Dùng để chuyển hướng
+
   const menuItems = [
     { name: "Dashboard", icon: "🏠" },
     { name: "Product", icon: "📦" },
@@ -9,6 +12,13 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
     { name: "Review", icon: "💬" },
     { name: "Order", icon: "🛒" },
   ];
+
+  const handleLogout = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+
+    navigate("/signin");
+  };
 
   return (
     <div className="admin-sidebar">
@@ -49,7 +59,7 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
           </button>
         </div>
 
-        <div className="admin-logout">
+        <div className="admin-logout" onClick={handleLogout}>
           <span className="icon">🔓</span>
           Logout
         </div>
