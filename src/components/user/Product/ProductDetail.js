@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import LoadingSpinner from "../../common/LoadingSpinner";
 import AddToCart from "../Button/AddToCart";
 import AddToWishlist from "../Button/AddToWishlist";
+import BuyNow from "../Button/BuyNow";
 import {
   ShoppingCart,
   Heart,
@@ -108,97 +109,6 @@ const ProductDetail = () => {
     }
   };
 
-  const handleToggleWishlist = async () => {
-    try {
-      const url = isFavorite
-        ? "/api/product/remove-from-wishlist" 
-        : "/api/product/add-to-wishlist";     
-
-      await axios.post(
-        url,
-        {
-          product_id: product.id,
-          color: selectedColor,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-
-      setIsFavorite(!isFavorite);
-      toast.success(isFavorite ? "Removed from favorites." : "Item has been added to your favorites.");
-    } catch (error) {
-      console.error("Error processing favorite status:", error);
-      toast.error("Unable to change favorite status.");
-    }
-  };
-
-  const handleBuyNow = async () => {
-    const stock = Number(product?.stock);
-
-    if (!product || typeof stock === "undefined") {
-      toast.error("Unable to find product information.");
-      return;
-    }
-
-    if (isNaN(stock)) {
-      toast.error("Unable to determine stock quantity.");
-      return;
-    }
-
-    if (stock <= 0) {
-      toast.warning("The product is out of stock! Please choose another product.");
-      console.warn("DEBUG: Product is out of stock."); // gỡ sau khi test
-      return;
-    }
-
-    if (quantity > stock) {
-      toast.warning(`Only ${stock} item(s) left in stock. Please select a smaller quantity.`);
-      return;
-    }
-
-    try {
-      await axios.post(
-        "/api/product/buy-now",
-        {
-          product_id: product.id,
-          quantity,
-          color: selectedColor,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-
-      toast.success("Order placed successfully!");
-      navigate("/user/payment");
-    } catch (error) {
-      const message = error.response?.data?.message || "Failed to complete the purchase.";
-
-      if (
-        error.response?.status === 400 &&
-        message.toLowerCase().includes("out of stock")
-      ) {
-        toast.warning("The product is out of stock.");
-      } else if (
-        error.response?.status === 400 &&
-        message.toLowerCase().includes("Only ... left")
-      ) {
-        toast.warning(message);
-      } else if (error.response?.status === 401) {
-        toast.error("You need to log in to make a purchase.");
-      } else {
-        toast.error("Unable to complete the purchase.");
-      }
-
-      console.error("Error while placing the order:", error);
-    }
-  };
-
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -229,7 +139,7 @@ const ProductDetail = () => {
         });
 
         console.log("Related products response:", res.data);
-        setRelatedProducts(Array.isArray(res.data.data) ? res.data.data : []); 
+        setRelatedProducts(Array.isArray(res.data.data) ? res.data.data : []);
       } catch (error) {
         console.error("Error fetching related products:", error);
         toast.error("Unable to load related products");
@@ -238,8 +148,8 @@ const ProductDetail = () => {
 
     fetchRelatedProducts();
   }, [id]);
-  
-  if (loading) return <div className="loading"><LoadingSpinner/>.</div>;
+
+  if (loading) return <div className="loading"><LoadingSpinner />.</div>;
   if (!product) return <div className="error">Product not found.</div>;
 
   return (
@@ -257,9 +167,8 @@ const ProductDetail = () => {
                 key={index}
                 src={img}
                 alt={`Thumbnail ${index + 1}`}
-                className={`thumbnail-product-detail ${
-                  mainImage === img ? "active-product-detail" : ""
-                }`}
+                className={`thumbnail-product-detail ${mainImage === img ? "active-product-detail" : ""
+                  }`}
                 onClick={() => setMainImage(img)}
               />
             ))}
@@ -286,7 +195,7 @@ const ProductDetail = () => {
                     className={`color-option-product-detail ${selectedColor === color ? "active-product-detail" : ""}`}
                     onClick={() => {
                       setSelectedColor(color);
-                      console.log("Selected color:", color); // 👉 kiểm tra log này khi click
+                      console.log("Selected color:", color);
                     }}
                   >
                     {color}
@@ -330,10 +239,10 @@ const ProductDetail = () => {
             </AddToCart>
 
             <div className="secondary-actions-product-detail">
-              <button className="secondary-btn-product-detail" onClick={handleBuyNow}>
+              <BuyNow className="secondary-btn-product-detail" product={product}>
                 <CreditCard size={18} color="#000000" style={{ marginRight: 8 }} />
                 Buy Now
-              </button>
+              </BuyNow>
               <AddToWishlist
                 item={product.id}
                 className="secondary-btn-product-detail"
@@ -408,9 +317,9 @@ const ProductDetail = () => {
         <h2 className="section-title-product-detail">Related Products</h2>
         <div className="products-grid-product-detail" ref={scrollRef}>
           {relatedProducts.map((product) => (
-            <div 
-              key={product.id} 
-              onClick={() => handleProductClick(product.id)} 
+            <div
+              key={product.id}
+              onClick={() => handleProductClick(product.id)}
               className="product-card-product-detail"
             >
               {product.promotion_type && (

@@ -19,13 +19,13 @@ const Sidebar = ({ username, email, avatar, activeMenu }) => {
       </div>
       <ul className="menu">
         <li className={`menu-item ${activeMenu === "profile" ? "active" : ""}`}>
-          <Link to="user/profile" className="menu-link">
+          <Link to="/user/profile" className="menu-link">
             <User className="menu-icon" />
             My Profile
           </Link>
         </li>
-        <li className={`menu-item ${activeMenu === "orders" ? "active" : ""}`}>
-          <Link to="/user/orders" className="menu-link">
+        <li className={`menu-item ${activeMenu === "history" ? "active" : ""}`}>
+          <Link to="/user/history" className="menu-link">
             <FileText className="menu-icon" />
             My Orders
           </Link>

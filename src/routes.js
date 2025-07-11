@@ -17,7 +17,7 @@ import Wishlist from './pages/user/Wishlist/Wishlist.js';
 import Product from './pages/user/Product/Product';
 import Payment from "./pages/user/Payment/Payment.js";
 import HomePage from "./pages/user/HomePage/HomePage.js";
-import Sidebar from "./pages/user/Order/Orders.js";
+import History from "./pages/user/Profile/History.js";
 import PaymentConfirmation from "./pages/user/Payment/PaymentConfirmation.js";
 import PaymentMethod from "./components/user/Payment/PaymentMethod.js";
 // import ProductSpecs from "./components/user/Product/ProductSpecs.js";
@@ -46,7 +46,7 @@ function AppRoutes() {
           <Route path="Product" element={<Product />} />
           <Route path="product-detail/:id" element={<ProductDetailPage />} />
           <Route path="payment" element ={<Payment/>}/>
-          <Route path="orders" element={<Sidebar />} />
+          <Route path="history" element={<History />} />
           <Route path="payment_confirmation" element={<PaymentConfirmation />} />
           <Route path="payment_method" element={<PaymentMethod />} />
           <Route path="*" element={<NotFound />} />
