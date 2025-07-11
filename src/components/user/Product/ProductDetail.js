@@ -1,3 +1,446 @@
+// import { useState, useEffect, useRef } from "react";
+// import { useParams, useNavigate } from "react-router-dom";
+// import axios from "axios";
+// import "../../../pages/user/Product/Product.css";
+// import DescriptionTab from "./DescriptionTab";
+// import SpecificationsTab from "./SpecificationsTab";
+// import ReviewsTab from "./ReviewsTab";
+// import ReviewModal from "./ReviewModal";
+// import { toast } from "react-toastify";
+// import LoadingSpinner from "../../common/LoadingSpinner";
+// import AddToCart from "../Button/AddToCart";
+// import AddToWishlist from "../Button/AddToWishlist";
+// import {
+//   ShoppingCart,
+//   Heart,
+//   CreditCard,
+//   Truck,
+//   ShieldCheck,
+//   RotateCcw,
+//   CirclePlus,
+// } from "lucide-react";
+
+// const ProductDetail = () => {
+//   const { id } = useParams();
+//   const [product, setProduct] = useState(null);
+//   const [mainImage, setMainImage] = useState("");
+//   const [quantity, setQuantity] = useState(1);
+//   const [selectedColor, setSelectedColor] = useState("");
+//   const [activeTab, setActiveTab] = useState("description");
+//   const [isFavorite, setIsFavorite] = useState(false);
+//   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+//   const [loading, setLoading] = useState(true);
+//   const scrollRef = useRef(null);
+//   const [relatedProducts, setRelatedProducts] = useState([]);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchProduct = async () => {
+//       try {
+//         const response = await axios.get(`/api/product/${id}/detail`, {
+//           headers: {
+//             Authorization: `Bearer ${localStorage.getItem("token")}`,
+//           },
+//         });
+
+//         const data = response.data;
+//         setProduct(data);
+//         setMainImage(Array.isArray(data.images) && data.images.length > 0 ? data.images[0] : "/placeholder.svg");
+//         setSelectedColor(data.colors?.[0] || "Black");
+//       } catch (err) {
+//         toast.error("Unable to retrieve product information.");
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     if (id) fetchProduct();
+//   }, [id]);
+
+//   useEffect(() => {
+//     const slider = scrollRef.current;
+//     if (!slider) return;
+//     let isDown = false;
+//     let startX;
+//     let scrollLeft;
+
+//     const mouseDownHandler = (e) => {
+//       isDown = true;
+//       slider.classList.add("dragging");
+//       startX = e.pageX - slider.offsetLeft;
+//       scrollLeft = slider.scrollLeft;
+//     };
+
+//     const mouseLeaveHandler = () => {
+//       isDown = false;
+//       slider.classList.remove("dragging");
+//     };
+
+//     const mouseUpHandler = () => {
+//       isDown = false;
+//       slider.classList.remove("dragging");
+//     };
+//     const mouseMoveHandler = (e) => {
+//       if (!isDown) return;
+//       e.preventDefault();
+//       const x = e.pageX - slider.offsetLeft;
+//       const walk = (x - startX) * 1.5;
+//       slider.scrollLeft = scrollLeft - walk;
+//     };
+
+//     slider.addEventListener("mousedown", mouseDownHandler);
+//     slider.addEventListener("mouseleave", mouseLeaveHandler);
+//     slider.addEventListener("mouseup", mouseUpHandler);
+//     slider.addEventListener("mousemove", mouseMoveHandler);
+
+//     return () => {
+//       slider.removeEventListener("mousedown", mouseDownHandler);
+//       slider.removeEventListener("mouseleave", mouseLeaveHandler);
+//       slider.removeEventListener("mouseup", mouseUpHandler);
+//       slider.removeEventListener("mousemove", mouseMoveHandler);
+//     };
+//   }, []);
+
+//   const handleQuantityChange = (change) => {
+//     const newQuantity = quantity + change;
+//     if (newQuantity >= 1 && newQuantity <= 99) {
+//       setQuantity(newQuantity);
+//     }
+//   };
+
+//   const handleToggleWishlist = async () => {
+//     try {
+//       const url = isFavorite
+//         ? "/api/product/remove-from-wishlist" 
+//         : "/api/product/add-to-wishlist";     
+
+//       await axios.post(
+//         url,
+//         {
+//           product_id: product.id,
+//           color: selectedColor,
+//         },
+//         {
+//           headers: {
+//             Authorization: `Bearer ${localStorage.getItem("token")}`,
+//           },
+//         }
+//       );
+
+//       setIsFavorite(!isFavorite);
+//       toast.success(isFavorite ? "Removed from favorites." : "Item has been added to your favorites.");
+//     } catch (error) {
+//       console.error("Error processing favorite status:", error);
+//       toast.error("Unable to change favorite status.");
+//     }
+//   };
+
+//   const handleBuyNow = async () => {
+//     const stock = Number(product?.stock);
+
+//     if (!product || typeof stock === "undefined") {
+//       toast.error("Unable to find product information.");
+//       return;
+//     }
+
+//     if (isNaN(stock)) {
+//       toast.error("Unable to determine stock quantity.");
+//       return;
+//     }
+
+//     if (stock <= 0) {
+//       toast.warning("The product is out of stock! Please choose another product.");
+//       console.warn("DEBUG: Product is out of stock."); // gỡ sau khi test
+//       return;
+//     }
+
+//     if (quantity > stock) {
+//       toast.warning(`Only ${stock} item(s) left in stock. Please select a smaller quantity.`);
+//       return;
+//     }
+
+//     try {
+//       await axios.post(
+//         "/api/product/buy-now",
+//         {
+//           product_id: product.id,
+//           quantity,
+//           color: selectedColor,
+//         },
+//         {
+//           headers: {
+//             Authorization: `Bearer ${localStorage.getItem("token")}`,
+//           },
+//         }
+//       );
+
+//       toast.success("Order placed successfully!");
+//       navigate("/user/payment");
+//     } catch (error) {
+//       const message = error.response?.data?.message || "Failed to complete the purchase.";
+
+//       if (
+//         error.response?.status === 400 &&
+//         message.toLowerCase().includes("out of stock")
+//       ) {
+//         toast.warning("The product is out of stock.");
+//       } else if (
+//         error.response?.status === 400 &&
+//         message.toLowerCase().includes("Only ... left")
+//       ) {
+//         toast.warning(message);
+//       } else if (error.response?.status === 401) {
+//         toast.error("You need to log in to make a purchase.");
+//       } else {
+//         toast.error("Unable to complete the purchase.");
+//       }
+
+//       console.error("Error while placing the order:", error);
+//     }
+//   };
+
+
+//   const renderTabContent = () => {
+//     switch (activeTab) {
+//       case "description":
+//         return <DescriptionTab />;
+//       case "specifications":
+//         return <SpecificationsTab />;
+//       case "reviews":
+//         return <ReviewsTab />;
+//       default:
+//         return null;
+//     }
+//   };
+
+//   const handleProductClick = (productId) => {
+//     navigate(`/user/product-detail/${productId}`);
+//   };
+
+//   useEffect(() => {
+//     if (!id) return;
+
+//     const fetchRelatedProducts = async () => {
+//       try {
+//         const res = await axios.get(`/api/product/${id}/related`, {
+//           headers: {
+//             Authorization: `Bearer ${localStorage.getItem("token")}`,
+//           },
+//         });
+
+//         console.log("Related products response:", res.data);
+//         setRelatedProducts(Array.isArray(res.data.data) ? res.data.data : []); 
+//       } catch (error) {
+//         console.error("Error fetching related products:", error);
+//         toast.error("Unable to load related products");
+//       }
+//     };
+
+//     fetchRelatedProducts();
+//   }, [id]);
+  
+//   if (loading) return <div className="loading"><LoadingSpinner/>.</div>;
+//   if (!product) return <div className="error">Product not found.</div>;
+
+//   return (
+//     <div className="container-product-detail">
+//       <div className="product-section-product-detail">
+//         <div className="product-images-product-detail">
+//           <img
+//             src={mainImage}
+//             alt={product.name}
+//             className="main-image-product-detail"
+//           />
+//           <div className="thumbnail-gallery-product-detail">
+//             {product.images?.map((img, index) => (
+//               <img
+//                 key={index}
+//                 src={img}
+//                 alt={`Thumbnail ${index + 1}`}
+//                 className={`thumbnail-product-detail ${
+//                   mainImage === img ? "active-product-detail" : ""
+//                 }`}
+//                 onClick={() => setMainImage(img)}
+//               />
+//             ))}
+//           </div>
+//         </div>
+
+//         <div className="product-info-product-detail">
+//           <h1 className="product-title-product-detail">{product.name}</h1>
+
+//           <div className="price-section-product-detail">
+//             <span className="current-price-product-detail">${product.price}</span>
+//             {product.old_price && (
+//               <span className="original-price-product-detail">${product.old_price}₫</span>
+//             )}
+//           </div>
+
+//           <div className="product-options-product-detail">
+//             <div className="option-group-product-detail">
+//               <label className="option-label-color-product-detail">Color:</label>
+//               <div className="color-options-product-detail">
+//                 {(product.colors || ["Black", "White"]).map((color) => (
+//                   <button
+//                     key={color}
+//                     className={`color-option-product-detail ${selectedColor === color ? "active-product-detail" : ""}`}
+//                     onClick={() => {
+//                       setSelectedColor(color);
+//                       console.log("Selected color:", color); // 👉 kiểm tra log này khi click
+//                     }}
+//                   >
+//                     {color}
+//                   </button>
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+
+//           <div className="quantity-section-product-detail">
+//             <label className="option-label-quantity-product-detail">Quantity:</label>
+//             <div className="quantity-controls-product-detail">
+//               <button className="quantity-btn-product-detail" onClick={() => handleQuantityChange(-1)}>
+//                 -
+//               </button>
+//               <input
+//                 type="number"
+//                 value={quantity}
+//                 onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+//                 className="quantity-input-product-detail"
+//                 min="1"
+//                 max="99"
+//               />
+//               <button className="quantity-btn-product-detail" onClick={() => handleQuantityChange(1)}>
+//                 +
+//               </button>
+//             </div>
+//             <span className="stock-info-product-detail">
+//               Only {product.stock} item(s)
+//             </span>
+//           </div>
+
+//           <div className="action-buttons-product-detail">
+//             <AddToCart
+//               className="add-to-cart-btn-product-detail"
+//               product={product}
+//               quantity={quantity}
+//             >
+//               <ShoppingCart color="#fff" size={25} style={{ marginRight: 8 }} />
+//               Add to Cart
+//             </AddToCart>
+
+//             <div className="secondary-actions-product-detail">
+//               <button className="secondary-btn-product-detail" onClick={handleBuyNow}>
+//                 <CreditCard size={18} color="#000000" style={{ marginRight: 8 }} />
+//                 Buy Now
+//               </button>
+//               <AddToWishlist
+//                 item={product.id}
+//                 className="secondary-btn-product-detail"
+//               >
+
+//                 <Heart
+//                   size={18}
+//                   style={{ marginRight: 8 }}
+//                 />
+//                 Favorited
+//               </AddToWishlist>
+
+//             </div>
+//           </div>
+
+//           <div className="trust-badges-product-detail">
+//             <div className="badge-product-detail">
+//               <Truck strokeWidth={3} size={22} color="#13830C" />
+//               <span>Free Shipping</span>
+//             </div>
+//             <div className="badge-product-detail">
+//               <ShieldCheck strokeWidth={3} size={22} color="#0980CD" />
+//               <span>Official Warranty</span>
+//             </div>
+//             <div className="badge-product-detail">
+//               <RotateCcw strokeWidth={3} size={22} color="#FF0000" />
+//               <span>Easy Returns</span>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className="specifications-product-detail">
+//         <div className="spec-tabs-product-detail">
+//           <button
+//             className={`spec-tab-product-detail ${activeTab === "description" ? "active-product-detail" : ""}`}
+//             onClick={() => setActiveTab("description")}
+//           >
+//             Product Description
+//           </button>
+//           <button
+//             className={`spec-tab-product-detail ${activeTab === "specifications" ? "active-product-detail" : ""}`}
+//             onClick={() => setActiveTab("specifications")}
+//           >
+//             Specifications
+//           </button>
+//           <button
+//             className={`spec-tab-product-detail ${activeTab === "reviews" ? "active-product-detail" : ""}`}
+//             onClick={() => setActiveTab("reviews")}
+//           >
+//             <div style={{ display: "flex", justifyContent: "center" }}>
+//               Reviews
+//               <CirclePlus
+//                 size={18}
+//                 style={{ marginLeft: 8, cursor: "pointer" }}
+//                 onClick={(e) => {
+//                   e.stopPropagation();
+//                   setIsReviewModalOpen(true);
+//                 }}
+//               />
+//             </div>
+//           </button>
+//         </div>
+
+//         <div className={`tab-content ${activeTab === "specifications" ? "with-border" : ""}`}>
+//           {renderTabContent()}
+//         </div>
+//       </div>
+
+//       {isReviewModalOpen && <ReviewModal onClose={() => setIsReviewModalOpen(false)} />}
+//       <div className="related-products-product-detail">
+//         <h2 className="section-title-product-detail">Related Products</h2>
+//         <div className="products-grid-product-detail" ref={scrollRef}>
+//           {relatedProducts.map((product) => (
+//             <div 
+//               key={product.id} 
+//               onClick={() => handleProductClick(product.id)} 
+//               className="product-card-product-detail"
+//             >
+//               {product.promotion_type && (
+//                 <div className="promotion_type-badge-product-detail">
+//                   {product.promotion_type}
+//                 </div>
+//               )}
+//               <img src={product.image} alt={product.name} />
+//               <h4>{product.name}</h4>
+
+//               <div className="price-product-detail">
+//                 <span className="current-price">
+//                   {Number(product.price).toLocaleString("vi-VN")}₫
+//                 </span>
+//                 {product.old_price && (
+//                   <span className="original-price">
+//                     {Number(product.old_price).toLocaleString("vi-VN")}₫
+//                   </span>
+//                 )}
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ProductDetail;
+
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,8 +451,7 @@ import ReviewsTab from "./ReviewsTab";
 import ReviewModal from "./ReviewModal";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../common/LoadingSpinner";
-import AddToCart from "../Button/AddToCart";
-import AddToWishlist from "../Button/AddToWishlist";
+
 import {
   ShoppingCart,
   Heart,
@@ -108,6 +550,71 @@ const ProductDetail = () => {
     }
   };
 
+  const handleAddToCart = async (product) => {
+    const stock = Number(product?.stock);
+
+    if (!product || typeof product.stock === "undefined") {
+      toast.error("Unable to find product information.");
+      return;
+    }
+
+    if (isNaN(stock)) {
+      toast.error("Unable to determine stock quantity.");
+      return;
+    }
+
+    if (stock <= 0) {
+      toast.warning("The product is out of stock!");
+      return;
+    }
+
+    try {
+      await axios.post(
+        "/api/product/add-to-cart",
+        {
+          product_id: product.id,
+          quantity,
+          color: selectedColor,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      toast.success("Added to cart!");
+    } catch (error) {
+      const message = error.response?.data?.message || "Failed to add to cart.";
+      const stock = error.response?.data?.stock;
+      const in_cart = error.response?.data?.in_cart;
+
+      console.log("DEBUG error:", message, stock, in_cart);
+
+      if (error.response?.status === 401) {
+        toast.error("You need to log in to make a purchase.");
+      } else if (
+        error.response?.status === 400 &&
+        message.toLowerCase().includes("exceeds available stock")
+      ) {
+        if (typeof stock !== "undefined" && typeof in_cart !== "undefined") {
+          toast.warning(`Only ${stock} item(s) left in stock, and you already have ${in_cart} in your cart.`);
+        } else {
+          toast.warning("Quantity exceeds available stock.");
+        }
+      } else if (
+        error.response?.status === 400 &&
+        message.toLowerCase().includes("product not found")
+      ) {
+        toast.error("The product does not exist.");
+      } else {
+        toast.error("Failed to add to cart.");
+      }
+
+      console.error("Failed to add item to cart:", error);
+    }
+  };
+
   const handleToggleWishlist = async () => {
     try {
       const url = isFavorite
@@ -188,7 +695,7 @@ const ProductDetail = () => {
         error.response?.status === 400 &&
         message.toLowerCase().includes("Only ... left")
       ) {
-        toast.warning(message);
+        toast.warning(message); // ví dụ: "Chỉ còn lại 3 sản phẩm trong kho."
       } else if (error.response?.status === 401) {
         toast.error("You need to log in to make a purchase.");
       } else {
@@ -229,7 +736,7 @@ const ProductDetail = () => {
         });
 
         console.log("Related products response:", res.data);
-        setRelatedProducts(Array.isArray(res.data.data) ? res.data.data : []); 
+        setRelatedProducts(Array.isArray(res.data.data) ? res.data.data : []); // đảm bảo là mảng
       } catch (error) {
         console.error("Error fetching related products:", error);
         toast.error("Unable to load related products");
@@ -238,7 +745,7 @@ const ProductDetail = () => {
 
     fetchRelatedProducts();
   }, [id]);
-  
+    
   if (loading) return <div className="loading"><LoadingSpinner/>.</div>;
   if (!product) return <div className="error">Product not found.</div>;
 
@@ -315,37 +822,29 @@ const ProductDetail = () => {
               </button>
             </div>
             <span className="stock-info-product-detail">
-              Only {product.stock} item(s)
+              Only {product.stock || 100} item(s)
             </span>
           </div>
 
           <div className="action-buttons-product-detail">
-            <AddToCart
-              className="add-to-cart-btn-product-detail"
-              product={product}
-              quantity={quantity}
-            >
+            <button className="add-to-cart-btn-product-detail" onClick={() => handleAddToCart(product)}>
               <ShoppingCart color="#fff" size={25} style={{ marginRight: 8 }} />
               Add to Cart
-            </AddToCart>
-
+            </button>
             <div className="secondary-actions-product-detail">
               <button className="secondary-btn-product-detail" onClick={handleBuyNow}>
                 <CreditCard size={18} color="#000000" style={{ marginRight: 8 }} />
                 Buy Now
               </button>
-              <AddToWishlist
-                item={product.id}
-                className="secondary-btn-product-detail"
-              >
 
+              <button className="secondary-btn-product-detail" onClick={handleToggleWishlist}>
                 <Heart
                   size={18}
+                  color={isFavorite ? "#FF0000" : "#000000"}
                   style={{ marginRight: 8 }}
                 />
-                Favorited
-              </AddToWishlist>
-
+                {isFavorite ? "Favorited" : "Add to Favorites"}
+              </button>
             </div>
           </div>
 

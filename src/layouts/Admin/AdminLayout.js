@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AdminSidebar from "./AdminSidebar";
 import UserManagement from "../../pages/admin/User_managemet/User_management";
+import Dashboard from "../../pages/admin/Dashboard/Dashboard";
 
 export default function AdminLayout() {
   const [activeItem, setActiveItem] = useState("Dashboard");
@@ -17,12 +18,7 @@ export default function AdminLayout() {
       case "Order":
         return <div style={{ padding: 20 }}>Order Management</div>;
       default:
-        return (
-          <div style={{ padding: 20 }}>
-            <h2>Dashboard</h2>
-            <p>Welcome to the Admin Dashboard!</p>
-          </div>
-        );
+        return <Dashboard/>
     }
   };
 
