@@ -7,7 +7,7 @@ import SignUp from './pages/auth/register/SignUp';
 import SignIn from './pages/auth/login/SignIn';
 import ResetPassword from './pages/auth/login/ResetPassword';
 import AuthCallback from './pages/auth/AuthCallback';
-import Dashboard from './pages/admin/Dashboard/Dashboard';
+import Dashboard from './pages/admin/Dashboard/Dashboard.js'
 import AboutUs from './pages/user/About_us/About_us';
 import NotFound from './pages/user/NotFound/NotFound';
 import Blog from './pages/user/Blog/Blog';
