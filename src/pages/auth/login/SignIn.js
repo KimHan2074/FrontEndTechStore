@@ -58,7 +58,7 @@ export default function SignIn() {
 
         setTimeout(() => {
           if (role === 'user') {
-            navigate('/user/homepage');
+            navigate('/');
           } else if (role === 'admin') {
             navigate('/admin/dashboard');
           } 
