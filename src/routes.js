@@ -32,14 +32,19 @@ function AppRoutes() {
     <>
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route index element={<SignUp />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/callback" element={<AuthCallback />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
         </Route>
+
+          <Route element={<UserLayout />}>
+          <Route index element={<HomePage />} />
+        </Route>
         
         <Route path="/user" element={<UserLayout />}>
-          <Route path="homepage" element={<HomePage />} />
+          {/* <Route path="homepage" element={<HomePage />} /> */}
+          <Route index element={<HomePage />} />
           <Route path="about-us" element={<AboutUs />} />
           <Route path="blog" element={<Blog />} />
           <Route path="profile" element={<Profile />} />

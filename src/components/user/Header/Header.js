@@ -207,7 +207,7 @@ function Header({ onSearch }) {
               <ul className="menu-items">
                 <li className="menu-item-header">
                   <NavLink
-                    to="/user/homepage"
+                    to="/"
                     className={({ isActive }) =>
                       isActive ? "menu-link-header active" : "menu-link-header"
                     }
