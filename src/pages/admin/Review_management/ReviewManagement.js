@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./ReviewManagement.css";
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
 import { FaTrash } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ReviewManagement() {
   const [reviews, setReviews] = useState([]);
@@ -17,11 +19,11 @@ export default function ReviewManagement() {
         if (data.status && data.data) {
           setReviews(data.data);
         } else {
-          console.error("Unexpected response", data);
+          toast.error("Unexpected response", data);
         }
       })
       .catch((err) => {
-        console.error("Failed to fetch reviews", err);
+        toast.error("Failed to fetch reviews", err);
       })
       .finally(() => {
         setLoading(false);
@@ -29,7 +31,6 @@ export default function ReviewManagement() {
   }, []);
 
   const handleDeleteReview = (id) => {
-    if (!window.confirm("Are you sure you want to delete this review?")) return;
 
     fetch(`http://localhost:8000/api/admin/delete-reviews/${id}`, {
       method: "DELETE",
@@ -38,14 +39,14 @@ export default function ReviewManagement() {
       .then((data) => {
         if (data.status) {
           setReviews((prev) => prev.filter((r) => r.id !== id));
-          alert("Review deleted successfully.");
+          toast.success("Review deleted successfully.");
         } else {
-          alert("Failed to delete the review.");
+          toast.error("Failed to delete the review.");
         }
       })
       .catch((err) => {
-        console.error("Error deleting review:", err);
-        alert("An error occurred while deleting the review.");
+        toast.error("Error deleting review:", err);
+        toast.error("An error occurred while deleting the review.");
       });
   };
 
@@ -110,6 +111,7 @@ export default function ReviewManagement() {
           Next
         </button>
       </div>
+      <ToastContainer />
     </div>
   );
 }

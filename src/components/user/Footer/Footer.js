@@ -7,7 +7,6 @@ const Footer = () => {
     return (
         <footer className="footer">
             <div className="footer-container">
-                {/* Company Info */}
                 <div className="footer-column">
                     <div className="footer-logo">
                         <img
@@ -26,7 +25,6 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Top Category */}
                 <div className="footer-column">
                     <h3 className="footer-title">TOP CATEGORY</h3>
                     <ul className="footer-links">
@@ -40,7 +38,6 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Quick Links */}
                 <div className="footer-column">
                     <h3 className="footer-title">QUICK LINKS</h3>
                     <ul className="footer-links">
@@ -54,7 +51,6 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Download App */}
                 <div className="footer-column">
                     <h3 className="footer-title">DOWNLOAD APP</h3>
                     <div className="footer-apps">
@@ -65,7 +61,6 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Popular Tags */}
                 <div className="footer-column">
                     <h3 className="footer-title">POPULAR TAG</h3>
                     <div className="footer-tags">

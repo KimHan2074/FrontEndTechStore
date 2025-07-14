@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import "./UserManagement.css";
 import { FaEdit } from "react-icons/fa";
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
-  // const [selectedUsers, setSelectedUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 8;
@@ -19,11 +20,11 @@ export default function UserManagement() {
         if (data.status && data.data) {
           setUsers(data.data);
         } else {
-          console.error("API returned unexpected format", data);
+          toast.error("API returned unexpected format", data);
         }
       })
       .catch((err) => {
-        console.error("Failed to fetch users", err);
+        toast.error("Failed to fetch users", err);
       })
       .finally(() => {
         setLoading(false);
@@ -47,29 +48,20 @@ export default function UserManagement() {
             )
           );
           setEditingUser(null);
-          alert("Update successful!");
+          toast.success("Update successful!");
         } else {
-          alert("Update failed!");
+          toast.error("Update failed!");
         }
       })
       .catch((err) => {
-        console.error("Update failed", err);
-        alert("An error occurred while updating.");
+        toast.error("Update failed", err);
+        toast.error("An error occurred while updating.");
       });
   };
 
   const totalPages = Math.ceil(users.length / usersPerPage);
   const startIndex = (currentPage - 1) * usersPerPage;
   const paginatedUsers = users.slice(startIndex, startIndex + usersPerPage);
-  // const isAllSelected = paginatedUsers.length > 0 && paginatedUsers.every((u) => selectedUsers.includes(u.id));
-
-  // const toggleUserSelection = (userId) => {
-  //   setSelectedUsers((prevSelected) =>
-  //     prevSelected.includes(userId)
-  //       ? prevSelected.filter((id) => id !== userId)
-  //       : [...prevSelected, userId]
-  //   );
-  // };
 
   if (loading) return <LoadingSpinner />;
 
@@ -192,6 +184,7 @@ export default function UserManagement() {
           </div>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 }

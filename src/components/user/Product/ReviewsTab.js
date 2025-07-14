@@ -5,7 +5,7 @@ import "../../../pages/user/Product/Product.css";
 import { toast } from "react-toastify";
 
 const ReviewsTab = () => {
-  const { id: productId } = useParams(); // Lấy productId từ URL
+  const { id: productId } = useParams(); 
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const ReviewsTab = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log("Reviews API response:", res.data); // debug
+        console.log("Reviews API response:", res.data); 
         setReviews(res.data.data);
       } catch (error) {
         toast.error("Unable to load product reviews.");

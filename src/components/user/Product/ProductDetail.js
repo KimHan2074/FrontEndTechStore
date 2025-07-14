@@ -150,7 +150,7 @@ const ProductDetail = () => {
 
     if (stock <= 0) {
       toast.warning("The product is out of stock! Please choose another product.");
-      console.warn("DEBUG: Product is out of stock."); // gỡ sau khi test
+      console.warn("DEBUG: Product is out of stock.");
       return;
     }
 
@@ -286,7 +286,7 @@ const ProductDetail = () => {
                     className={`color-option-product-detail ${selectedColor === color ? "active-product-detail" : ""}`}
                     onClick={() => {
                       setSelectedColor(color);
-                      console.log("Selected color:", color); // 👉 kiểm tra log này khi click
+                      console.log("Selected color:", color); 
                     }}
                   >
                     {color}

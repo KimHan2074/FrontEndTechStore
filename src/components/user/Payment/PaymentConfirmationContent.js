@@ -74,7 +74,6 @@ const PaymentConfirmation = ({
     <div className="payment-container">
       <h1 className="payment-title">Payment</h1>
 
-      {/* Steps */}
         <div className="steps-container">
           {steps.map((step) => (
             <div key={step.number} className={`step-item ${step.active ? "active" : ""}`}>
@@ -92,13 +91,11 @@ const PaymentConfirmation = ({
 
       <div className="main-card">
         <div className="card-content">
-          {/* Order Info */}
           <div className="order-header">
             <div className="order-id-main">Order {orderId}</div>
             <div className="order-id-sub">Order {orderId}</div>
           </div>
 
-          {/* Customer */}
           <div className="section">
             <div className="section-header">
               <UserIcon />
@@ -112,7 +109,6 @@ const PaymentConfirmation = ({
             </div>
           </div>
 
-          {/* Payment */}
           <div className="section">
             <div className="section-header">
               <CreditCardIcon />
@@ -124,7 +120,6 @@ const PaymentConfirmation = ({
             </div>
           </div>
 
-          {/* Products */}
           <div className="section">
             <div className="section-header">
               <PackageIcon />
@@ -154,7 +149,6 @@ const PaymentConfirmation = ({
             </div>
           </div>
 
-          {/* Price Summary */}
           <div className="price-summary">
             <div className="price-row">
               <span className="price-label">Subtotal</span>
@@ -174,7 +168,6 @@ const PaymentConfirmation = ({
             </div>
           </div>
 
-          {/* Mail */}
           <div className="email-notice">
             <MailIcon />
             <div className="email-text">
@@ -182,7 +175,6 @@ const PaymentConfirmation = ({
             </div>
           </div>
 
-          {/* Confirm */}
           <div className="button-container">
             <button onClick={onConfirmOrder} className="confirm-button">
               Confirm Order

@@ -107,24 +107,21 @@ function Header({ onSearch }) {
         </div>
       </div>
 
-
-      {/* Welcome bar */}
       <div className="welcome-bar">
         <div className="container welcome-content">
           <div className="welcome-text">Welcome to TechStore.</div>
           <div className="social-links-icon">
             <span>Follow us:</span>
-            <a href="#"><Twitter size={18} color="#FFF" /></a>
-            <a href="#"><Facebook size={18} color="#FFF" /></a>
-            <a href="#"><MessageCircleHeart size={18} color="#FFF" /></a>
-            <a href="#"><CreditCard size={18} color="#FFF" /></a>
-            <a href="#"><Youtube size={18} color="#FFF" /></a>
-            <a href="#"><Instagram size={18} color="#FFF" /></a>
+            <a href="https://x.com/"><Twitter size={18} color="#FFF" /></a>
+            <a href="https://www.facebook.com/?locale=vi_VN"><Facebook size={18} color="#FFF" /></a>
+            <a href="https://tabler.io/icons/icon/message-circle-heart"><MessageCircleHeart size={18} color="#FFF" /></a>
+            <a href="https://creditcard.com.vn/"><CreditCard size={18} color="#FFF" /></a>
+            <a href="https://www.youtube.com/?app=desktop&hl=vi"><Youtube size={18} color="#FFF" /></a>
+            <a href="https://www.instagram.com/"><Instagram size={18} color="#FFF" /></a>
           </div>
         </div>
       </div>
 
-      {/* Main nav */}
       <div className="main-nav">
         <div className="container nav-content">
           <div className="logo">
@@ -235,12 +232,18 @@ function Header({ onSearch }) {
                     <Archive size={18} /> Blog
                   </NavLink>
                 </li>
+                <li className="menu-item-header">
+                  <NavLink
+                    to="/user/about_us"
+                    className={({ isActive }) =>
+                      isActive ? "menu-link-header active" : "menu-link-header"
+                    }
+                  >
+                    <Archive size={18} /> About Us
+                  </NavLink>
+                </li>
               </ul>
-
             </nav>
-            {/* Auth menu */}
-
-
             <div className="contact-phone">
               <Phone size={18} />
               <span className="phone-number">+1-202-555-0104</span>

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../user/About_us/About_us.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AboutUs = () => {
     const [promotedProducts, setPromotedProducts] = useState({
@@ -13,17 +15,20 @@ const AboutUs = () => {
         const fetchPromotedProducts = async () => {
             try {
                 const response = await fetch('http://localhost:8000/api/products/promoted-aboutus');
-                const data = await response.json();
+                const json = await response.json();
+
+                const data = json.data || [];
+
                 const categorizedProducts = {
                     hot: data.filter((product) => product.promotion_type === 'hot'),
                     new: data.filter((product) => product.promotion_type === 'new'),
                     summerSale: data.filter((product) => product.promotion_type === 'summer sale'),
                     bestDeal: data.filter((product) => product.promotion_type === 'best deal'),
                 };
-
                 setPromotedProducts(categorizedProducts);
+
             } catch (error) {
-                console.error('Failed to fetch promoted products:', error);
+                toast.error('Failed to fetch promoted products:', error);
             }
         };
 
@@ -32,7 +37,7 @@ const AboutUs = () => {
 
     const renderProducts = (products = [], title) => (
     <div className="product-category">
-        <h1>{title}</h1>
+        <h3>{title}</h3>
         <ul className="product-list">
             {products.map((product) => (
                 <li key={product.id} className="product-item">
@@ -109,6 +114,7 @@ const AboutUs = () => {
                 {renderProducts(promotedProducts.summerSale, 'Top Rated')}
                 {renderProducts(promotedProducts.new, 'New Arrivals')}
             </div>
+            <ToastContainer />
         </div>
     );
 };
