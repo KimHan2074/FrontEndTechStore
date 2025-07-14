@@ -1,9 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // <-- Thêm dòng này
+import { useNavigate } from "react-router-dom";
 import "./AdminSidebar.css";
 
 const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
-  const navigate = useNavigate(); // <-- Dùng để chuyển hướng
+  const navigate = useNavigate();
 
   const menuItems = [
     { name: "Dashboard", icon: "🏠" },

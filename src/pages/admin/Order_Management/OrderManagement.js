@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./OrderManagement.css";
 import { FaTrash } from "react-icons/fa";
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function OrderManagement() {
   const [orders, setOrders] = useState([]);
@@ -17,11 +19,11 @@ export default function OrderManagement() {
         if (data.status && data.data) {
           setOrders(data.data);
         } else {
-          console.error("Unexpected API response", data);
+          toast.error("Unexpected API response", data);
         }
       })
       .catch((err) => {
-        console.error("Failed to fetch orders", err);
+        toast.error("Failed to fetch orders", err);
       })
       .finally(() => {
         setLoading(false);
@@ -29,7 +31,6 @@ export default function OrderManagement() {
   }, []);
 
   const handleDeleteOrder = (id) => {
-    if (!window.confirm("Are you sure you want to delete this order?")) return;
 
     fetch(`http://localhost:8000/api/admin/orders/${id}`, {
       method: "DELETE",
@@ -38,14 +39,14 @@ export default function OrderManagement() {
       .then((data) => {
         if (data.status) {
           setOrders((prev) => prev.filter((o) => o.id !== id));
-          alert("Order deleted successfully.");
+          toast.success("Order deleted successfully.");
         } else {
-          alert("Failed to delete order.");
+          toast.error("Failed to delete order.");
         }
       })
       .catch((err) => {
-        console.error("Delete error:", err);
-        alert("An error occurred while deleting the order.");
+        toast.error("Delete error:", err);
+        toast.error("An error occurred while deleting the order.");
       });
   };
     const getStatusClass = (status) => {
@@ -130,6 +131,7 @@ export default function OrderManagement() {
           Next
         </button>
       </div>
+      <ToastContainer />
     </div>
   );
 }

@@ -6,7 +6,6 @@ const ProductSidebar = ({ selectedCategoryId, setSelectedCategoryId, onSearch  }
   const [products, setProducts] = useState([]);
   const [galleryImages, setGalleryImages] = useState([]);
   const [categories, setCategories] = useState([]);
-  // const [searchQuery, setSearchQuery] = useState("");
 
   const fetchTopProducts = async () => {
     try {
@@ -65,11 +64,6 @@ const fetchGalleryImages = async () => {
       console.error("Error fetching products by category:", err);
     }
   };
-  // const handleSearchSubmit = (e) => {
-  //   e.preventDefault();
-  //   onSearch(searchQuery);
-  // };
-  
 
   return (
     <div className="mobile-interface">

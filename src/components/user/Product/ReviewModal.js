@@ -5,7 +5,7 @@ import "../../../pages/user/Product/Product.css";
 import { useParams } from "react-router-dom";
 
 const ReviewModal = ({ onClose }) => {
-  const { id } = useParams(); // productId từ URL
+  const { id } = useParams(); 
   const [overallRating, setOverallRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [reviewDetail, setReviewDetail] = useState("");

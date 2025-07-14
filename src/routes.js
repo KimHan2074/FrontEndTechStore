@@ -20,7 +20,6 @@ import HomePage from "./pages/user/HomePage/HomePage.js";
 import Sidebar from "./pages/user/Order/Orders.js";
 import PaymentConfirmation from "./pages/user/Payment/PaymentConfirmation.js";
 import PaymentMethod from "./components/user/Payment/PaymentMethod.js";
-// import ProductSpecs from "./components/user/Product/ProductSpecs.js";
 import ProductDetailPage from "./pages/user/Product/ProductDetailPage.js";
 import AdminSidebar from "./layouts/Admin/AdminSidebar.js";
 import UserManagement from "./pages/admin/User_managemet/User_management.js";
@@ -46,6 +45,8 @@ function AppRoutes() {
           {/* <Route path="homepage" element={<HomePage />} /> */}
           <Route index element={<HomePage />} />
           <Route path="about-us" element={<AboutUs />} />
+          <Route path="homepage" element={<HomePage />} />
+          <Route path="about_us" element={<AboutUs />} />
           <Route path="blog" element={<Blog />} />
           <Route path="profile" element={<Profile />} />
           <Route path="shopping_cart" element={<ShoppingCart />} />
