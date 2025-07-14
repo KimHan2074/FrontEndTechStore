@@ -27,7 +27,7 @@ const NotFound = () => {
                     </button>
                     <button
                         className="not-found-button"
-                        onClick={() => navigate('/user/homepage')}
+                        onClick={() => navigate('/')}
                     >
                         <FaHome /> Go to Home
                     </button>

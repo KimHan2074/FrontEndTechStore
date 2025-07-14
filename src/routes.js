@@ -7,7 +7,7 @@ import SignUp from './pages/auth/register/SignUp';
 import SignIn from './pages/auth/login/SignIn';
 import ResetPassword from './pages/auth/login/ResetPassword';
 import AuthCallback from './pages/auth/AuthCallback';
-import Dashboard from './pages/admin/Dashboard/Dashboard';
+import Dashboard from './pages/admin/Dashboard/Dashboard.js'
 import AboutUs from './pages/user/About_us/About_us';
 import NotFound from './pages/user/NotFound/NotFound';
 import Blog from './pages/user/Blog/Blog';
@@ -31,13 +31,20 @@ function AppRoutes() {
     <>
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route index element={<SignUp />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/callback" element={<AuthCallback />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
         </Route>
+
+          <Route element={<UserLayout />}>
+          <Route index element={<HomePage />} />
+        </Route>
         
         <Route path="/user" element={<UserLayout />}>
+          {/* <Route path="homepage" element={<HomePage />} /> */}
+          <Route index element={<HomePage />} />
+          <Route path="about-us" element={<AboutUs />} />
           <Route path="homepage" element={<HomePage />} />
           <Route path="about_us" element={<AboutUs />} />
           <Route path="blog" element={<Blog />} />

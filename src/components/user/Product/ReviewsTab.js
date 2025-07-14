@@ -61,7 +61,7 @@ const ReviewsTab = () => {
                 </div>
                 <p>{review.comment}</p>
                 {review.image_url && (
-                  <img src={review.image_url} alt="Review" className="review-image" />
+                  <img src={review.image_url} alt="Review" className="review-image" style={{width: '80px', height: '80px'}} />
                 )}
               </div>
             </div>
