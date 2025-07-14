@@ -15,7 +15,7 @@ export default function AuthCallback() {
     if (token) {
       localStorage.setItem("token", token);
       toast.success("Đăng nhập bằng Google thành công!");
-      navigate("/user/homepage"); 
+      navigate("/"); 
     } else {
       toast.error("Đăng nhập bằng Google thất bại!");
       navigate("/signin"); 

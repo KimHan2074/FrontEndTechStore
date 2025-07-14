@@ -28,9 +28,9 @@ export default function SignInForm({
           </Link>
 
           <Link
-            to="/"
+            to="/signup"
             className={`signin-tab ${
-              location.pathname === "/" ? "signin-tab-active" : ""
+              location.pathname === "/signup" ? "signin-tab-active" : ""
             }`}
           >
             Sign Up

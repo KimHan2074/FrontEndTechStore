@@ -74,7 +74,7 @@ export default function Cart() {
         }
       )
       .then(() => {
-        navigate("/user/homepage", {
+        navigate("/", {
             state: { successMessage: "Order confirmed and email sent." },
         });
       })
