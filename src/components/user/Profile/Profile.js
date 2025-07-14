@@ -30,7 +30,7 @@ const UserProfile = () => {
 
   useEffect(() => {
   const fetchUserIdAndData = async () => {
-    setLoading(true); // ⏳ Bắt đầu loading
+    setLoading(true); 
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -130,7 +130,7 @@ const UserProfile = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include", // tương đương withCredentials: true trong axios
+      credentials: "include", 
       body: JSON.stringify({
         current_password: passwords.current,
         new_password: passwords.new,

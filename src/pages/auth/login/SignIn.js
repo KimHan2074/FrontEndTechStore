@@ -34,7 +34,6 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // Validation
     if (!formData.name || !formData.password) {
       alert("Please fill in all fields!")
       return
@@ -62,11 +61,8 @@ export default function SignIn() {
           } else if (role === 'admin') {
             navigate('/admin/dashboard');
           } 
-          // else {
-          //   navigate('/');    
-          // } 
+
         }, 1000);
-        // Loading 1s trước khi điều hướng sang trang homepage or admin
       } 
     catch (error) {
       setLoading(false);
