@@ -35,12 +35,12 @@ const PaymentMethod = () => {
     const orderId = localStorage.getItem("currentOrderId");
 
     if (!orderId) {
-      alert("Không tìm thấy order_id. Vui lòng quay lại bước nhập thông tin.");
+      alert("Order_id not found. Please return to the information entry step.");
       return;
     }
 
     if (selectedPayment === "momo") {
-      console.log("📦 Gửi MoMo:", { amount: roundedAmount, order_id: orderId });
+      console.log("📦 Send MoMo:", { amount: roundedAmount, order_id: orderId });
       setIsLoading(true);
 
       try {
@@ -58,20 +58,20 @@ const PaymentMethod = () => {
         if (data.payUrl) {
           window.location.href = data.payUrl;
         } else {
-          alert("Không thể tạo liên kết MoMo.");
+          alert("Unable to create MoMo link.");
         }
       } catch (error) {
         console.error("MoMo API error:", error);
-        alert("Có lỗi xảy ra khi kết nối MoMo.");
+        alert("An error occurred while connecting to MoMo.");
       } finally {
         setIsLoading(false);
       }
 
     } else if (selectedPayment === "cash") {
-      alert("Bạn chọn thanh toán tiền mặt!");
+      alert("You choose to pay cash!");
       navigate("/order-success");
     } else {
-      alert(`Phương thức "${selectedPayment}" chưa hỗ trợ.`);
+      alert(`Method "${selectedPayment}" not supported yet.`);
     }
   };
 
