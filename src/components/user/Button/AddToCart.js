@@ -24,14 +24,14 @@ const AddToCart = ({ product, quantity = 1, className = "", children }) => {
       const totalAfterAdd = inCart + quantityToAdd;
 
       if (totalAfterAdd > product.stock) {
-        toast.warning(`⚠️ Số lượng trong giỏ (${inCart}) + số mới (${quantityToAdd}) vượt tồn kho (${product.stock})`);
+        toast.warning(`⚠️ Quantity in basket (${inCart}) + new number(${quantityToAdd}) excess inventory (${product.stock})`);
         return false;
       }
 
       return true;
     } catch (err) {
       console.error("Error checking cart:", err);
-      toast.error("Không kiểm tra được giỏ hàng.");
+      toast.error("Unable to check cart.");
       return false;
     }
   };
@@ -42,7 +42,7 @@ const AddToCart = ({ product, quantity = 1, className = "", children }) => {
       return;
     }
 
-    console.log("🛒 Add to cart clicked", { productId: product.id, quantity }); // 👈 debug log
+    console.log("🛒 Add to cart clicked", { productId: product.id, quantity });
 
     const isValid = await checkStockBeforeAdd(product.id, quantity);
     if (!isValid) return;

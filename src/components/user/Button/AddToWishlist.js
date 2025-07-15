@@ -38,7 +38,7 @@ export default class AddToWishlist extends Component {
 
       const msg = response.data?.message;
 
-      if (msg === "Đã có trong wishlist") {
+      if (msg === "Already in wishlist") {
         toast.info("This product is already in your wishlist.");
       } else {
         toast.success("Successfully added to wishlist!");

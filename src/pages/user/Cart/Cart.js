@@ -84,7 +84,7 @@ export default function Cart() {
     if (newQuantity < 1) return;
 
     if (newQuantity > item.stock) {
-      toast.error(`⚠️ Số lượng vượt quá tồn kho (${item.stock}) của sản phẩm "${item.name}"`);
+      toast.error(`⚠️ Quantity Exceeds Stock (${item.stock}) of product "${item.name}"`);
       return;
     }
 
@@ -118,18 +118,18 @@ export default function Cart() {
           )
         );
 
-        toast.success("Cập nhật số lượng thành công!");
+        toast.success("Quantity updated successfully!");
       })
       .catch((error) => {
         console.error("Error updating quantity:", error);
 
-        let errorMessage = "Không thể cập nhật số lượng do lỗi không xác định!";
+        let errorMessage = "Unable to update quantity due to unknown error!";
         if (error.response) {
           errorMessage =
             error.response.data?.message ||
             `Lỗi server: ${error.response.statusText} (Mã: ${error.response.status})`;
         } else if (error.request) {
-          errorMessage = "Không thể kết nối đến server. Vui lòng kiểm tra mạng!";
+          errorMessage = "Unable to connect to server. Please check network!";
         } else {
           errorMessage = error.message;
         }
@@ -152,7 +152,7 @@ export default function Cart() {
         toast.success("Remove item successfully.");
       })
       .catch((error) => {
-        alert("Không thể xóa sản phẩm khỏi giỏ hàng.");
+        alert("Cannot remove product from cart.");
       });
   };
 
@@ -263,7 +263,7 @@ export default function Cart() {
       if (orderId) {
         localStorage.setItem("currentOrderId", orderId);
       } else {
-        console.warn("⚠️ Không nhận được order_id từ server");
+        console.warn("⚠️ Unable to receive order_id from server");
       }
 
       localStorage.setItem("checkoutData", JSON.stringify({

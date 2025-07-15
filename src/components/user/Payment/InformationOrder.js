@@ -205,7 +205,6 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
               <h2>Order Information</h2>
             </div>
 
-            {/* FORM */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();

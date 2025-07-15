@@ -47,8 +47,8 @@ export default function ShoppingCart({
                       disabled={item.stock === 0 || item.stock === undefined}
                       title={
                         item.stock === 0 || item.stock === undefined
-                          ? "Sản phẩm đã hết hàng"
-                          : "Chọn sản phẩm để thanh toán"
+                          ? "Product is out of stock"
+                          : "Select product to checkout"
                       }
                     />
 
