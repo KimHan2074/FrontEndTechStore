@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./UserManagement.css";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  // const [selectedUsers, setSelectedUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 8;
@@ -47,29 +47,29 @@ export default function UserManagement() {
             )
           );
           setEditingUser(null);
-          alert("Cập nhật thành công!");
+          alert("Update successful!");
         } else {
-          alert("Cập nhật thất bại!");
+          alert("Update failed!");
         }
       })
       .catch((err) => {
         console.error("Update failed", err);
-        alert("Lỗi khi cập nhật.");
+        alert("An error occurred while updating.");
       });
   };
 
   const totalPages = Math.ceil(users.length / usersPerPage);
   const startIndex = (currentPage - 1) * usersPerPage;
   const paginatedUsers = users.slice(startIndex, startIndex + usersPerPage);
-  const isAllSelected = paginatedUsers.length > 0 && paginatedUsers.every((u) => selectedUsers.includes(u.id));
+  // const isAllSelected = paginatedUsers.length > 0 && paginatedUsers.every((u) => selectedUsers.includes(u.id));
 
-  const toggleUserSelection = (userId) => {
-    setSelectedUsers((prevSelected) =>
-      prevSelected.includes(userId)
-        ? prevSelected.filter((id) => id !== userId)
-        : [...prevSelected, userId]
-    );
-  };
+  // const toggleUserSelection = (userId) => {
+  //   setSelectedUsers((prevSelected) =>
+  //     prevSelected.includes(userId)
+  //       ? prevSelected.filter((id) => id !== userId)
+  //       : [...prevSelected, userId]
+  //   );
+  // };
 
   if (loading) return <LoadingSpinner />;
 
@@ -113,21 +113,21 @@ export default function UserManagement() {
               ))
             ) : (
               <tr>
-                <td colSpan="7" style={{ textAlign: "center" }}>Không có người dùng nào.</td>
+                <td colSpan="7" style={{ textAlign: "center" }}>No users found.</td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "12px", gap: "8px" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "12px", gap: "8px" }}>
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
         >
           Previous
         </button>
-        <span>Trang {currentPage} / {totalPages}</span>
+        <span>Page {currentPage} / {totalPages}</span>
         <button
           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={currentPage === totalPages}
@@ -139,7 +139,7 @@ export default function UserManagement() {
       {editingUser && (
         <div className="edit-form-overlay">
           <div className="edit-form">
-            <h3>Chỉnh sửa người dùng</h3>
+            <h3>Edit User</h3>
             <label>Username:
               <input
                 type="text"
@@ -186,8 +186,8 @@ export default function UserManagement() {
               />
             </label>
             <div className="form-actions">
-              <button onClick={handleUpdateUser}>Lưu</button>
-              <button onClick={() => setEditingUser(null)}>Hủy</button>
+              <button onClick={handleUpdateUser}>Save</button>
+              <button onClick={() => setEditingUser(null)}>Cancel</button>
             </div>
           </div>
         </div>

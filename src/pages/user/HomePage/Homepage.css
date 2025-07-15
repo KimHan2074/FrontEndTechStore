@@ -117,6 +117,7 @@
 .product-card-banner-bottom {
   display: flex;
   justify-content: space-between;
+  gap: 10px
 }
 
 .product-card-banner-top .buy-button-banner {
