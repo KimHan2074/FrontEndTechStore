@@ -28,16 +28,16 @@ function SearchBar() {
       );
 
       if (productMatch) {
-        console.log("✅ Tìm thấy sản phẩm:", productMatch);
+        console.log("✅ Find products:", productMatch);
         return navigate("/user/Product", {
           state: { searchQuery: trimmed },
         });
       }
 
-      alert("Không tìm thấy sản phẩm phù hợp.");
+      alert("No matching products found.");
     } catch (error) {
-      console.error("❌ Lỗi khi tìm kiếm sản phẩm:", error);
-      alert("Đã xảy ra lỗi khi tìm kiếm sản phẩm.");
+      console.error("❌ Error while searching for product:", error);
+      alert("An error occurred while searching for the product.");
     }
   };
 

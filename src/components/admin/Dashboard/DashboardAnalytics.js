@@ -16,7 +16,6 @@ import {
   AreaChart,
 } from "recharts"
 import { DollarSign, ShoppingCart, Users } from "lucide-react"
-// Improved text wrapping function
 const wrapText = (text, maxLength = 12) => {
   if (!text || typeof text !== "string") return text
 
@@ -24,7 +23,6 @@ const wrapText = (text, maxLength = 12) => {
 
   const words = text.split(" ")
 
-  // If single word is too long, split it
   if (words.length === 1) {
     const chunks = []
     for (let i = 0; i < text.length; i += maxLength) {
@@ -46,7 +44,6 @@ const wrapText = (text, maxLength = 12) => {
         lines.push(currentLine)
         currentLine = word
       } else {
-        // Word itself is longer than maxLength
         lines.push(word.slice(0, maxLength))
         currentLine = word.slice(maxLength)
       }
@@ -63,7 +60,7 @@ const wrapText = (text, maxLength = 12) => {
 const CustomTick = ({ x, y, payload, textAnchor = "middle", maxWidth = 100 }) => {
   const lines = wrapText(payload.value, 12);
   const lineHeight = 14;
-  const offsetY = 20; // 👈 đẩy chữ xuống dưới trục X
+  const offsetY = 20;
   const startY = y + offsetY;
 
   return (
@@ -96,7 +93,6 @@ const DashboardAnalytics = ({ summary, monthlyRevenue, categorySales, orderStatu
     })}`;
   };
 
-  // Format currency for Vietnamese locale
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("vi-VN").format(value)
   }
@@ -105,7 +101,6 @@ const DashboardAnalytics = ({ summary, monthlyRevenue, categorySales, orderStatu
     <div className="dashboard">
       <h1 className="dashboard-title">Dashboard Analytics</h1>
 
-      {/* Summary Cards */}
       <div className="summary-cards">
         <div className="card">
           <div className="card-header">
@@ -132,9 +127,7 @@ const DashboardAnalytics = ({ summary, monthlyRevenue, categorySales, orderStatu
         </div>
       </div>
 
-      {/* Charts Grid */}
       <div className="charts-grid">
-        {/* Monthly Revenue Chart */}
         <div className="chart-box">
           <div className="chart-header">
             <h3 className="chart-title">Monthly Revenue</h3>
@@ -179,7 +172,6 @@ const DashboardAnalytics = ({ summary, monthlyRevenue, categorySales, orderStatu
           </div>
         </div>
 
-        {/* Sales by Category Chart */}
         <div className="chart-box">
           <div className="chart-header">
             <h3 className="chart-title">Sales By Category</h3>
@@ -213,7 +205,6 @@ const DashboardAnalytics = ({ summary, monthlyRevenue, categorySales, orderStatu
           </div>
         </div>
 
-        {/* Order Status Chart */}
         <div className="chart-box">
           <div className="chart-header">
             <h3 className="chart-title">Order Status</h3>
@@ -262,7 +253,6 @@ const DashboardAnalytics = ({ summary, monthlyRevenue, categorySales, orderStatu
           </div>
         </div>
 
-        {/* Top Products Chart */}
         <div className="chart-box">
           <div className="chart-header">
             <h3 className="chart-title">Top Best-Selling Products</h3>

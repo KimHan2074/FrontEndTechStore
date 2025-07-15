@@ -14,13 +14,13 @@ export default function AuthCallback() {
 
     if (token) {
       localStorage.setItem("token", token);
-      toast.success("Đăng nhập bằng Google thành công!");
+      toast.success("Sign in with Google successful!");
       navigate("/"); 
     } else {
-      toast.error("Đăng nhập bằng Google thất bại!");
+      toast.error("Google login failed!");
       navigate("/signin"); 
     }
   }, [location]);
 
-  return <div>Đang xử lý đăng nhập...</div>;
+  return <div>Processing login...</div>; 
 }
