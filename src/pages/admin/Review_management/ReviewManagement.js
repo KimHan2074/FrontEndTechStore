@@ -19,6 +19,7 @@ export default function ReviewManagement() {
         if (data.status && data.data) {
           setReviews(data.data);
         } else {
+
           toast.error("Unexpected response", data);
         }
       })
@@ -31,6 +32,7 @@ export default function ReviewManagement() {
   }, []);
 
   const handleDeleteReview = (id) => {
+    if (!window.confirm("Are you sure you want to delete this review?")) return;
 
     fetch(`http://localhost:8000/api/admin/delete-reviews/${id}`, {
       method: "DELETE",

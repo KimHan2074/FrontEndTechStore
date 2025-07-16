@@ -9,7 +9,7 @@ body {
   max-width: 900px;
 }
 
-.product-card {
+.product-card-product-list {
   display: flex;
   border: 1px solid transparent;
   border-radius: 8px;
@@ -19,6 +19,7 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   height: 160px;
   position: relative;
+  
 }
 
 .actions-container {
@@ -58,9 +59,9 @@ body {
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
-.product-card img {
+.product-card-product-list img {
   width: 165px;
-  height: 165px;
+  /* height: 165px; */
   object-fit: cover;
   border-radius: 8px;
   margin-right: 16px;
@@ -183,7 +184,7 @@ body {
   margin: 0 auto;
 }
 
-.promotion-label {
+.promotion-label-product-list {
   position: absolute;
   top: 8px;
   right: -30px;

@@ -31,6 +31,7 @@ export default function OrderManagement() {
   }, []);
 
   const handleDeleteOrder = (id) => {
+    if (!window.confirm("Are you sure you want to delete this order?")) return;
 
     fetch(`http://localhost:8000/api/admin/orders/${id}`, {
       method: "DELETE",

@@ -32,10 +32,21 @@ function Header({ onSearch }) {
     onSearch(searchQuery);
   };
 
-  useEffect(() => {
+ useEffect(() => {
+  const checkLogin = () => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
-  }, []);
+  };
+
+  checkLogin();
+
+  window.addEventListener("storage", checkLogin);
+
+  return () => {
+    window.removeEventListener("storage", checkLogin);
+  };
+}, []);
+
 
   useEffect(() => {
   const fetchWishlistCount = async () => {
@@ -49,7 +60,7 @@ function Header({ onSearch }) {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setWishlistCount(res.data.length); // hoặc res.data.data.length tùy cấu trúc
+      setWishlistCount(res.data.length);
     } catch (error) {
       console.error("Failed to fetch wishlist count:", error);
     }
@@ -157,20 +168,20 @@ function Header({ onSearch }) {
               <Heart size={20} /><span className="badge">{wishlistCount}</span>
             </a>
             <li className="user-dropdown">
-              <a href={isLoggedIn ? "/user/profile" : "/signin"} className="icon-link">
-                <User size={20} />
-              </a>
-              {isLoggedIn && (
-                <ul className="dropdown-menu">
-                  <li>
-                    <a href="#" onClick={async (e) => {
-                      e.preventDefault();
-                      await Logout();
-                    }}>Logout</a>
-                  </li>
-                </ul>
-              )}
-            </li>
+          <a href={isLoggedIn ? "/user/profile" : "/signin"} className="icon-link">
+            <User size={20} />
+          </a>
+          {isLoggedIn && (
+            <ul className="dropdown-menu">
+              <li>
+                <a href="#" onClick={(e) => {
+                  e.preventDefault();
+                  Logout();
+                }}>Logout</a>
+              </li>
+            </ul>
+          )}
+        </li>
           </div>
         </div>
         <div className="category-nav">
