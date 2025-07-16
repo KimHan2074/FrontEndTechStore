@@ -19,10 +19,11 @@ const AboutUs = () => {
                 // *** CHỈNH SỬA DÒNG NÀY ***
                 // Sử dụng biến môi trường REACT_APP_API_URL đã cấu hình trên Railway
                 // và nối với phần còn lại của đường dẫn API
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/products/promoted-aboutus`);
+                const response = await fetch(`https://backendlaraveltechstore-production.up.railway.app/api/products/promoted-aboutus`);
                 const json = await response.json();
 
                 const data = json.data || [];
+                console.log(data);
 
                 const categorizedProducts = {
                     hot: data.filter((product) => product.promotion_type === 'hot'),
