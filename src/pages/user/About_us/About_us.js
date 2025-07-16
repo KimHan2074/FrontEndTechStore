@@ -16,7 +16,10 @@ const AboutUs = () => {
     useEffect(() => {
         const fetchPromotedProducts = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/products/promoted-aboutus');
+                // *** CHỈNH SỬA DÒNG NÀY ***
+                // Sử dụng biến môi trường REACT_APP_API_URL đã cấu hình trên Railway
+                // và nối với phần còn lại của đường dẫn API
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/products/promoted-aboutus`);
                 const json = await response.json();
 
                 const data = json.data || [];
@@ -30,7 +33,9 @@ const AboutUs = () => {
                 setPromotedProducts(categorizedProducts);
 
             } catch (error) {
-                toast.error('Failed to fetch promoted products:', error);
+                // Thay đổi cách hiển thị lỗi để dễ debug hơn
+                console.error('Failed to fetch promoted products:', error);
+                toast.error(`Failed to fetch promoted products: ${error.message || error}`);
             }
         };
 
@@ -118,7 +123,7 @@ const AboutUs = () => {
                 />
                 <div className="overlay-text">
                     <h2>Your trusted and reliable retail shop</h2>
-                    <p>TechStore is an online platform specializing in high-quality electronic devices from leading brands. We take pride in delivering a modern, convenient, and secure shopping experience to our customers. We aim to be your trusted companion by providing cutting-edge technology products at competitive prices while helping you stay updated with the latest innovations.</p>
+                    <p>TechStore is an online platform specializing in high-quality electronic devices from leading brands. We take pride in delivering a modern, convenient, and secure shopping experience to our customers. We aim to be your trusted companion by providing cutting-cutting-edge technology products at competitive prices while helping you stay updated with the latest innovations.</p>
                 </div>
             </div>
 
