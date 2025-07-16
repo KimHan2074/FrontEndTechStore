@@ -56,7 +56,7 @@ function Header({ onSearch }) {
 
       if (!token || !userId) return;
 
-      const res = await axios.get(`http://localhost:8000/api/user/wishlist/${userId}`, {
+      const res = await axios.get(`https://backendlaraveltechstore-production.up.railway.app/api/user/wishlist/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -79,7 +79,7 @@ function Header({ onSearch }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/user/product/categories");
+        const response = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/product/categories");
         setCategories(Array.isArray(response.data.data) ? response.data.data : []);
       } catch (err) {
         console.error("Error fetching categories:", err);
@@ -91,7 +91,7 @@ function Header({ onSearch }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/products/top-images");
+        const response = await axios.get("https://backendlaraveltechstore-production.up.railway.appapi/products/top-images");
         setCategories(response.data.data);
       } catch (error) {
         console.error("Failed to fetch categories:", error);

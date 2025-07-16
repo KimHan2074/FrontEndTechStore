@@ -24,7 +24,7 @@ const ProductList = ({ searchQuery }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        let url = `http://127.0.0.1:8000/api/products/list?page=${currentPage}&per_page=${itemsPerPage}`;
+        let url = `https://backendlaraveltechstore-production.up.railway.app/api/products/list?page=${currentPage}&per_page=${itemsPerPage}`;
         if (selectedCategoryId) {
           url += `&category_id=${selectedCategoryId}`;
         } else if (searchQuery) {

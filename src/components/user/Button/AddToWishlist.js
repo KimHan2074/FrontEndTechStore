@@ -23,7 +23,7 @@ export default class AddToWishlist extends Component {
       }
 
       const response = await axios.post(
-        "http://localhost:8000/api/user/wishlist/add",
+        "https://backendlaraveltechstore-production.up.railway.app/api/user/wishlist/add",
         {
           user_id: finalUserId,
           product_id: productId,

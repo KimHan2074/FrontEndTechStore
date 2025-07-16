@@ -14,8 +14,8 @@ const PromoBanner = () => {
     const fetchData = async () => {
       try {
         const [productRes, promotedRes] = await Promise.all([
-          axios.get("http://localhost:8000/api/user/product/index"),
-          axios.get("http://localhost:8000/api/user/product/promoted"),
+          axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/product/index"),
+          axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/product/promoted"),
         ]);
 
         const productData = productRes.data?.data || [];

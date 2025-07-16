@@ -67,7 +67,7 @@ const PaymentMethod = () => {
       setIsLoading(true);
       if (selectedPayment === "qr") {
         if (!showQRCode) return setShowQRCode(true);
-        await axios.post("http://localhost:8000/api/user/orders/confirm-payment", {
+        await axios.post("https://backendlaraveltechstore-production.up.railway.app/api/user/orders/confirm-payment", {
           order_id: orderId,
           method: paymentMap[selectedPayment],
         });
@@ -75,7 +75,7 @@ const PaymentMethod = () => {
         return navigate("/user/payment_confirmation");
       }
 
-      await fetch("http://localhost:8000/api/user/payments", {
+      await fetch("https://backendlaraveltechstore-production.up.railway.app/api/user/payments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -87,7 +87,7 @@ const PaymentMethod = () => {
       });
 
       if (selectedPayment === "cash") {
-        await axios.post("http://localhost:8000/api/user/orders/confirm-payment", {
+        await axios.post("https://backendlaraveltechstore-production.up.railway.app/api/user/orders/confirm-payment", {
           order_id: orderId,
           method: paymentMap[selectedPayment],
         });
@@ -97,7 +97,7 @@ const PaymentMethod = () => {
 
       if (selectedPayment === "momo") {
         if (amountVND > 50000000) return alert("⚠️ MoMo supports payments up to 50 million VND.");
-        const res = await fetch("http://localhost:8000/api/user/momo/create-payment", {
+        const res = await fetch("https://backendlaraveltechstore-production.up.railway.app/api/user/momo/create-payment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
