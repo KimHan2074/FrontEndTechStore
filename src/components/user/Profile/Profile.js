@@ -37,7 +37,7 @@ const UserProfile = () => {
         throw new Error("Token not found. Please log in first.");
       }
 
-      const userIdResponse = await axios.get("http://127.0.0.1:8000/api/user/getUserId", {
+      const userIdResponse = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/getUserId", {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
@@ -45,7 +45,7 @@ const UserProfile = () => {
       const fetchedUserId = userIdResponse.data.userId;
       setUserId(fetchedUserId);
 
-      const userResponse = await axios.get(`http://127.0.0.1:8000/api/user/${fetchedUserId}`, {
+      const userResponse = await axios.get(`https://backendlaraveltechstore-production.up.railway.app/api/user/${fetchedUserId}`, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
@@ -87,7 +87,7 @@ const UserProfile = () => {
     }
     try {
       const response = await axios.put(
-        `http://127.0.0.1:8000/api/user/update-profile/${userId}`,
+        `https://backendlaraveltechstore-production.up.railway.app/api/user/update-profile/${userId}`,
         {
           name: profile.username,
           email: profile.email,
@@ -125,7 +125,7 @@ const UserProfile = () => {
   }
 
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/user/change-password/${userId}`, {
+    const response = await fetch(`https://backendlaraveltechstore-production.up.railway.app/api/user/change-password/${userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -194,7 +194,7 @@ const UserProfile = () => {
     }
     try {
       await axios.put(
-        `http://127.0.0.1:8000/api/user/update-avatar/${userId}`,
+        `https://backendlaraveltechstore-production.up.railway.app/api/user/update-avatar/${userId}`,
         { avatar: avatarUrl },
         {
           headers: { "Content-Type": "application/json" },

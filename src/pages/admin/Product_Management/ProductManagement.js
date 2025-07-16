@@ -28,7 +28,7 @@ const ProductManagement = ({ categoryId = null }) => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const { data } = await axios.get("http://localhost:8000/api/admin/products/stock-statistics");
+        const { data } = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/admin/products/stock-statistics");
         if (data.status) setStats(data.data);
         else setStatsError("Failed to load statistics");
       } catch (err) {
@@ -46,7 +46,7 @@ const ProductManagement = ({ categoryId = null }) => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get("http://localhost:8000/api/admin/group-by-category");
+        const { data } = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/admin/group-by-category");
         const updatedGroups = data.data.map((group, index) => ({
           ...group,
           category_id: index + 1,
@@ -64,7 +64,7 @@ const ProductManagement = ({ categoryId = null }) => {
 const handleDelete = async (id) => {
   if (!window.confirm("Are you sure you want to delete this product?")) return;
   try {
-    await axios.delete(`http://localhost:8000/api/admin/products/${id}`);
+    await axios.delete(`https://backendlaraveltechstore-production.up.railway.app/api/admin/products/${id}`);
     setGroupedProducts((prev) =>
       prev.map((group) => ({
         ...group,

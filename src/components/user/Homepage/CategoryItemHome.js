@@ -9,7 +9,7 @@ const CategoryItemHome = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const categoryRes = await axios.get("http://localhost:8000/api/user/product/categories");
+        const categoryRes = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/product/categories");
         setCategories(categoryRes.data.data);
         console.log("Clicked category:", categoryRes);
       } catch (err) {

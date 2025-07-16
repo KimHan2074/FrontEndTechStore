@@ -57,7 +57,7 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
     const fetchOrder = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(`http://localhost:8000/api/user/orders/${orderId}`, {
+        const res = await fetch(`https://backendlaraveltechstore-production.up.railway.app/api/user/orders/${orderId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -167,7 +167,7 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/user/orders/${orderId}/update-info`,
+        `https://backendlaraveltechstore-production.up.railway.app/api/user/orders/${orderId}/update-info`,
         {
           method: "PUT",
           headers: {
