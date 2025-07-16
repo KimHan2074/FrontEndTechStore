@@ -68,7 +68,7 @@ export default function SignUpPage() {
   
     try {
       setLoading(true);
-      await axios.post("http://127.0.0.1:8000/api/auth/register", formData);
+      await axios.post("https://backendlaraveltechstore-production.up.railway.app/api/auth/register", formData);
       toast.success("Registration successful! Please check your email for OTP.");
       setGeneratedEmail(formData.email);
       setIsVerifying(true);
@@ -81,7 +81,7 @@ export default function SignUpPage() {
   }
 
   const handleGoogleSignUp = () => {
-    window.location.href = "http://127.0.0.1:8000/auth/google/redirect";
+    window.location.href = "https://backendlaraveltechstore-production.up.railway.app/auth/google/redirect";
   };
 
   return (

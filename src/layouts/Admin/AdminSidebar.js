@@ -36,7 +36,7 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/admin/categories")
+      .get("https://backendlaraveltechstore-production.up.railway.app/api/admin/categories")
       .then((res) => setCategories(res.data.data))
       .catch((err) => console.error("Failed to load categories", err));
   }, []);

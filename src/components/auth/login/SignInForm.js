@@ -157,7 +157,7 @@ export default function SignInPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/login', formData);
+      const response = await axios.post('https://backendlaraveltechstore-production.up.railway.app/api/auth/login', formData);
       const { role, token, userId } = response.data;
 
       // Lưu thông tin vào localStorage

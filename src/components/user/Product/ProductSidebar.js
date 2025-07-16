@@ -9,7 +9,7 @@ const ProductSidebar = ({ selectedCategoryId, setSelectedCategoryId, onSearch  }
 
   const fetchTopProducts = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/products/top-five");
+      const response = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/products/top-five");
       setProducts(response.data);
     } catch (err) {
       console.error("Error fetching top products:", err);
@@ -17,7 +17,7 @@ const ProductSidebar = ({ selectedCategoryId, setSelectedCategoryId, onSearch  }
   };
 const fetchGalleryImages = async () => {
   try {
-    const response = await axios.get("http://127.0.0.1:8000/api/products/top-images");
+    const response = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/products/top-images");
     console.log("Products data:", response.data); 
 
     const images = response.data.map(item => item.image_url);
