@@ -12,7 +12,7 @@ import {
   ShoppingCart,
   LogOut,
   Sun,
-  Moon
+  Moon,
 } from "lucide-react";
 
 const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
@@ -56,7 +56,9 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
           {menuItems.map((item) => (
             <React.Fragment key={item.name}>
               <li
-                className={`admin-menu-item ${activeItem === item.name ? "active" : ""}`}
+                className={`admin-menu-item ${
+                  activeItem === item.name ? "active" : ""
+                }`}
                 onClick={() => {
                   if (item.name === "Product") {
                     setShowProductSubmenu(!showProductSubmenu);
@@ -70,7 +72,9 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
                 <span className="icon">{item.icon}</span>
                 {item.name}
                 {item.name === "Product" && (
-                  <span style={{ marginLeft: "auto" }}>{showProductSubmenu ? "▲" : "▼"}</span>
+                  <span style={{ marginLeft: "auto" }}>
+                    {showProductSubmenu ? "▲" : "▼"}
+                  </span>
                 )}
               </li>
 
@@ -96,13 +100,17 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
 
         <div className="admin-theme-toggle">
           <button
-            className={`admin-theme-btn light ${theme === "light" ? "active" : ""}`}
+            className={`admin-theme-btn light ${
+              theme === "light" ? "active" : ""
+            }`}
             onClick={() => setTheme("light")}
           >
             <Sun size={16} /> Light
           </button>
           <button
-            className={`admin-theme-btn dark ${theme === "dark" ? "active" : ""}`}
+            className={`admin-theme-btn dark ${
+              theme === "dark" ? "active" : ""
+            }`}
             onClick={() => setTheme("dark")}
           >
             <Moon size={16} /> Dark

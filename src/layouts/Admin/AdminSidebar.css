@@ -1,6 +1,7 @@
 .admin-sidebar {
   width: 250px;
   height: 130vh;
+  /* width: 330px; */
   background-color: #0D1B2A;
   color: white;
   display: flex;

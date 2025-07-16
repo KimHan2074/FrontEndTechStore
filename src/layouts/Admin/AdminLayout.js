@@ -4,6 +4,7 @@ import UserManagement from "../../pages/admin/User_managemet/User_management";
 import OrderManagement from "../../pages/admin/Order_Management/OrderManagement";
 import ReviewManagement from "../../pages/admin/Review_management/ReviewManagement";
 import ProductManagement from "../../pages/admin/Product_Management/ProductManagement";
+import Dashboard from "../../pages/admin/Dashboard/Dashboard";
 
 export default function AdminLayout() {
   const [activeItem, setActiveItem] = useState("Dashboard");
@@ -25,12 +26,7 @@ export default function AdminLayout() {
       case "Order":
         return <OrderManagement />;
       default:
-        return (
-          <div style={{ padding: 20 }}>
-            <h2>Dashboard</h2>
-            <p>Welcome to the Admin Dashboard!</p>
-          </div>
-        );
+        return <Dashboard/>
     }
   };
 

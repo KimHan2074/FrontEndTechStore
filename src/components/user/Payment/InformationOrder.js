@@ -50,7 +50,7 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
     }, 0);
 
     setSubtotal(subtotalCalc);
-    setTotal(subtotalCalc + shippingFee - discount); // cập nhật luôn total nếu cần
+    setTotal(subtotalCalc + shippingFee - discount);
   }, [products, shippingFee, discount]);
 
   useEffect(() => {
@@ -68,8 +68,8 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
         if (res.ok) {
           setOrder(data.order);
           setProducts(data.order.order_details);
-          setShippingFee(data.order.shipping_fee || 0);  // nếu backend có
-          setDiscount(data.order.discount || 0);         // nếu backend có
+          setShippingFee(data.order.shipping_fee || 0);  
+          setDiscount(data.order.discount || 0);         
           setTotal(Number(data.order.total_amount) || 0);
         } else {
           alert("Failed to load order data.");
@@ -205,7 +205,6 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
               <h2>Order Information</h2>
             </div>
 
-            {/* FORM */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -307,7 +306,6 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
             </form>
           </div>
 
-          {/* Steps */}
           <div className="form-section-information-order">
             <div
               className="section-header-information-order"
@@ -329,7 +327,6 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
           </div>
         </div>
 
-        {/* Right section: products */}
         <div className="right-section-information-order">
           <div className="product-section-information-order">
             <h3>Products</h3>

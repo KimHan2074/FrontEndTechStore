@@ -96,6 +96,7 @@ const AddProductForm = ({ onCancel, onSave }) => {
 
       toast.success("Product created successfully!");
       onSave(createdProduct);
+      onCancel();
     } catch (err) {
       console.error("❌ Error:", err.response?.data || err.message);
        toast.error(err.response?.data?.message || "❌ Failed to create product");
@@ -123,12 +124,12 @@ const AddProductForm = ({ onCancel, onSave }) => {
 
           <label>
             <span>Price</span>
-            <input name="price" type="number" step="0.1" value={product.price} onChange={handleChange} required />
+            <input name="price" type="number" step="0.1" min ="0" value={product.price} onChange={handleChange} required />
           </label>
 
           <label>
             <span>Old Price</span>
-            <input name="old_price" type="number" step="0.1" value={product.old_price} onChange={handleChange} />
+            <input name="old_price" type="number" step="0.1" min ="0" value={product.old_price} onChange={handleChange} />
           </label>
 
           <label>

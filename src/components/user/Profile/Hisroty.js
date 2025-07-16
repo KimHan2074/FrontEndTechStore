@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import LoadingSpinner from "../../common/LoadingSpinner";
 import { Repeat, X } from "lucide-react";
-import BuyNow from "../Button/BuyNow";
 import { useNavigate } from "react-router-dom";
 
 const HistoryContent = () => {
@@ -31,26 +29,7 @@ const HistoryContent = () => {
       });
 
       const orders = response.data.data || [];
-
-      const items = orders.flatMap((order) =>
-        (order.order_details || [])
-          .filter((detail) => detail.product)
-          .map((detail) => {
-            const product = detail.product;
-            return {
-              order_detail_id: detail.id,
-              product_id: detail.product_id,
-              id: product.id,
-              name: product.name || "Unknown name",
-              unit_price: parseFloat(detail.unit_price),
-              priceDisplay: `${parseFloat(detail.unit_price)}`,
-              quantity: detail.quantity,
-              image: product.images?.[0]?.image_url || "/placeholder.svg",
-            };
-          })
-      );
-
-      setHistoryData(items);
+      setHistoryData(orders);
     } catch (error) {
       toast.error("Unable to load order history.");
       setHistoryData([]);
@@ -59,41 +38,35 @@ const HistoryContent = () => {
     }
   };
 
-  const handleDeleteHistory = async (item) => {
+  const handleDeleteOrderHistory = async (orderId) => {
     try {
-      await axios.request({
-        method: "DELETE",
-        url: "/api/user/order-history/delete",
-        data: {
-          order_detail_id: item.order_detail_id,
-        },
+      await axios.delete(`/api/user/order-history/delete`, {
+        data: { order_id: orderId },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
         },
       });
 
-      toast.success("Removed from history");
+      toast.success("Deleted order history successfully!");
       fetchOrderHistory(selectedDate);
     } catch (error) {
-      toast.error("Failed to delete");
-      console.error("Detailed error:", error.response?.data || error.message);
+      toast.error("Failed to delete order history.");
+      console.error(error);
     }
   };
 
-  const handleReorder = async (item) => {
+  const handleReorderOrder = async (order) => {
+    const products = order.order_details.map((detail) => ({
+      product_id: detail.product_id,
+      quantity: detail.quantity,
+      unit_price: detail.unit_price,
+    }));
+
     try {
-      await axios.post(
+      const response = await axios.post(
         "/api/user/orders/create",
-        {
-          user_id: localStorage.getItem("userId"),
-          products: [
-            {
-              product_id: item.product_id,
-              quantity: item.quantity,
-              unit_price: item.unit_price,
-            },
-          ],
-        },
+        { products },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -102,10 +75,40 @@ const HistoryContent = () => {
         }
       );
 
+      const newOrderId = response.data.order_id;
+      const {
+        full_name,
+        phone,
+        address,
+        province,
+        district,
+        ward,
+      } = order;
+
+      if (full_name && phone && address && province && district && ward) {
+        await axios.put(
+          `/api/user/orders/${newOrderId}/update-info`,
+          {
+            full_name,
+            phone,
+            address,
+            province,
+            district,
+            ward,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      }
+
       toast.success("Reordered successfully!");
-      navigate(`/user/payment/`);
+      navigate(`/user/payment?orderId=${newOrderId}`);
     } catch (error) {
-      toast.error("Failed to reorder!");
+      toast.error("Failed to reorder.");
       console.error(error);
     }
   };
@@ -115,14 +118,6 @@ const HistoryContent = () => {
       fetchOrderHistory(selectedDate);
     }
   }, [selectedDate]);
-
-  if (loading) {
-    return (
-      <div className="history-loading">
-        <LoadingSpinner />
-      </div>
-    );
-  }
 
   return (
     <div className="history-content">
@@ -141,35 +136,43 @@ const HistoryContent = () => {
         {historyData.length === 0 ? (
           <p className="no-data-message">No orders found on this date.</p>
         ) : (
-          <ul className="history-list">
-            {historyData.map((item) => (
-              <li key={item.order_detail_id} className="history-item">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="product-image-history"
-                />
-                <div className="product-info">
-                  <div className="product-name">{item.name}</div>
-                  <div className="product-price">$ {item.priceDisplay}</div>
-                  <div className="product-quantity">
-                    Quantity: {item.quantity}
-                  </div>
+          <ul className="order-list">
+            {historyData.map((order) => (
+              <li key={order.id} className="order-item">
+                <div className="order-products">
+                  {order.order_details.map((detail) => (
+                    <div key={detail.id} className="product-in-order">
+                      <img
+                        src={detail.product?.images?.[0]?.image_url || "/placeholder.svg"}
+                        alt={detail.product?.name}
+                        className="product-image-history"
+                      />
+                      <div className="product-info">
+                        <p className="product-name">{detail.product?.name}</p>
+                        <p className="product-quantity">Quantity: {detail.quantity}</p>
+                        <p className="product-price">Unit Price: ${detail.unit_price}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <button
-                  className="edit-icon"
-                  onClick={() => handleReorder(item)}
-                >
-                  <Repeat />
-                </button>
 
-                <button
-                  className="edit-icon"
-                  onClick={() => handleDeleteHistory(item)}
-                >
-                  <X />
-                </button>
+                <div className="order-actions">
+                  <button
+                    className="edit-icon"
+                    onClick={() => handleReorderOrder(order)}
+                  >
+                    <Repeat className="reorder-icon" />
+                  </button>
+
+                  <button
+                    className="edit-icon"
+                    onClick={() => handleDeleteOrderHistory(order.id)}
+                  >
+                    <X className="delete-icon" />
+                  </button>
+                </div>
               </li>
+
             ))}
           </ul>
         )}

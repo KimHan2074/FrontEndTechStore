@@ -1188,18 +1188,20 @@
 }
 
 .product-image-best-seller {
-  width: 100%;
-  border-radius: 5px;
   height: 200px;
-  margin-bottom: 10px;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #f4f4f4;
   border-radius: 8px;
 }
 
 .product-image-best-seller img {
   width: 100%;
-  min-height: 80%;
+  height: 100%;
   object-fit: contain;
+  margin-bottom:5px;
 }
 
 .product-info-best-seller {

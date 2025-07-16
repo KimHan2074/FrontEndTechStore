@@ -5,6 +5,7 @@ import axios from "axios";
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
 import EditProductForm from "../../../pages/admin/Product_Management/EditProduct";
 import AddProductForm from "../../../pages/admin/Product_Management/AddProductForm";
+import { toast } from "react-toastify";
 
 const ProductManagement = ({ categoryId = null }) => {
   const [loading, setLoading] = useState(true);
@@ -21,6 +22,8 @@ const ProductManagement = ({ categoryId = null }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All Statuses");
   const [editingId, setEditingId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 10;
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -58,21 +61,23 @@ const ProductManagement = ({ categoryId = null }) => {
     fetchProducts();
   }, []);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
-    try {
-      await axios.delete(`http://localhost:8000/api/admin/products/${id}`);
-      setGroupedProducts((prev) =>
-        prev.map((group) => ({
-          ...group,
-          products: group.products.filter((p) => p.id !== id),
-        }))
-      );
-    } catch (err) {
-      console.error("Delete failed:", err);
-      alert("Xoá sản phẩm thất bại");
-    }
-  };
+const handleDelete = async (id) => {
+  if (!window.confirm("Are you sure you want to delete this product?")) return;
+  try {
+    await axios.delete(`http://localhost:8000/api/admin/products/${id}`);
+    setGroupedProducts((prev) =>
+      prev.map((group) => ({
+        ...group,
+        products: group.products.filter((p) => p.id !== id),
+      }))
+    );
+    toast.success("Product deleted successfully");
+  } catch (err) {
+    console.error("Delete failed:", err);
+    toast.error("Failed to delete the product");
+  }
+};
+
 
   const openEditForm = (product) => setEditingId(product.id);
   const closeEditForm = () => setEditingId(null);
@@ -106,25 +111,29 @@ const ProductManagement = ({ categoryId = null }) => {
     setEditingId(null);
   };
 
-  const handleProductAdd = (newProduct) => {
-    setGroupedProducts((prev) => {
-      const updatedGroups = [...prev];
-      const targetGroup = updatedGroups.find((g) => g.category_id === newProduct.category_id);
+ const handleProductAdd = (newProduct) => {
+  setGroupedProducts((prev) => {
+    const updatedGroups = [...prev];
+    const targetGroup = updatedGroups.find((g) => g.category_id === newProduct.category_id);
 
-      if (targetGroup) {
+    if (targetGroup) {
+      const alreadyExists = targetGroup.products.some((p) => p.id === newProduct.id);
+      if (!alreadyExists) {
         targetGroup.products.push(newProduct);
-      } else {
-        updatedGroups.push({
-          category_id: newProduct.category_id,
-          category: newProduct.category_name || "Unknown Category",
-          products: [newProduct],
-        });
       }
+    } else {
+      updatedGroups.push({
+        category_id: newProduct.category_id,
+        category: newProduct.category_name || "Unknown Category",
+        products: [newProduct],
+      });
+    }
 
-      return updatedGroups;
-    });
-    setIsAdding(false);
-  };
+    return updatedGroups;
+  });
+  setIsAdding(false);
+};
+
 
   if (loading) return <LoadingSpinner />;
 
@@ -153,9 +162,12 @@ const ProductManagement = ({ categoryId = null }) => {
     return matchesSearch && matchesStatus && matchesCategory;
   });
 
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const currentProducts = filteredProducts.slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage);
+
   return (
     <div className="product-management">
-      <div className="header">
+       <div className="header">
         <h1>Product Management</h1>
       </div>
 
@@ -207,11 +219,11 @@ const ProductManagement = ({ categoryId = null }) => {
         <button className="add-product-btn" onClick={() => setIsAdding(true)}>+ Add New Product</button>
       </div>
 
+
       <div className="table-container">
         <table className="products-table">
           <thead>
             <tr>
-              <th><input type="checkbox" /></th>
               <th>Image</th>
               <th>Name Product</th>
               <th>Category</th>
@@ -222,9 +234,8 @@ const ProductManagement = ({ categoryId = null }) => {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((product) => (
+            {currentProducts.map((product) => (
               <tr key={product.id}>
-                <td><input type="checkbox" /></td>
                 <td>
                   <img
                     src={(product.images && product.images[0]?.image_url) || "/placeholder.svg"}
@@ -238,7 +249,7 @@ const ProductManagement = ({ categoryId = null }) => {
                 <td>{product.stock}</td>
                 <td>
                   <span className={`status-badge ${product.status === "In Stock" ? "in-stock" :
-                      product.status === "Low Stock" ? "low-stock" : "out-of-stock"
+                    product.status === "Low Stock" ? "low-stock" : "out-of-stock"
                     }`}>
                     {product.status}
                   </span>
@@ -253,6 +264,15 @@ const ProductManagement = ({ categoryId = null }) => {
         </table>
       </div>
 
+      <div className="pagination-controls">
+        <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <span>Page {currentPage} / {totalPages}</span>
+        <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
+          Next
+        </button>
+      </div>
 
       {editingId !== null && (
         <EditProductForm

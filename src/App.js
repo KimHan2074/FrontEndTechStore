@@ -9,7 +9,6 @@ import axios from 'axios';
 function App() {
   const [cartItems, setCartItems] = useState([]);
 
-  // Fetch cart items khi khởi động
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
@@ -38,9 +37,8 @@ function App() {
     };
 
     fetchCartItems();
-  }, []); // Chỉ chạy một lần khi mount
+  }, []); 
 
-  // Hàm đồng bộ lại cartItems sau khi cập nhật
   const syncCartItems = async () => {
     try {
       const response = await axios.get('/api/user/cart', {

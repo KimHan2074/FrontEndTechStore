@@ -90,7 +90,7 @@ const BestSellerSection = () => {
         );
         setProducts(bestDeals);
       } catch (error) {
-        console.error("❌ Lỗi gọi API:", error);
+        console.error("❌ API call error:", error);
       }
     };
 
@@ -113,7 +113,7 @@ const BestSellerSection = () => {
         <div className="products-section-best-seller">
           <div className="products-grid-best-seller">
             {products.length === 0 ? (
-              <p className="no-products-message">Không có sản phẩm khuyến mãi nào!</p>
+              <p className="no-products-message">There are no promotional products!</p>
             ) : (
               products.map((product, index) => (
                 <ProductCard key={`${product.id}-${index}`} product={product} onClick={handleProductClick} />

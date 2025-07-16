@@ -7,7 +7,7 @@ import SignUp from './pages/auth/register/SignUp';
 import SignIn from './pages/auth/login/SignIn';
 import ResetPassword from './pages/auth/login/ResetPassword';
 import AuthCallback from './pages/auth/AuthCallback';
-import Dashboard from './pages/admin/Dashboard/Dashboard';
+import Dashboard from './pages/admin/Dashboard/Dashboard.js'
 import AboutUs from './pages/user/About_us/About_us';
 import NotFound from './pages/user/NotFound/NotFound';
 import Blog from './pages/user/Blog/Blog';
@@ -20,7 +20,6 @@ import HomePage from "./pages/user/HomePage/HomePage.js";
 import History from "./pages/user/Profile/History.js";
 import PaymentConfirmation from "./pages/user/Payment/PaymentConfirmation.js";
 import PaymentMethod from "./components/user/Payment/PaymentMethod.js";
-// import ProductSpecs from "./components/user/Product/ProductSpecs.js";
 import ProductDetailPage from "./pages/user/Product/ProductDetailPage.js";
 import AdminSidebar from "./layouts/Admin/AdminSidebar.js";
 import UserManagement from "./pages/admin/User_managemet/User_management.js";
@@ -33,15 +32,22 @@ function AppRoutes() {
     <>
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route index element={<SignUp />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/callback" element={<AuthCallback />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
         </Route>
+
+          <Route element={<UserLayout />}>
+          <Route index element={<HomePage />} />
+        </Route>
         
         <Route path="/user" element={<UserLayout />}>
-          <Route path="homepage" element={<HomePage />} />
+          {/* <Route path="homepage" element={<HomePage />} /> */}
+          <Route index element={<HomePage />} />
           <Route path="about-us" element={<AboutUs />} />
+          <Route path="homepage" element={<HomePage />} />
+          <Route path="about_us" element={<AboutUs />} />
           <Route path="blog" element={<Blog />} />
           <Route path="profile" element={<Profile />} />
           <Route path="shopping_cart" element={<ShoppingCart />} />

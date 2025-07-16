@@ -34,8 +34,8 @@ export default function ShoppingCart({
 
           <div className="cart-items-list">
             {cartItems.map((item) => {
-              console.log(`Rendering item ${item.id}, quantity: ${item.quantity}, stock: ${item.stock}`); // Debug chi tiết
-              const currentQuantity = item.quantity || 0; // Bảo vệ quantity
+              console.log(`Rendering item ${item.id}, quantity: ${item.quantity}, stock: ${item.stock}`); 
+              const currentQuantity = item.quantity || 0;
               return (
                 <div key={item.id} className="cart-item-row">
                   <div className="cart-item-product">
@@ -47,8 +47,8 @@ export default function ShoppingCart({
                       disabled={item.stock === 0 || item.stock === undefined}
                       title={
                         item.stock === 0 || item.stock === undefined
-                          ? "Sản phẩm đã hết hàng"
-                          : "Chọn sản phẩm để thanh toán"
+                          ? "Product is out of stock"
+                          : "Select product to checkout"
                       }
                     />
 

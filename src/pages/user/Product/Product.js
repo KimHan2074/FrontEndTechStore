@@ -60,40 +60,6 @@ const ProductList = ({ searchQuery }) => {
     }
   };
 
-  //   const handleAddToWishlist = async (productId) => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const userId = localStorage.getItem("userId");
-
-  //     if (!token || !userId) {
-  //       toast.error("Bạn cần đăng nhập để thêm vào wishlist");
-  //       return;
-  //     }
-
-  //     await axios.post(
-  //       "http://localhost:8000/api/user/wishlist/add",
-  //       {
-  //         user_id: userId,
-  //         product_id: productId,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-
-  //     toast.success("Đã thêm vào wishlist!");
-
-  //     // ✅ Gửi sự kiện cập nhật để header cập nhật số lượng wishlist
-  //     window.dispatchEvent(new CustomEvent("wishlist-updated"));
-  //   } catch (error) {
-  //     console.error("Lỗi thêm wishlist:", error.response?.data || error);
-  //     toast.error("Thêm vào wishlist thất bại");
-  //   }
-  // };
-
-
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -118,10 +84,10 @@ const ProductList = ({ searchQuery }) => {
             products.map((product) => (
               <div
                 key={product.id}
-                className="product-card border rounded-md shadow-sm p-4 flex items-center mb-4"
+                className="product-card-product-list border rounded-md shadow-sm p-4 flex items-center mb-4"
               >
                 {product.promotion_type && (
-                  <div className="promotion-label">{product.promotion_type}</div>
+                  <div className="promotion-label-product-list">{product.promotion_type}</div>
                 )}
                 <img
                   src={

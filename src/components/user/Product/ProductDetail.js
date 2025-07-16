@@ -11,6 +11,7 @@ import LoadingSpinner from "../../common/LoadingSpinner";
 import AddToCart from "../Button/AddToCart";
 import AddToWishlist from "../Button/AddToWishlist";
 import BuyNow from "../Button/BuyNow";
+
 import {
   ShoppingCart,
   Heart,
@@ -109,7 +110,6 @@ const ProductDetail = () => {
     }
   };
 
-
   const renderTabContent = () => {
     switch (activeTab) {
       case "description":
@@ -140,6 +140,7 @@ const ProductDetail = () => {
 
         console.log("Related products response:", res.data);
         setRelatedProducts(Array.isArray(res.data.data) ? res.data.data : []);
+
       } catch (error) {
         console.error("Error fetching related products:", error);
         toast.error("Unable to load related products");
@@ -230,9 +231,9 @@ const ProductDetail = () => {
 
           <div className="action-buttons-product-detail">
             <AddToCart
-              className="add-to-cart-btn-product-detail"
               product={product}
               quantity={quantity}
+              className="add-to-cart-btn-product-detail"
             >
               <ShoppingCart color="#fff" size={25} style={{ marginRight: 8 }} />
               Add to Cart
@@ -243,18 +244,9 @@ const ProductDetail = () => {
                 <CreditCard size={18} color="#000000" style={{ marginRight: 8 }} />
                 Buy Now
               </BuyNow>
-              <AddToWishlist
-                item={product.id}
-                className="secondary-btn-product-detail"
-              >
-
-                <Heart
-                  size={18}
-                  style={{ marginRight: 8 }}
-                />
-                Favorited
+              <AddToWishlist item={product.id} className="secondary-btn-product-detail">
+                <Heart size={18} color="#000000" style={{ marginRight: 8 }} /> Favorited
               </AddToWishlist>
-
             </div>
           </div>
 

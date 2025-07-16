@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../../user/About_us/About_us.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const AboutUs = () => {
     const [promotedProducts, setPromotedProducts] = useState({
@@ -8,56 +11,72 @@ const AboutUs = () => {
         summerSale: [],
         bestDeal: [],
     });
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPromotedProducts = async () => {
             try {
                 const response = await fetch('http://localhost:8000/api/products/promoted-aboutus');
-                const data = await response.json();
+                const json = await response.json();
+
+                const data = json.data || [];
+
                 const categorizedProducts = {
                     hot: data.filter((product) => product.promotion_type === 'hot'),
                     new: data.filter((product) => product.promotion_type === 'new'),
                     summerSale: data.filter((product) => product.promotion_type === 'summer sale'),
                     bestDeal: data.filter((product) => product.promotion_type === 'best deal'),
                 };
-
                 setPromotedProducts(categorizedProducts);
+
             } catch (error) {
-                console.error('Failed to fetch promoted products:', error);
+                toast.error('Failed to fetch promoted products:', error);
             }
         };
 
         fetchPromotedProducts();
     }, []);
+    const handleProductClick = (productId) => {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            toast.warning("Please login to view product details!");
+            return;
+        }
+
+        navigate(`/user/product-detail/${productId}`);
+    };
 
     const renderProducts = (products = [], title) => (
-    <div className="product-category">
-        <h1>{title}</h1>
-        <ul className="product-list">
-            {products.map((product) => (
-                <li key={product.id} className="product-item">
-                    <img
-                        src={product.images?.[0]?.image_url || 'https://via.placeholder.com/150'}
-                        alt={product.name}
-                        className="product-image"
-                    />
-                    <div className="product-info">
-                        <p className="product-name">{product.name}</p>
-                        <div className="product-price-container">
-                            <p className="product-price">${product.price}</p>
-                            {product.old_price && (
-                                <p className="product-old-price">${product.old_price}</p>
-                            )}
+        <div className="product-category">
+            <h3>{title}</h3>
+            <ul className="product-list" >
+                {products.map((product) => (
+                    <li key={product.id} className="product-item" onClick={() => handleProductClick(product.id)}>
+                        <img
+                            src={product.images?.[0]?.image_url || 'https://via.placeholder.com/150'}
+                            alt={product.name}
+                            className="product-image"
+                        />
+                        <div className="product-info">
+                            <p className="product-name">{product.name}</p>
+                            <div className="product-price-container">
+                                <p className="product-price">${product.price}</p>
+                                {product.old_price && (
+                                    <p className="product-old-price">${product.old_price}</p>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                </li>
-            ))}
-        </ul>
-    </div>
-);
+                    </li>
+                ))}
+
+            </ul>
+        </div>
+    );
+
     return (
         <div className="about-container">
-            <div className="top-content-row">
+            <div className="top-content-row-about-us">
                 <div className="text-container">
                     <div className="who-we-are">WHO WE ARE</div>
                     <h1 className="title">
@@ -109,6 +128,7 @@ const AboutUs = () => {
                 {renderProducts(promotedProducts.summerSale, 'Top Rated')}
                 {renderProducts(promotedProducts.new, 'New Arrivals')}
             </div>
+            <ToastContainer />
         </div>
     );
 };

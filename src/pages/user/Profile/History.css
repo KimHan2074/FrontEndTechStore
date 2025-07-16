@@ -11,6 +11,7 @@
 .history-content {
   width: 100%;
   margin: 20px;
+  padding: 20px;
 }
 
 .history-container {
@@ -74,13 +75,6 @@
   border-bottom: none;
 }
 
-.product-image-history {
-  width: 130px;
-  height: 130px;
-  object-fit: contain;
-  margin-right: 15px;
-  border-radius: 4px;
-}
 
 .product-info {
   flex: 1;
@@ -138,3 +132,64 @@
     font-size: 15px;
   }
 }
+
+.product-in-order {
+  display: flex;
+  gap: 10px;
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.product-image-history {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: #fafafa;
+}
+
+.order-products {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.order-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-right: 20px;
+}
+
+.edit-icon {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  transition: background-color 0.2s;
+}
+
+.edit-icon:active {
+  background-color: transparent !important;
+  box-shadow: none;
+}
+
+
+/*  */

@@ -77,7 +77,7 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
           <p className="no-results-message">No matching articles found</p>
         ) : (
          currentCards
-  .filter((card) => card.author) // Chỉ lấy blog có author
+  .filter((card) => card.author) 
   .map((card) => (
     <div
       key={card.id}

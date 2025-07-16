@@ -26,7 +26,7 @@ const PromoBanner = () => {
         const summerSale = promotedData.find(p => p.promotion_type === "summer sale");
         setSummerSaleProduct(summerSale || null);
       } catch (error) {
-        console.error("❌ Lỗi gọi API:", error);
+        console.error("❌ API call error:", error);
       }
     };
 
@@ -68,7 +68,6 @@ const PromoBanner = () => {
                   <h2 className="product-title-banner">{product.name}</h2>
                   <h3 className="product-subtitle-banner">Xbox</h3>
                   <p className="product-description-banner">{product.description}</p>
-                  {/* <button className="buy-button-banner" onClick={handleShopNow}>SHOW NOW</button> */}
                  <BuyNow className="buy-button-banner" product={product} label="SHOW NOW" />
                 </div>
                 <div className="product-image-banner">
@@ -83,7 +82,6 @@ const PromoBanner = () => {
         </Slider>
       </div>
 
-      {/* RIGHT: SUMMER SALES (always visible) */}
       <div className="side-products-banner">
         <div className="product-card-banner">
           <div className="card-overlay-content">

@@ -65,7 +65,7 @@ const BestDealSection = () => {
         });
         const duplicated = Object.entries(idMap).filter(([id, count]) => count > 1);
         if (duplicated.length > 0) {
-          console.warn("⚠️ ID trùng trong deals:", duplicated);
+          console.warn("⚠️ Duplicate ID in deals:", duplicated);
         }
 
         if (uniqueDeals.length > 0) {
@@ -77,7 +77,7 @@ const BestDealSection = () => {
           setFeaturedProduct(null);
         }
       } catch (error) {
-        console.error("Lỗi khi lấy sản phẩm Best Deal:", error);
+        console.error("Error when getting Best Deal product:", error);
       }
     };
 
@@ -111,8 +111,16 @@ const BestDealSection = () => {
   }, [featuredProduct]);
 
   const handleProductClick = (productId) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        toast.warning("Please login to view product details!");
+        return;
+    }
+
     navigate(`/user/product-detail/${productId}`);
-  };
+};
+
   return (
     <div className="best-deals-container-best-deal">
       <div className="header-section-best-deal">
