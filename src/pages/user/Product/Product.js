@@ -84,10 +84,10 @@ const ProductList = ({ searchQuery }) => {
             products.map((product) => (
               <div
                 key={product.id}
-                className="product-card border rounded-md shadow-sm p-4 flex items-center mb-4"
+                className="product-card-product-list border rounded-md shadow-sm p-4 flex items-center mb-4"
               >
                 {product.promotion_type && (
-                  <div className="promotion-label">{product.promotion_type}</div>
+                  <div className="promotion-label-product-list">{product.promotion_type}</div>
                 )}
                 <img
                   src={

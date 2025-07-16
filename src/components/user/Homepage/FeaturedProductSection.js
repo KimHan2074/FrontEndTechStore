@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const FeaturedProductSection = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -44,8 +45,16 @@ const FeaturedProductSection = () => {
   };
 
   const handleProductClick = (productId) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        toast.warning("Please login to view product details!");
+        return;
+    }
+
     navigate(`/user/product-detail/${productId}`);
-  };
+};
+
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (

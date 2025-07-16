@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 const CategoryItemHome = () => {
   const [categories, setCategories] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -30,10 +31,17 @@ const CategoryItemHome = () => {
     return () => clearInterval(interval);
   }, [categories]);
 
-  const handleCategoryClick = (category) => {
-    console.log("Clicked category:", category);
-    navigate("/user/Product");
-  };
+ const handleProductClick = (productId) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        toast.warning("Please login to view product details!");
+        return;
+    }
+
+    navigate(`/user/product-detail/${productId}`);
+};
+
 
   const visibleCategories = categories.slice(currentIndex, currentIndex + 6);
 
@@ -43,7 +51,7 @@ const CategoryItemHome = () => {
   <div
     key={`${category.id}-${index}`}
     className="category-item"
-    onClick={() => handleCategoryClick(category)}
+    onClick={() => handleProductClick(category)}
   >
     <div className="category-icon">
       <img

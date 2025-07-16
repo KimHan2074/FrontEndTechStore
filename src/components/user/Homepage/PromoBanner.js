@@ -26,7 +26,7 @@ const PromoBanner = () => {
         const summerSale = promotedData.find(p => p.promotion_type === "summer sale");
         setSummerSaleProduct(summerSale || null);
       } catch (error) {
-        console.error("❌ Lỗi gọi API:", error);
+        console.error("❌ API call error:", error);
       }
     };
 

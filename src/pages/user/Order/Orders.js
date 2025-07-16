@@ -25,7 +25,7 @@ const Sidebar = ({ username, email }) => {
           </Link>
         </li>
         <li className="menu-item">
-          <Link to="/user/orders" className="menu-link">
+          <Link to="/user/history" className="menu-link">
             <FileText className="menu-icon" />
             My Orders
           </Link>
