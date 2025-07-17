@@ -48,7 +48,7 @@ function Header({ onSearch }) {
 }, []);
 
 
-  useEffect(() => {
+useEffect(() => {
   const fetchWishlistCount = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -56,11 +56,26 @@ function Header({ onSearch }) {
 
       if (!token || !userId) return;
 
-      const res = await axios.get(`https://backendlaraveltechstore-production.up.railway.app/api/user/wishlist/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const response = await fetch(`https://backendlaraveltechstore-production.up.railway.app/api/user/wishlist/${userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
 
-      setWishlistCount(res.data.length);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Nếu data là mảng
+      setWishlistCount(data.length);
+
+      // Nếu data có dạng: { wishlist: [...] }
+      // setWishlistCount(data.wishlist.length);
+
     } catch (error) {
       console.error("Failed to fetch wishlist count:", error);
     }
@@ -75,6 +90,7 @@ function Header({ onSearch }) {
     window.removeEventListener("wishlist-updated", handleWishlistUpdate);
   };
 }, []);
+
 
   useEffect(() => {
     const fetchCategories = async () => {
