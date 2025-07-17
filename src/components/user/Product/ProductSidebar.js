@@ -33,7 +33,7 @@ const fetchGalleryImages = async () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/products/all-categories");
+      const response = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/products/all-categories");
       setCategories(response.data);
     } catch (err) {
       console.error("Error fetching categories:", err);
@@ -56,8 +56,8 @@ const fetchGalleryImages = async () => {
     try {
       const response = await axios.get(
         categoryId
-          ? `http://127.0.0.1:8000/api/products/top-five?category_id=${categoryId}`
-          : "http://127.0.0.1:8000/api/products/top-five"
+          ? `https://backendlaraveltechstore-production.up.railway.app/api/products/top-five?category_id=${categoryId}`
+          : "https://backendlaraveltechstore-production.up.railway.app/api/products/top-five"
       );
       setProducts(response.data);
     } catch (err) {
