@@ -55,7 +55,7 @@ const CategoryItemHome = () => {
   >
     <div className="category-icon">
       <img
-        src={category.image}
+        src={category.image_url}
         alt={category.name}
         className="category-image"
       />
