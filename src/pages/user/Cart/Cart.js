@@ -256,6 +256,7 @@ export default function Cart() {
       const response = await axios.post(`${apiUrl}/api/user/cart/checkout`, payload, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
         },
       });
 
