@@ -7,6 +7,8 @@ import PaymentConfirmationContent from "../../../components/user/Payment/Payment
 import LoadingSpinner from "../../../components/common/LoadingSpinner.js"
 import { useNavigate } from "react-router-dom"
 
+const apiUrl = process.env.REACT_APP_BE_URL;
+
 export default function Cart() {
   const [loading, setLoading] = useState(true)
   const [orderData, setOrderData] = useState(null)
@@ -15,7 +17,7 @@ export default function Cart() {
 
   useEffect(() => {
     axios
-      .get("/api/user/order/confirmation", {
+      .get(`${apiUrl}/api/user/order/confirmation`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           Accept: "application/json",
@@ -64,7 +66,7 @@ export default function Cart() {
     setConfirming(true) 
     axios
       .post(
-        "/api/user/order/confirm-payment",
+        `${apiUrl}/api/user/order/confirm-payment`,
         {},
         {
           headers: {

@@ -49,10 +49,11 @@ export default function SignIn() {
         withCredentials: true
       });
 
-      const { token, role, user } = response.data;
+      const { token, role, user, userId } = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('userId', userId);
       console.log('Login successful:', response.data);
 
         setTimeout(() => {
