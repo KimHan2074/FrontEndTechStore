@@ -8,6 +8,7 @@ import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../../context/CartContext";
 
+const apiUrl = process.env.REACT_APP_BE_URL;
 
 export default function Cart() {
   const { cartItems, setCartItems } = useCart();
@@ -18,11 +19,10 @@ export default function Cart() {
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const fetchCartItems = () => {
       axios
-        .get("/api/user/cart", {
+        .get(`${apiUrl}/api/user/cart`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             Accept: "application/json",
@@ -90,7 +90,7 @@ export default function Cart() {
 
     axios
       .put(
-        `/api/user/cart/${itemId}/quantity`,
+        `${apiUrl}/api/user/cart/${itemId}/quantity`,
         { quantity: newQuantity },
         {
           headers: {
@@ -141,7 +141,7 @@ export default function Cart() {
 
   const handleRemoveItem = (itemId) => {
     axios
-      .delete(`/api/user/cart/${itemId}`, {
+      .delete(`${apiUrl}/api/user/cart/${itemId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -170,7 +170,7 @@ export default function Cart() {
   const handleApplyCoupon = () => {
     axios
       .post(
-        "/api/user/cart/apply-coupon",
+        `${apiUrl}/api/user/cart/apply-coupon`,
         { code: couponCode },
         {
           headers: {
@@ -210,7 +210,7 @@ export default function Cart() {
 
 
     axios
-      .delete("/api/user/cart", {
+      .delete(`${apiUrl}/api/user/cart`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -253,7 +253,7 @@ export default function Cart() {
     };
 
     try {
-      const response = await axios.post("/api/user/cart/checkout", payload, {
+      const response = await axios.post(`${apiUrl}/api/user/cart/checkout`, payload, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

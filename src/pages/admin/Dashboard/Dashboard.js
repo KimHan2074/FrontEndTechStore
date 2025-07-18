@@ -3,6 +3,8 @@ import axios from "axios"
 import DashboardAnalytics from '../../../components/admin/Dashboard/DashboardAnalytics';
 import "./Dashboard.css";
 
+const apiUrl = process.env.REACT_APP_BE_URL;
+
 const Dashboard = () => {
   const [summary, setSummary] = useState({})
   const [monthlyRevenue, setMonthlyRevenue] = useState([])
@@ -28,11 +30,11 @@ const Dashboard = () => {
         statusRes,
         topProductRes
       ] = await Promise.all([
-        axios.get("/api/admin/dashboard/summary", { headers }),
-        axios.get("/api/admin/dashboard/monthly-revenue", { headers }),
-        axios.get("/api/admin/dashboard/revenue-by-category", { headers }),
-        axios.get("/api/admin/dashboard/order-status-distribution", { headers }),
-        axios.get("/api/admin/dashboard/top-selling-products", { headers }),
+        axios.get(`${apiUrl}/api/admin/dashboard/summary`, { headers }),
+        axios.get(`${apiUrl}/api/admin/dashboard/monthly-revenue`, { headers }),
+        axios.get(`${apiUrl}/api/admin/dashboard/revenue-by-category`, { headers }),
+        axios.get(`${apiUrl}/api/admin/dashboard/order-status-distribution`, { headers }),
+        axios.get(`${apiUrl}/api/admin/dashboard/top-selling-products`, { headers }),
       ])
 
       // 👉 Console log tất cả dữ liệu trả về:

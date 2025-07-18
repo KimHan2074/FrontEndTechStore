@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../../../pages/user/Product/Product.css";
 
+const apiUrl = process.env.REACT_APP_BE_URL;
+
 const DescriptionTab = () => {
   const { id: productId } = useParams();
   const [descriptionData, setDescriptionData] = useState(null);
@@ -11,7 +13,7 @@ const DescriptionTab = () => {
   useEffect(() => {
     const fetchDescription = async () => {
       try {
-        const res = await axios.get(`/api/description/product/${productId}`, {
+        const res = await axios.get(`${apiUrl}/api/description/product/${productId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
