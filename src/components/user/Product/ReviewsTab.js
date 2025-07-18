@@ -4,6 +4,8 @@ import axios from "axios";
 import "../../../pages/user/Product/Product.css";
 import { toast } from "react-toastify";
 
+const apiUrl = process.env.REACT_APP_BE_URL;
+
 const ReviewsTab = () => {
   const { id: productId } = useParams(); 
   const [reviews, setReviews] = useState([]);
@@ -11,7 +13,7 @@ const ReviewsTab = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const res = await axios.get(`/api/reviews/product/${productId}`, {
+        const res = await axios.get(`${apiUrl}/api/reviews/product/${productId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

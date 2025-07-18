@@ -3,13 +3,15 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { CartContext } from '../../../context/CartContext';
 
+const apiUrl = process.env.REACT_APP_BE_URL;
+
 const AddToCart = ({ product, quantity = 1, className = "", children }) => {
   const { syncCartItems } = useContext(CartContext);
 
   const checkStockBeforeAdd = async (productId, quantityToAdd) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`/api/user/cart`, {
+      const res = await axios.get(`${apiUrl}/api/user/cart`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -61,7 +63,7 @@ const AddToCart = ({ product, quantity = 1, className = "", children }) => {
 
     console.log("📤 Sending to backend:", payload);
 
-    await axios.post("/api/user/cart/add", payload, {
+    await axios.post(`${apiUrl}/api/user/cart/add`, payload, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json",

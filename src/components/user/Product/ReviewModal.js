@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import "../../../pages/user/Product/Product.css";
 import { useParams } from "react-router-dom";
 
+const apiUrl = process.env.REACT_APP_BE_URL;
+
 const ReviewModal = ({ onClose }) => {
   const { id } = useParams(); 
   const [overallRating, setOverallRating] = useState(0);
@@ -69,7 +71,7 @@ const ReviewModal = ({ onClose }) => {
     }
 
     try {
-      await axios.post(`/api/product/${id}/review`, formData, {
+      await axios.post(`${apiUrl}/api/product/${id}/review`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -57,7 +57,7 @@ export default function OrderManagement() {
         case "completed":
         return "status-badge completed";
         case "processing":
-        return "status-badge processing";
+        return "status-badge processing"; 
         case "cancelled":
         return "status-badge cancelled";
         default:
