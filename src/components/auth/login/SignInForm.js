@@ -163,8 +163,9 @@ export default function SignInPage() {
       // Lưu thông tin vào localStorage
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('role', role);
-      localStorage.setItem('token', token);      // 🔐 để Header biết user đã đăng nhập
-      localStorage.setItem('userId', userId);    // (nếu bạn cần lấy wishlist/user data)
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId); 
+console.log(response.data);
 
       // Điều hướng + reload
       if (role === 'admin') {

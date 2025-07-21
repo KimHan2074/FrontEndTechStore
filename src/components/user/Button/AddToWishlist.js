@@ -15,7 +15,19 @@ export default class AddToWishlist extends Component {
 
     try {
       const token = localStorage.getItem("token");
-      const finalUserId = localStorage.getItem("userId");
+      const userIdRes = await axios.get("http://127.0.0.1:8000/api/user/getUserId", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+        withCredentials: true,
+      });
+      const finalUserId = userIdRes.data.userId;
+localStorage.setItem("userId", finalUserId);
+
+
+      console.log("userId:", finalUserId);
+      console.log("token:", token);
 
       if (!finalUserId || !token) {
         toast.error("Unable to retrieve user information.");
@@ -42,6 +54,8 @@ export default class AddToWishlist extends Component {
         toast.info("This product is already in your wishlist.");
       } else {
         toast.success("Successfully added to wishlist!");
+          window.dispatchEvent(new Event("wishlist-updated")); // 👈 thêm dòng này
+
       }
 
       this.setState({ added: true });

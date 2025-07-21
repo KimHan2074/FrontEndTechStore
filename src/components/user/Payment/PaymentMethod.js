@@ -7,6 +7,7 @@ const paymentMap = {
   cash: "COD",
   momo: "Momo",
   qr: "QR",
+  vnpay: "VNPay",
 };
 
 const PaymentIcon = ({ type }) => {
@@ -24,47 +25,80 @@ const PaymentIcon = ({ type }) => {
   }
 };
 
-const useCheckoutData = () => {
-  const [data, setData] = useState({
-    products: [],
-    subtotal: 0,
-    discount: 0,
-    shippingFee: 0,
-    total: 0,
-  });
-
-  useEffect(() => {
-    const localData = JSON.parse(localStorage.getItem("checkoutData"));
-    if (localData) {
-      const total = (localData.subtotal || 0) - (localData.discount || 0) + (localData.shippingCost || 0);
-      setData({
-        products: localData.items || [],
-        subtotal: localData.subtotal || 0,
-        discount: localData.discount || 0,
-        shippingFee: localData.shippingCost || 0,
-        total,
-      });
-    }
-  }, []);
-
-  return data;
-};
-
 const PaymentMethod = () => {
   const [selectedPayment, setSelectedPayment] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showQRCode, setShowQRCode] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [shippingFee, setShippingFee] = useState(0);
+  const [total, setTotal] = useState(0);
+
   const navigate = useNavigate();
-  const { products, subtotal, discount, shippingFee, total } = useCheckoutData();
+
+  const token = localStorage.getItem("token");
+  const orderId = localStorage.getItem("currentOrderId");
+
+  useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        const res = await fetch(`http://localhost:8000/api/user/orders/${orderId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+        console.log("📦 Dữ liệu đơn hàng từ API:", data.order);
+
+        if (res.ok) {
+          const details = data.order.order_details || [];
+
+          const subtotalCalc = details.reduce((sum, item) => {
+            return sum + parseFloat(item.unit_price) * item.quantity;
+          }, 0);
+
+          const totalAmount = parseFloat(data.order.total_amount) || 0;
+          const discountValue = parseFloat(data.order.discount || 0);
+          const calculatedShipping = totalAmount - subtotalCalc + discountValue;
+
+          setProducts(details);
+          setSubtotal(subtotalCalc);
+          setDiscount(discountValue);
+          setShippingFee(calculatedShipping > 0 ? calculatedShipping : 0);
+          setTotal(totalAmount);
+console.log({
+  subtotalCalc,
+  discountValue,
+  totalAmount,
+  calculatedShipping,
+});
+
+        } else {
+          alert("❌ Failed to load order");
+        }
+      } catch (err) {
+        console.error("❌ Error fetching order:", err);
+      }
+    };
+
+    if (orderId && token) {
+      fetchOrder();
+    }
+  }, [orderId, token]);
+
 
   const handleAccept = async () => {
     if (!selectedPayment) return alert("Please select a payment method.");
-    const orderId = localStorage.getItem("currentOrderId");
     if (!orderId) return alert("Order ID not found.");
-    const amountVND = Math.round(total * 24000);
+
+    const exchangeRate = 24000;
+    const amountVND = Math.round(total * exchangeRate);
 
     try {
       setIsLoading(true);
+
       if (selectedPayment === "qr") {
         if (!showQRCode) return setShowQRCode(true);
         await axios.post("http://localhost:8000/api/user/orders/confirm-payment", {
@@ -74,17 +108,6 @@ const PaymentMethod = () => {
         alert("✅ Your QR payment has been successfully confirmed!");
         return navigate("/user/payment_confirmation");
       }
-
-      await fetch("http://localhost:8000/api/user/payments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          order_id: orderId,
-          payment_method: selectedPayment,
-          amount: amountVND,
-        }),
-      });
 
       if (selectedPayment === "cash") {
         await axios.post("http://localhost:8000/api/user/orders/confirm-payment", {
@@ -105,7 +128,21 @@ const PaymentMethod = () => {
         });
         const data = await res.json();
         if (data.payUrl) window.location.href = data.payUrl;
-        else alert("Failed to create MoMo payment link.");
+        else alert("❌ Failed to create MoMo payment link.");
+        return;
+      }
+
+      if (selectedPayment === "vnpay") {
+        const res = await axios.post("http://localhost:8000/api/user/create-payment", {
+          amount: amountVND,
+          order_id: orderId,
+        });
+        if (res.data && res.data.url) {
+          window.location.href = res.data.url;
+        } else {
+          alert("❌ Failed to create VNPay payment link.");
+        }
+        return;
       }
     } catch (err) {
       alert("An error occurred while processing the payment.");
@@ -119,6 +156,7 @@ const PaymentMethod = () => {
     { id: "momo", name: "MoMo", description: "Payment via MoMo", icon: "phone" },
     { id: "cash", name: "Cash", description: "Payment via Cash", icon: "cash" },
     { id: "qr", name: "QR", description: "Payment via QR", icon: "qr" },
+    { id: "vnpay", name: "VNPay", description: "Payment via VNPay", icon: "card" },
   ];
 
   return (
@@ -170,6 +208,12 @@ const PaymentMethod = () => {
               </div>
             )}
 
+            {selectedPayment === "vnpay" && (
+              <div style={{ marginTop: "20px", fontStyle: "italic", color: "#555" }}>
+                You will be redirected to VNPay to complete the payment.
+              </div>
+            )}
+
             <div className="payment-footer-paymentMethod">
               <div className="total-section-paymentMethod">
                 <span className="total-label-paymentMethod">Total:</span>
@@ -199,7 +243,7 @@ const PaymentMethod = () => {
             <div className="product-list-paymentMethod">
               {products.length > 0 ? (
                 products.map((product) => (
-                  <div key={product.cart_item_id} className="product-item-paymentMethod">
+                  <div key={product.cart_item_id || product.product_id} className="product-item-paymentMethod">
                     <img src={product.image || "/placeholder.svg"} alt={product.name} className="product-image-paymentMethod" />
                     <div className="product-details-paymentMethod">
                       <h4>{product.name}</h4>

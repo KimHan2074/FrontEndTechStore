@@ -98,7 +98,7 @@ const BestSellerSection = () => {
     const interval = setInterval(fetchBestDeals, 5000);
     return () => clearInterval(interval);
   }, []);
-
+if (products.length === 0) return null;
   return (
     <div className="container-best-seller">
       <div className="header-best-seller">

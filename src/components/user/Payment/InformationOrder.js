@@ -64,13 +64,26 @@ const InformationOrder = ({ onContinue, setCurrentStep, currentStep }) => {
         });
 
         const data = await res.json();
+        console.log("📦 Dữ liệu đơn hàng từ API:", data.order);
+
 
         if (res.ok) {
           setOrder(data.order);
           setProducts(data.order.order_details);
-          setShippingFee(data.order.shipping_fee || 0);  
-          setDiscount(data.order.discount || 0);         
-          setTotal(Number(data.order.total_amount) || 0);
+          const subtotalCalc = data.order.order_details.reduce((sum, item) => {
+            return sum + parseFloat(item.unit_price) * item.quantity;
+          }, 0);
+
+          const totalAmount = parseFloat(data.order.total_amount) || 0;
+          const discountValue = parseFloat(data.order.discount || 0);
+          const calculatedShipping = totalAmount - subtotalCalc + discountValue;
+
+          setShippingFee(calculatedShipping > 0 ? calculatedShipping : 0);
+          setSubtotal(subtotalCalc);
+          setDiscount(discountValue);
+          setTotal(totalAmount);
+          // setDiscount(parseFloat(data.order.discount) || 0);
+          // setTotal(parseFloat(data.order.total_amount) || 0);
         } else {
           alert("Failed to load order data.");
         }

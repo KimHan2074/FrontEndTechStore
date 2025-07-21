@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import "../../../pages/user/Header/Header.css"
 import { useCart } from "../../../context/CartContext"
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ function Header({ onSearch }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const { cartItems } = useCart();
   const itemCount = cartItems?.length || 0;
@@ -31,30 +31,36 @@ function Header({ onSearch }) {
     e.preventDefault();
     onSearch(searchQuery);
   };
-
- useEffect(() => {
-  const checkLogin = () => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
+  const handleCategoryClick = (categoryId, categoryName) => {
+    navigate(`/user/product?categoryId=${categoryId}&categoryName=${encodeURIComponent(categoryName)}`);
   };
-
-  checkLogin();
-
-  window.addEventListener("storage", checkLogin);
-
-  return () => {
-    window.removeEventListener("storage", checkLogin);
-  };
-}, []);
-
-
   useEffect(() => {
+    const checkLogin = () => {
+      const token = localStorage.getItem("token");
+      setIsLoggedIn(!!token);
+    };
+
+    checkLogin();
+    window.addEventListener("storage", checkLogin);
+
+    return () => {
+      window.removeEventListener("storage", checkLogin);
+    };
+  }, []);
+
+
   const fetchWishlistCount = async () => {
     try {
       const token = localStorage.getItem("token");
-      const userId = localStorage.getItem("userId");
+      if (!token) return;
 
-      if (!token || !userId) return;
+      const userIdRes = await axios.get("http://127.0.0.1:8000/api/user/getUserId", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+      const userId = userIdRes.data.userId;
 
       const res = await axios.get(`http://localhost:8000/api/user/wishlist/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -66,15 +72,6 @@ function Header({ onSearch }) {
     }
   };
 
-  fetchWishlistCount();
-
-  const handleWishlistUpdate = () => fetchWishlistCount();
-  window.addEventListener("wishlist-updated", handleWishlistUpdate);
-
-  return () => {
-    window.removeEventListener("wishlist-updated", handleWishlistUpdate);
-  };
-}, []);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -100,10 +97,21 @@ function Header({ onSearch }) {
 
     fetchCategories();
   }, []);
+  useEffect(() => {
+    fetchWishlistCount(); // Gọi ngay khi Header render lần đầu
 
+    const handleWishlistUpdate = () => {
+      fetchWishlistCount(); // Gọi lại khi wishlist có sự thay đổi
+    };
+
+    window.addEventListener("wishlist-updated", handleWishlistUpdate);
+
+    return () => {
+      window.removeEventListener("wishlist-updated", handleWishlistUpdate);
+    };
+  }, []);
 
   return (
-
     <header className="store-header">
       <div className="promo-banner">
         <div className="container banner-content">
@@ -165,40 +173,46 @@ function Header({ onSearch }) {
                 window.location.href = "/signin";
               }
             }} className="icon-link">
-              <Heart size={20} /><span className="badge">{wishlistCount}</span>
+              <Heart size={20} />
+              <span className="badge">{wishlistCount}</span>
             </a>
+
             <li className="user-dropdown">
-          <a href={isLoggedIn ? "/user/profile" : "/signin"} className="icon-link">
-            <User size={20} />
-          </a>
-          {isLoggedIn && (
-            <ul className="dropdown-menu">
-              <li>
-                <a href="#" onClick={(e) => {
-                  e.preventDefault();
-                  Logout();
-                }}>Logout</a>
-              </li>
-            </ul>
-          )}
-        </li>
+              <a href={isLoggedIn ? "/user/profile" : "/signin"} className="icon-link">
+                <User size={20} />
+              </a>
+              {isLoggedIn && (
+                <ul className="dropdown-menu">
+                  <li>
+                    <a href="#" onClick={(e) => {
+                      e.preventDefault();
+                      Logout();
+                    }}>Logout</a>
+                  </li>
+                </ul>
+              )}
+            </li>
           </div>
         </div>
         <div className="category-nav">
           <div className="container category-content">
+
             <div
               className="category-dropdown"
-              onMouseEnter={() => setIsDropdownOpen(true)}
-              onMouseLeave={() => setIsDropdownOpen(false)}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
-              <button className="dropdown-btn">
-                All Category <ChevronDown />
-              </button>
+              <div className="dropdown-wrapper">
+                <button className="dropdown-btn">
+                  All Category <ChevronDown />
+                </button>
 
-              {isDropdownOpen && (
-                <div className="dropdown-menu horizontal-menu">
+                <div className={`dropdown-menu horizontal-menu ${isDropdownOpen ? 'active' : ''}`}>
                   {Array.isArray(categories) && categories.map((category) => (
-                    <div key={category.id} className="dropdown-item">
+                    <div
+                      key={category.id}
+                      className="dropdown-item"
+                      onClick={() => handleCategoryClick(category.id, category.name)}
+                    >
                       <img
                         src={category.image_url || "https://via.placeholder.com/50"}
                         alt={category.name}
@@ -208,7 +222,7 @@ function Header({ onSearch }) {
                     </div>
                   ))}
                 </div>
-              )}
+              </div>
             </div>
 
             <nav className="main-menus">
