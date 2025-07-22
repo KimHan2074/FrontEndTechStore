@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../pages/user/Payment/Payment.css";
 import axios from "axios";
+import InformationProductDetail from "./InformationProductDetail";
 
 const paymentMap = {
   cash: "COD",
@@ -40,54 +41,6 @@ const PaymentMethod = () => {
   const token = localStorage.getItem("token");
   const orderId = localStorage.getItem("currentOrderId");
 
-  useEffect(() => {
-    const fetchOrder = async () => {
-      try {
-        const res = await fetch(`http://localhost:8000/api/user/orders/${orderId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await res.json();
-        console.log("📦 Dữ liệu đơn hàng từ API:", data.order);
-
-        if (res.ok) {
-          const details = data.order.order_details || [];
-
-          const subtotalCalc = details.reduce((sum, item) => {
-            return sum + parseFloat(item.unit_price) * item.quantity;
-          }, 0);
-
-          const totalAmount = parseFloat(data.order.total_amount) || 0;
-          const discountValue = parseFloat(data.order.discount || 0);
-          const calculatedShipping = totalAmount - subtotalCalc + discountValue;
-
-          setProducts(details);
-          setSubtotal(subtotalCalc);
-          setDiscount(discountValue);
-          setShippingFee(calculatedShipping > 0 ? calculatedShipping : 0);
-          setTotal(totalAmount);
-console.log({
-  subtotalCalc,
-  discountValue,
-  totalAmount,
-  calculatedShipping,
-});
-
-        } else {
-          alert("❌ Failed to load order");
-        }
-      } catch (err) {
-        console.error("❌ Error fetching order:", err);
-      }
-    };
-
-    if (orderId && token) {
-      fetchOrder();
-    }
-  }, [orderId, token]);
-
 
   const handleAccept = async () => {
     if (!selectedPayment) return alert("Please select a payment method.");
@@ -101,7 +54,7 @@ console.log({
 
       if (selectedPayment === "qr") {
         if (!showQRCode) return setShowQRCode(true);
-        await axios.post("http://localhost:8000/api/user/orders/confirm-payment", {
+        await axios.post("https://backendlaraveltechstore-production.up.railway.app/api/user/orders/confirm-payment", {
           order_id: orderId,
           method: paymentMap[selectedPayment],
         });
@@ -110,7 +63,7 @@ console.log({
       }
 
       if (selectedPayment === "cash") {
-        await axios.post("http://localhost:8000/api/user/orders/confirm-payment", {
+        await axios.post("https://backendlaraveltechstore-production.up.railway.app/api/user/orders/confirm-payment", {
           order_id: orderId,
           method: paymentMap[selectedPayment],
         });
@@ -120,7 +73,7 @@ console.log({
 
       if (selectedPayment === "momo") {
         if (amountVND > 50000000) return alert("⚠️ MoMo supports payments up to 50 million VND.");
-        const res = await fetch("http://localhost:8000/api/user/momo/create-payment", {
+        const res = await fetch("https://backendlaraveltechstore-production.up.railway.app/api/user/momo/create-payment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -133,7 +86,7 @@ console.log({
       }
 
       if (selectedPayment === "vnpay") {
-        const res = await axios.post("http://localhost:8000/api/user/create-payment", {
+        const res = await axios.post("https://backendlaraveltechstore-production.up.railway.app/api/user/create-payment", {
           amount: amountVND,
           order_id: orderId,
         });
@@ -158,7 +111,33 @@ console.log({
     { id: "qr", name: "QR", description: "Payment via QR", icon: "qr" },
     { id: "vnpay", name: "VNPay", description: "Payment via VNPay", icon: "card" },
   ];
+useEffect(() => {
+  const fetchOrder = async () => {
+    try {
+      const res = await fetch(
+        `https://backendlaraveltechstore-production.up.railway.app/api/user/orders/${orderId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
+      if (!res.ok) throw new Error("Failed to fetch order");
+
+      const data = await res.json();
+      if (data.order) {
+        setTotal(parseFloat(data.order.total_amount || 0));
+      }
+    } catch (err) {
+      console.error("Error fetching order in PaymentMethod:", err.message);
+    }
+  };
+
+  if (orderId && token) {
+    fetchOrder();
+  }
+}, [orderId, token]);
   return (
     <div className="payment-container-paymentMethod">
       <h1 className="payment-title-paymentMethod">Payment</h1>
@@ -215,10 +194,12 @@ console.log({
             )}
 
             <div className="payment-footer-paymentMethod">
-              <div className="total-section-paymentMethod">
+               <div className="total-section-paymentMethod">
                 <span className="total-label-paymentMethod">Total:</span>
                 <span className="total-amount-paymentMethod">${total.toFixed(2)}</span>
               </div>
+
+
               <button
                 className="accept-btn-paymentMethod"
                 onClick={handleAccept}
@@ -238,37 +219,13 @@ console.log({
         </div>
 
         <div className="right-section-paymentMethod">
-          <div className="product-section-paymentMethod">
-            <h3>Products</h3>
-            <div className="product-list-paymentMethod">
-              {products.length > 0 ? (
-                products.map((product) => (
-                  <div key={product.cart_item_id || product.product_id} className="product-item-paymentMethod">
-                    <img src={product.image || "/placeholder.svg"} alt={product.name} className="product-image-paymentMethod" />
-                    <div className="product-details-paymentMethod">
-                      <h4>{product.name}</h4>
-                      <p className="quantity-paymentMethod">Quantity: {product.quantity}</p>
-                      <div className="price-container-paymentMethod">
-                        <span className="current-price-paymentMethod">
-                          ${(product.unit_price * product.quantity).toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p>No products found.</p>
-              )}
-            </div>
-          </div>
-
-          <div className="order-summary-paymentMethod">
-            <h3>Order Summary</h3>
-            <div className="summary-row-paymentMethod"><span>Subtotal</span><span className="price-blue-paymentMethod">${subtotal.toFixed(2)}</span></div>
-            <div className="summary-row-paymentMethod"><span>Discount</span><span className="price-blue-paymentMethod">- ${discount.toFixed(2)}</span></div>
-            <div className="summary-row-paymentMethod"><span>Shipping Fee</span><span className="price-blue-paymentMethod">${shippingFee.toFixed(2)}</span></div>
-            <div className="summary-row-paymentMethod total-row-paymentMethod"><span>Total</span><span className="price-blue-paymentMethod">${total.toFixed(2)}</span></div>
-          </div>
+        <InformationProductDetail
+  products={products}
+  subtotal={subtotal}
+  discount={discount}
+  shippingFee={shippingFee}
+  total={total}
+/>
         </div>
       </div>
     </div>

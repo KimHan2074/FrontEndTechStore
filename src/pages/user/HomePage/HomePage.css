@@ -1459,25 +1459,25 @@
   transform: translateX(-50%);
   background: #ffeaa7;
   color: #2d3436;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  font-size: 20px;
-  font-weight: 800;
-  z-index: 10;
-  box-shadow: 0 6px 20px rgba(255, 234, 167, 0.6);
-  border: 2px solid #fdcb6e;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 10px;
+  padding: 4px 6px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: clamp(10px, 2vw, 14px);
+  box-shadow: 0 4px 12px rgba(255, 234, 167, 0.5);
+  border: 1.5px solid #fdcb6e;
+  aspect-ratio: 1 / 1;
+  min-width: 40px;
+  min-height: 40px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: clamp(12px, 4vw, 20px);
+  word-wrap: break-word;
+  white-space: normal;
+  position: absolute;
+  z-index: 10;
 }
-
 
 
 .macbook-image{

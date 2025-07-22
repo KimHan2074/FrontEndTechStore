@@ -38,8 +38,8 @@ const AddProductForm = ({ onCancel, onSave }) => {
     const fetchData = async () => {
       try {
         const [categoryRes, promoRes] = await Promise.all([
-          axios.get("http://localhost:8000/api/admin/categories"),
-          axios.get("http://localhost:8000/api/admin/promotion-types"),
+          axios.get("https://backendlaraveltechstore-production.up.railway.app/api/admin/categories"),
+          axios.get("https://backendlaraveltechstore-production.up.railway.app/api/admin/promotion-types"),
         ]);
         setCategories(categoryRes.data.data || []);
         setPromotionTypes(promoRes.data.data || []);
@@ -77,7 +77,7 @@ const AddProductForm = ({ onCancel, onSave }) => {
       console.log("📦 Sending to API:", dataToSend);
 
       const res = await axios.post(
-        "http://localhost:8000/api/admin/create/products",
+        "https://backendlaraveltechstore-production.up.railway.app/api/admin/create/products",
         dataToSend,
         {
           headers: {

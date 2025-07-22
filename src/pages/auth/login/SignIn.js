@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://127.0.0.1:8000';
+axios.defaults.baseURL = 'https://backendlaraveltechstore-production.up.railway.app';
 
 export default function SignIn() {
   const API_URL = process.env.REACT_APP_BE_URL;
@@ -49,10 +49,11 @@ export default function SignIn() {
         withCredentials: true
       });
 
-      const { token, role, user } = response.data;
+      const { token, role, user, userId } = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('userId', userId);
       console.log('Login successful:', response.data);
 
         setTimeout(() => {
@@ -79,7 +80,7 @@ export default function SignIn() {
   }
 
   const handleGoogleSignUp = () => {
-    window.location.href = "http://127.0.0.1:8000/auth/google/redirect";
+    window.location.href = "https://backendlaraveltechstore-production.up.railway.app/auth/google/redirect";
   };
 
   return (

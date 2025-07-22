@@ -10,7 +10,7 @@ const CategoryItemHome = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/user/product/categories");
+         const response = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/product/categories");
         setCategories(response.data.data);
       } catch (err) {
         console.error("Error fetching categories:", err);

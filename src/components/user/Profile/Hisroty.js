@@ -57,7 +57,6 @@ const HistoryContent = () => {
   };
 
  const handleReorderOrder = async (order) => {
-  // Kiểm tra xem có sản phẩm nào đã bị xóa khỏi hệ thống không
   const unavailableProducts = order.order_details.filter(
     (detail) => !detail.product
   );
@@ -68,7 +67,7 @@ const HistoryContent = () => {
     return;
   }
 
-  // Nếu tất cả sản phẩm còn tồn tại, tiếp tục reorder
+
   const products = order.order_details.map((detail) => ({
     product_id: detail.product_id,
     quantity: detail.quantity,

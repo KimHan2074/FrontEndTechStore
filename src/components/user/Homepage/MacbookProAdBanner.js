@@ -11,12 +11,9 @@ const MacbookProAdBanner = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/user/product/index");
-        const data = response.data.data;
 
-        // Chỉ lấy các sản phẩm có đầy đủ thông tin cần thiết
-        const validProducts = data.filter(p => p && p.name && p.price && p.image_url);
-        setProducts(validProducts);
+        const product = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/product/index");
+        setProducts(product.data.data);
       } catch (err) {
         console.log("Fetch product of lastHome: ", err);
       }
@@ -35,8 +32,6 @@ const MacbookProAdBanner = () => {
   }, [products]);
 
   const product = products[currentIndex];
-
-  // Không có product => không hiển thị gì
   if (!product) return null;
 
   return (

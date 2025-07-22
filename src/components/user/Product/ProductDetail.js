@@ -22,6 +22,8 @@ import {
   CirclePlus,
 } from "lucide-react";
 
+const apiUrl = process.env.REACT_APP_BE_URL;
+
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -39,7 +41,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`/api/product/${id}/detail`, {
+        const response = await axios.get(`${apiUrl}/api/product/${id}/detail`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -133,7 +135,7 @@ const ProductDetail = () => {
 
     const fetchRelatedProducts = async () => {
       try {
-        const res = await axios.get(`/api/product/${id}/related`, {
+        const res = await axios.get(`${apiUrl}/api/product/${id}/related`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -235,9 +237,10 @@ Product does not exist.
           </div>
 
           <div className="action-buttons-product-detail">
-            <AddToCart
+             <AddToCart
               product={product}
               quantity={quantity}
+              selectedColor={selectedColor}
               className="add-to-cart-btn-product-detail"
             >
               <ShoppingCart color="#fff" size={25} style={{ marginRight: 8 }} />

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-	import Sidebar from "../../../pages/user/Sidebar/Sidebar";import HistoryContent from "../../../components/user/Profile/Hisroty";
+	import Sidebar from "../../../pages/user/Sidebar/Sidebar";
+  import HistoryContent from "../../../components/user/Profile/Hisroty";
 import "../../../pages/user/Profile/History.css";
 import axios from "axios";
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
@@ -16,14 +17,14 @@ const History = () => {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No token found");
 
-        const userIdRes = await axios.get("http://127.0.0.1:8000/api/user/getUserId", {
+        const userIdRes = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/getUserId", {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         });
 
         const userId = userIdRes.data.userId;
 
-        const userRes = await axios.get(`http://127.0.0.1:8000/api/user/${userId}`, {
+        const userRes = await axios.get(`https://backendlaraveltechstore-production.up.railway.app/api/user/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         });

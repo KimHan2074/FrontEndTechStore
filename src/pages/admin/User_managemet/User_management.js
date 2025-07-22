@@ -15,7 +15,7 @@ export default function UserManagement() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8000/api/admin/users")
+    fetch("https://backendlaraveltechstore-production.up.railway.app/api/admin/users")
       .then((res) => res.json())
       .then((data) => {
         if (data.status && data.data) {
@@ -33,7 +33,7 @@ export default function UserManagement() {
   }, []);
 
   const handleUpdateUser = () => {
-    fetch(`http://localhost:8000/api/admin/update-user/${editingUser.id}`, {
+    fetch(`https://backendlaraveltechstore-production.up.railway.app/api/admin/update-user/${editingUser.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

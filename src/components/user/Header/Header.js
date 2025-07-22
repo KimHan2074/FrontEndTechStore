@@ -54,7 +54,7 @@ function Header({ onSearch }) {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const userIdRes = await axios.get("http://127.0.0.1:8000/api/user/getUserId", {
+      const userIdRes = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/getUserId", {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
@@ -62,7 +62,7 @@ function Header({ onSearch }) {
       });
       const userId = userIdRes.data.userId;
 
-      const res = await axios.get(`http://localhost:8000/api/user/wishlist/${userId}`, {
+      const res = await axios.get(`https://backendlaraveltechstore-production.up.railway.app/api/user/wishlist/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -76,7 +76,7 @@ function Header({ onSearch }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/user/product/categories");
+        const response = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/product/categories");
         setCategories(Array.isArray(response.data.data) ? response.data.data : []);
       } catch (err) {
         console.error("Error fetching categories:", err);
@@ -98,10 +98,10 @@ function Header({ onSearch }) {
     fetchCategories();
   }, []);
   useEffect(() => {
-    fetchWishlistCount(); // Gọi ngay khi Header render lần đầu
+    fetchWishlistCount();
 
     const handleWishlistUpdate = () => {
-      fetchWishlistCount(); // Gọi lại khi wishlist có sự thay đổi
+      fetchWishlistCount();
     };
 
     window.addEventListener("wishlist-updated", handleWishlistUpdate);

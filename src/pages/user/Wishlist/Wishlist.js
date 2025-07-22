@@ -23,7 +23,7 @@ export default function Wishlist() {
       if (!token) throw new Error("Token not found");
 
       await axios.delete(
-        `http://127.0.0.1:8000/api/user/delete/wishlist/${item.id}`,
+        `https://backendlaraveltechstore-production.up.railway.app/api/user/delete/wishlist/${item.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ export default function Wishlist() {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("Token not found.");
 
-        const idRes = await axios.get("http://127.0.0.1:8000/api/user/getUserId", {
+        const idRes = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/getUserId", {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         });
@@ -57,7 +57,7 @@ export default function Wishlist() {
         const fetchedUserId = idRes.data.userId;
         setUserId(fetchedUserId);
 
-        const userRes = await axios.get(`http://127.0.0.1:8000/api/user/${fetchedUserId}`, {
+        const userRes = await axios.get(`https://backendlaraveltechstore-production.up.railway.app/api/user/${fetchedUserId}`, {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         });
@@ -70,7 +70,7 @@ export default function Wishlist() {
         });
 
         const wishlistRes = await axios.get(
-          `http://127.0.0.1:8000/api/user/wishlist/${fetchedUserId}`,
+          `https://backendlaraveltechstore-production.up.railway.app/api/user/wishlist/${fetchedUserId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true,

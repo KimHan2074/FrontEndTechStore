@@ -66,12 +66,30 @@ export default function SignUpPage() {
       return;
     }
   
+    // try {
+    //   setLoading(true);
+    //   await axios.post("https://backendlaraveltechstore-production.up.railway.app/api/auth/register", formData);
+    //   toast.success("Registration successful! Please check your email for OTP.");
+    //   setGeneratedEmail(formData.email);
+    //   setIsVerifying(true);
+    // } catch (error) {
+    //   console.error("Registration Error:", error);
+    //   toast.error(error?.response?.data?.message || "Registration failed.");
+    // } finally {
+    //   setLoading(false);
+    // }
+
     try {
       setLoading(true);
-      await axios.post("http://127.0.0.1:8000/api/auth/register", formData);
-      toast.success("Registration successful! Please check your email for OTP.");
-      setGeneratedEmail(formData.email);
-      setIsVerifying(true);
+      const response = await axios.post("https://backendlaraveltechstore-production.up.railway.app/api/auth/register", formData);
+
+      if (response.data.status) {
+        toast.success(response.data.message || "Registration successful! Please check your email for OTP.");
+        setGeneratedEmail(formData.email);
+        setIsVerifying(true);
+      } else {
+        toast.error(response.data.message || "Registration failed.");
+      }
     } catch (error) {
       console.error("Registration Error:", error);
       toast.error(error?.response?.data?.message || "Registration failed.");
@@ -81,7 +99,7 @@ export default function SignUpPage() {
   }
 
   const handleGoogleSignUp = () => {
-    window.location.href = "http://127.0.0.1:8000/auth/google/redirect";
+    window.location.href = "https://backendlaraveltechstore-production.up.railway.app/auth/google/redirect";
   };
 
   return (

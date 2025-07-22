@@ -23,8 +23,8 @@ const EditProductForm = ({ id, onCancel, onSave }) => {
     const fetchData = async () => {
       try {
         const [productRes, categoryRes] = await Promise.all([
-          axios.get(`http://localhost:8000/api/admin/edit/products/${id}`),
-          axios.get(`http://localhost:8000/api/admin/categories`),
+          axios.get(`https://backendlaraveltechstore-production.up.railway.app/api/admin/edit/products/${id}`),
+          axios.get(`https://backendlaraveltechstore-production.up.railway.app/api/admin/categories`),
         ]);
 
         const productData = productRes?.data?.data;
@@ -72,7 +72,7 @@ const EditProductForm = ({ id, onCancel, onSave }) => {
       };
 
       const res = await axios.put(
-        `http://localhost:8000/api/admin/update/products/${id}`,
+        `https://backendlaraveltechstore-production.up.railway.app/api/admin/update/products/${id}`,
         dataToSend
       );
 

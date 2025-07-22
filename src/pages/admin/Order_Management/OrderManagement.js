@@ -13,7 +13,7 @@ export default function OrderManagement() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8000/api/admin/orders")
+    fetch("https://backendlaraveltechstore-production.up.railway.app/api/admin/orders")
       .then((res) => res.json())
       .then((data) => {
         if (data.status && data.data) {
@@ -33,7 +33,7 @@ export default function OrderManagement() {
   const handleDeleteOrder = (id) => {
     if (!window.confirm("Are you sure you want to delete this order?")) return;
 
-    fetch(`http://localhost:8000/api/admin/orders/${id}`, {
+    fetch(`https://backendlaraveltechstore-production.up.railway.app/api/admin/orders/${id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
@@ -57,7 +57,7 @@ export default function OrderManagement() {
         case "completed":
         return "status-badge completed";
         case "processing":
-        return "status-badge processing";
+        return "status-badge processing"; 
         case "cancelled":
         return "status-badge cancelled";
         default:

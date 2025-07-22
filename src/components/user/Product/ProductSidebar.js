@@ -3,12 +3,42 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../../../components/user/Product/ProductSidebar.css";
 
-const ProductSidebar = ({ selectedCategoryId }) => {
+const ProductSidebar = ({ selectedCategoryId, setSelectedCategoryId }) => {
   const [categories, setCategories] = useState([]);
   const [galleryImages, setGalleryImages] = useState([]);
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const fetchTopProducts = async () => {
+    try {
+      const response = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/products/top-five");
+      setProducts(response.data);
+    } catch (err) {
+      console.error("Error fetching top products:", err);
+    }
+  };
+const fetchGalleryImages = async () => {
+  try {
+    const response = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/products/top-images");
+    console.log("Products data:", response.data); 
+
+    const images = response.data.map(item => item.image_url);
+
+    setGalleryImages(images.slice(0, 12));
+  } catch (err) {
+    console.error("Error fetching gallery images:", err);
+  }
+};
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/products/all-categories");
+      setCategories(response.data);
+    } catch (err) {
+      console.error("Error fetching categories:", err);
+    }
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -44,14 +74,25 @@ const ProductSidebar = ({ selectedCategoryId }) => {
     fetchGalleryImages();
   }, []);
 
-  const handleCategoryClick = (categoryId) => {
-    const params = new URLSearchParams(location.search);
-    if (categoryId) {
-      params.set("categoryId", categoryId);
-    } else {
-      params.delete("categoryId");
+
+  const handleCategoryClick = async (categoryId) => {
+    setSelectedCategoryId(categoryId);
+
+    try {
+      const response = await axios.get(
+        categoryId
+          ? `https://backendlaraveltechstore-production.up.railway.app/api/products/top-five?category_id=${categoryId}`
+          : "https://backendlaraveltechstore-production.up.railway.app/api/products/top-five"
+      );
+      setProducts(response.data);
+    } catch (err) {
+      console.error("Error fetching products by category:", err);
     }
-    navigate(`/user/product?${params.toString()}`);
+    const params = new URLSearchParams();
+if (categoryId) {
+  params.set("categoryId", categoryId);
+}
+navigate(`/user/product?${params.toString()}`);
   };
 
   return (

@@ -20,7 +20,8 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/user/blogs/index")
+      .get("https://backendlaraveltechstore-production.up.railway.app/api/user/blogs/index")
+      
       .then((res) => {
         setCards(res.data);
         setIsDataFetched(true);

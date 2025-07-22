@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import BuyNow from "../Button/BuyNow";
 const renderStars = (rating) => {
   return Array.from({ length: 5 }, (_, index) => (
     <span
@@ -65,9 +65,9 @@ const PromoCard = ({ product, onClick, onBuyNow }) => {
         </div>
         <h3 className="promo-title-best-seller" onClick={() => onClick(product.id)}>{product.name}</h3>
         <p className="promo-description-best-seller" onClick={() => onClick(product.id)}>{product.description}</p>
-        <button className="promo-button-best-sellers" onClick={() => onBuyNow(product)}>
+        <BuyNow className="promo-button-best-sellers" onClick={() => onBuyNow(product)}>
           SHOP NOW
-        </button>
+        </BuyNow>
       </div>
     </div>
   );
@@ -84,7 +84,7 @@ const BestSellerSection = () => {
   useEffect(() => {
     const fetchBestDeals = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/user/product/promoted");
+        const res = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/product/promoted");
         const bestDeals = (res.data.data || []).filter(
           (p) => p.promotion_type === "best deal"
         );
