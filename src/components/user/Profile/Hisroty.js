@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import { Repeat, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+const apiUrl = process.env.REACT_APP_BE_URL;
+
 const HistoryContent = () => {
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(() => {
@@ -21,7 +23,7 @@ const HistoryContent = () => {
   const fetchOrderHistory = async (date) => {
     setLoading(true);
     try {
-      const response = await axios.get(`/api/user/order-history`, {
+      const response = await axios.get(`${apiUrl}/api/user/order-history`, {
         params: { date },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -40,7 +42,7 @@ const HistoryContent = () => {
 
   const handleDeleteOrderHistory = async (orderId) => {
     try {
-      await axios.delete(`/api/user/order-history/delete`, {
+      await axios.delete(`${apiUrl}/api/user/order-history/delete`, {
         data: { order_id: orderId },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -26,7 +26,6 @@ const ProductList = ({ searchQuery }) => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-
         let url = `https://backendlaraveltechstore-production.up.railway.app/api/products/list?page=${currentPage}&per_page=${itemsPerPage}`;
          if (categoryId) {
           url += `&category_id=${categoryId}`;

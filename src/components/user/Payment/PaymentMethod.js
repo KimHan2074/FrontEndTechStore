@@ -62,6 +62,7 @@ const PaymentMethod = () => {
         return navigate("/user/payment_confirmation");
       }
 
+
       if (selectedPayment === "cash") {
         await axios.post("https://backendlaraveltechstore-production.up.railway.app/api/user/orders/confirm-payment", {
           order_id: orderId,

@@ -12,6 +12,7 @@ const CategoryItemHome = () => {
       try {
          const response = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/product/categories");
         setCategories(response.data.data);
+
       } catch (err) {
         console.error("Error fetching categories:", err);
       }
@@ -44,7 +45,6 @@ const CategoryItemHome = () => {
     )}
   </>
 );
-
 };
 
 export default CategoryItemHome;

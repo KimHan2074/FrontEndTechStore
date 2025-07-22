@@ -6,6 +6,7 @@ import { CartContext } from '../../../context/CartContext';
 const apiUrl = process.env.REACT_APP_BE_URL;
 
 const AddToCart = ({ product, quantity = 1, selectedColor = null, className = "", children }) => {
+
   const { syncCartItems } = useContext(CartContext);
 
   const checkStockBeforeAdd = async (productId, quantityToAdd) => {

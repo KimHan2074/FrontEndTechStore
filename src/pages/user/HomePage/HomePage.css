@@ -295,7 +295,6 @@
   background-color: white;
   border-radius: 8px;
   
-}
 
 .category-item:hover {
   transform: translateY(-5px);
@@ -309,7 +308,7 @@
   transition: transform 0.3s ease;
 }
 
-/* //////////////// */
+
 .categories-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -1452,6 +1451,7 @@
   line-height: 1.6;
   margin-bottom: 35px;
 }
+
 .price-tag {
   position: absolute;
   top: 10px;
@@ -1481,6 +1481,7 @@
 
 
 .macbook-image{
+
   transform: scale(1.02) translateY(-5px);
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
 }
@@ -1564,6 +1565,7 @@
 }
 .content-left {
   /* flex: 1; */
+
   padding-right: 20px;
   height: 100%;
   display: flex;
@@ -1573,6 +1575,7 @@
 
 .content-right {
   /* flex: 1; */
+
   text-align: center;
   height: 100%;
   display: flex;
@@ -1586,6 +1589,7 @@
   border-radius: 10px;
   display: block;
   margin: 0 auto;
+
 }
 
 .product-title-macbook {

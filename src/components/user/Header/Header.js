@@ -48,7 +48,6 @@ function Header({ onSearch }) {
     };
   }, []);
 
-
   const fetchWishlistCount = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -62,15 +61,31 @@ function Header({ onSearch }) {
       });
       const userId = userIdRes.data.userId;
 
-      const res = await axios.get(`https://backendlaraveltechstore-production.up.railway.app/api/user/wishlist/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const response = await fetch(`https://backendlaraveltechstore-production.up.railway.app/api/user/wishlist/${userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
 
-      setWishlistCount(res.data.length);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Nếu data là mảng
+      setWishlistCount(data.length);
+
+      // Nếu data có dạng: { wishlist: [...] }
+      // setWishlistCount(data.wishlist.length);
+
     } catch (error) {
       console.error("Failed to fetch wishlist count:", error);
     }
   };
+
 
 
   useEffect(() => {
@@ -88,7 +103,7 @@ function Header({ onSearch }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/products/top-images");
+        const response = await axios.get("https://backendlaraveltechstore-production.up.railway.appapi/products/top-images");
         setCategories(response.data.data);
       } catch (error) {
         console.error("Failed to fetch categories:", error);

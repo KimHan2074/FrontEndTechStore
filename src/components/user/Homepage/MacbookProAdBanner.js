@@ -11,7 +11,6 @@ const MacbookProAdBanner = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-
         const product = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/product/index");
         setProducts(product.data.data);
       } catch (err) {

@@ -21,7 +21,6 @@ const InformationOrder = ({ onContinue, setCurrentStep }) => {
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
   useEffect(() => {
     fetch("https://provinces.open-api.vn/api/?depth=3")
       .then((res) => res.json())
