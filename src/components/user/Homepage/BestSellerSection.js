@@ -84,7 +84,7 @@ const BestSellerSection = () => {
   useEffect(() => {
     const fetchBestDeals = async () => {
       try {
-        const res = await axios.get("https://backendlaraveltechstore-production.up.railway.app/api/user/product/promoted");
+        const res = await axios.get("https://backend-laravel-techstore-4.onrender.com/api/user/product/promoted");
         const bestDeals = (res.data.data || []).filter(
           (p) => p.promotion_type === "best deal"
         );

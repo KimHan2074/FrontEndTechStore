@@ -18,7 +18,7 @@ export default class AddToWishlist extends Component {
       if (!userId) return;
 
       const response = await axios.get(
-        `https://backendlaraveltechstore-production.up.railway.app/api/user/wishlist/${userId}`,
+        `https://backend-laravel-techstore-4.onrender.com/api/user/wishlist/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
