@@ -294,7 +294,7 @@
   padding: 10px;
   background-color: white;
   border-radius: 8px;
-  
+}
 
 .category-item:hover {
   transform: translateY(-5px);
