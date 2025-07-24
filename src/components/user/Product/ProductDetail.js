@@ -127,7 +127,7 @@ const ProductDetail = () => {
   };
 
   const handleProductClick = (productId) => {
-    navigate(`${apiUrl}/user/product-detail/${productId}`);
+    navigate(`/user/product-detail/${productId}`);
   };
 
   useEffect(() => {
