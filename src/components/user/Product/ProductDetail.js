@@ -332,11 +332,13 @@ Product does not exist.
 
               <div className="price-product-detail">
                 <span className="current-price">
-                  {Number(product.price).toLocaleString("vi-VN")}
+                  {/* {Number(product.price).toLocaleString("vi-VN")} */}
+                   ${product.price}
                 </span>
                 {product.old_price && (
                   <span className="original-price">
-                    {Number(product.old_price).toLocaleString("vi-VN")}
+                    {/* {Number(product.old_price).toLocaleString("vi-VN")} */}
+                    ${product.old_price}
                   </span>
                 )}
               </div>
