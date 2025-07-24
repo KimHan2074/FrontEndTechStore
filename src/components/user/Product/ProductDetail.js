@@ -189,7 +189,7 @@ Product does not exist.
           <div className="price-section-product-detail">
             <span className="current-price-product-detail">${product.price}</span>
             {product.old_price && (
-              <span className="original-price-product-detail">${product.old_price}₫</span>
+              <span className="original-price-product-detail">${product.old_price}</span>
             )}
           </div>
 
@@ -332,11 +332,11 @@ Product does not exist.
 
               <div className="price-product-detail">
                 <span className="current-price">
-                  {Number(product.price).toLocaleString("vi-VN")}₫
+                  {Number(product.price).toLocaleString("vi-VN")}
                 </span>
                 {product.old_price && (
                   <span className="original-price">
-                    {Number(product.old_price).toLocaleString("vi-VN")}₫
+                    {Number(product.old_price).toLocaleString("vi-VN")}
                   </span>
                 )}
               </div>
