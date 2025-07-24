@@ -102,7 +102,7 @@ const InformationOrder = ({ onContinue, setCurrentStep }) => {
 
     try {
       const response = await fetch(
-        `https://backend-laravel-techstore-4.onrender.com/api/user/orders/${orderId}/update-info`,
+        `https://backendtechstore1-production.up.railway.app/api/user/orders/${orderId}/update-info`,
         {
           method: "PUT",
           headers: {

@@ -26,7 +26,7 @@ const ProductList = ({ searchQuery }) => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        let url = `https://backend-laravel-techstore-4.onrender.com/api/products/list?page=${currentPage}&per_page=${itemsPerPage}`;
+        let url = `https://backendtechstore1-production.up.railway.app/api/products/list?page=${currentPage}&per_page=${itemsPerPage}`;
          if (categoryId) {
           url += `&category_id=${categoryId}`;
         } else if (searchQuery) {

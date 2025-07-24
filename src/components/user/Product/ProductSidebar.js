@@ -12,7 +12,7 @@ const ProductSidebar = ({ selectedCategoryId, setSelectedCategoryId }) => {
 
   const fetchTopProducts = async () => {
     try {
-      const response = await axios.get("https://backend-laravel-techstore-4.onrender.com/api/products/top-five");
+      const response = await axios.get("https://backendtechstore1-production.up.railway.app/api/products/top-five");
       setProducts(response.data);
     } catch (err) {
       console.error("Error fetching top products:", err);
@@ -20,7 +20,7 @@ const ProductSidebar = ({ selectedCategoryId, setSelectedCategoryId }) => {
   };
 const fetchGalleryImages = async () => {
   try {
-    const response = await axios.get("https://backend-laravel-techstore-4.onrender.com/api/products/top-images");
+    const response = await axios.get("https://backendtechstore1-production.up.railway.app/api/products/top-images");
     console.log("Products data:", response.data); 
 
     const images = response.data.map(item => item.image_url);
@@ -33,7 +33,7 @@ const fetchGalleryImages = async () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("https://backend-laravel-techstore-4.onrender.com/api/products/all-categories");
+      const response = await axios.get("https://backendtechstore1-production.up.railway.app/api/products/all-categories");
       setCategories(response.data);
     } catch (err) {
       console.error("Error fetching categories:", err);
@@ -43,7 +43,7 @@ const fetchGalleryImages = async () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("https://backend-laravel-techstore-4.onrender.com/api/products/all-categories");
+        const response = await axios.get("https://backendtechstore1-production.up.railway.app/api/products/all-categories");
         setCategories(response.data);
       } catch (err) {
         console.error("Error fetching categories:", err);
@@ -52,7 +52,7 @@ const fetchGalleryImages = async () => {
 
     const fetchTopProducts = async () => {
       try {
-        const response = await axios.get("https://backend-laravel-techstore-4.onrender.com/api/products/top-five");
+        const response = await axios.get("https://backendtechstore1-production.up.railway.app/api/products/top-five");
         setProducts(response.data);
       } catch (err) {
         console.error("Error fetching top products:", err);
@@ -61,7 +61,7 @@ const fetchGalleryImages = async () => {
 
     const fetchGalleryImages = async () => {
       try {
-        const response = await axios.get("https://backend-laravel-techstore-4.onrender.com/api/products/top-images");
+        const response = await axios.get("https://backendtechstore1-production.up.railway.app/api/products/top-images");
         const images = response.data.map(item => item.image_url);
         setGalleryImages(images.slice(0, 12));
       } catch (err) {
@@ -81,8 +81,8 @@ const fetchGalleryImages = async () => {
     try {
       const response = await axios.get(
         categoryId
-          ? `https://backend-laravel-techstore-4.onrender.com/api/products/top-five?category_id=${categoryId}`
-          : "https://backend-laravel-techstore-4.onrender.com/api/products/top-five"
+          ? `https://backendtechstore1-production.up.railway.app/api/products/top-five?category_id=${categoryId}`
+          : "https://backendtechstore1-production.up.railway.app/api/products/top-five"
       );
       setProducts(response.data);
     } catch (err) {

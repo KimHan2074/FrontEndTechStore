@@ -17,14 +17,14 @@ const History = () => {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No token found");
 
-        const userIdRes = await axios.get("https://backend-laravel-techstore-4.onrender.com/api/user/getUserId", {
+        const userIdRes = await axios.get("https://backendtechstore1-production.up.railway.app/api/user/getUserId", {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         });
 
         const userId = userIdRes.data.userId;
 
-        const userRes = await axios.get(`https://backend-laravel-techstore-4.onrender.com/api/user/${userId}`, {
+        const userRes = await axios.get(`https://backendtechstore1-production.up.railway.app/api/user/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         });

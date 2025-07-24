@@ -36,7 +36,7 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
 
   useEffect(() => {
     axios
-      .get("https://backend-laravel-techstore-4.onrender.com/api/admin/categories")
+      .get("https://backendtechstore1-production.up.railway.app/api/admin/categories")
       .then((res) => setCategories(res.data.data))
       .catch((err) => console.error("Failed to load categories", err));
   }, []);
