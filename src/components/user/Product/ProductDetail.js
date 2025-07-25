@@ -41,10 +41,16 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/api/product/${id}/detail`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+        // const response = await axios.get(`${apiUrl}/api/product/${id}/detail`, {
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //   },
+        // });
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+        const response = await axios.get(`${apiUrl}/api/user/product/${id}/detail`, {
+          headers,
         });
 
         const data = response.data;
@@ -135,10 +141,17 @@ const ProductDetail = () => {
 
     const fetchRelatedProducts = async () => {
       try {
-        const res = await axios.get(`${apiUrl}/api/product/${id}/related`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+        // const res = await axios.get(`${apiUrl}/api/product/${id}/related`, {
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //   },
+        // });
+
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+        const res = await axios.get(`${apiUrl}/api/user/product/${id}/related`, {
+          headers,
         });
 
         console.log("Related products response:", res.data);
