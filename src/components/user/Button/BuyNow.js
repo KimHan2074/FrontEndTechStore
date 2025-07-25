@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const BuyNow = ({ product, className = "", children }) => {
+const BuyNow =({ product, selectedColor = "Black", className = "", children }) => {
   const navigate = useNavigate();
 
   const handleBuyNow = async () => {
@@ -20,6 +20,7 @@ const BuyNow = ({ product, className = "", children }) => {
               product_id: product?.id,
               quantity: 1,
               unit_price: product.price,
+              color: selectedColor || "Black",
             },
           ],
         },

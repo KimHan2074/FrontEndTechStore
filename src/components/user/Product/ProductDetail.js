@@ -248,7 +248,7 @@ Product does not exist.
             </AddToCart>
 
             <div className="secondary-actions-product-detail">
-              <BuyNow className="secondary-btn-product-detail" product={product}>
+              <BuyNow className="secondary-btn-product-detail" product={product} selectedColor={selectedColor}>
                 <CreditCard size={18} color="#000000" style={{ marginRight: 8 }} />
                 Buy Now
               </BuyNow>
