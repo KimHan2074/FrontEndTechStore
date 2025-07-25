@@ -248,6 +248,7 @@ export default function Cart() {
         image: item.image,
         quantity: item.quantity,
         unit_price: item.price,
+        color: item.color || "Black", /*THÊM TH COLOR*/
       }));
 
     const payload = {

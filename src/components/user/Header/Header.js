@@ -35,6 +35,7 @@ function Header({ onSearch }) {
     e.preventDefault();
     onSearch(searchQuery);
   };
+  
   const handleCategoryClick = (categoryId, categoryName) => {
     navigate(`/user/product?categoryId=${categoryId}&categoryName=${encodeURIComponent(categoryName)}`);
   };
