@@ -3,25 +3,33 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 
+
 const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
   const [cards, setCards] = useState([]);
   const [searchItem, setSearchItem] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedCardId, setExpandedCardId] = useState(null);
   const [isDataFetched, setIsDataFetched] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+
+
   const cardsPerPage = 9;
+
 
   const location = useLocation();
   const searchQueryFromBar = location.state?.searchQuery || "";
+
 
   useEffect(() => {
     setSearchItem(searchQueryFromBar);
   }, [searchQueryFromBar]);
 
+
   useEffect(() => {
     axios
       .get("https://backendtechstore1-production.up.railway.app/api/user/blogs/index")
-    
+
+
       .then((res) => {
         setCards(res.data);
         setIsDataFetched(true);
@@ -29,16 +37,20 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
       .catch((err) => console.error("Error fetching blogs:", err));
   }, []);
 
+
   const filteredCards = cards.filter((card) => {
     const matchesSearch =
       card.title.toLowerCase().includes(searchItem.toLowerCase()) ||
       card.content.toLowerCase().includes(searchItem.toLowerCase());
 
+
     const matchesCategory =
       selectedCategoryId === null || card.category_id === selectedCategoryId;
 
+
     return matchesSearch && matchesCategory;
   });
+
 
   useEffect(() => {
     if (isDataFetched && typeof onSearchResult === "function") {
@@ -46,19 +58,23 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
     }
   }, [filteredCards, onSearchResult, isDataFetched, searchItem, selectedCategoryId]);
 
+
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = filteredCards.slice(indexOfFirstCard, indexOfLastCard);
   const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
 
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
 
   const handleSearchChange = (e) => {
     setSearchItem(e.target.value);
     setCurrentPage(1);
   };
+
 
   return (
     <div className="blog-container">
@@ -67,59 +83,80 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
           type="text"
           placeholder="Search..."
           className="search-input-blog"
-          onChange={handleSearchChange}
-          value={searchItem}
+          value={searchInput}
+          onChange={(e) => {
+            const value = e.target.value;
+            setSearchInput(value);
+
+
+            if (value.trim() === "") {
+              setSearchItem("");
+              setCurrentPage(1);
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              setSearchItem(searchInput);
+              setCurrentPage(1);
+            }
+          }}
         />
+
+
         <i className="fa-solid fa-magnifying-glass search-icon-blog"></i>
       </div>
+
 
       <div className="cards-container-blog">
         {filteredCards.length === 0 ? (
           <p className="no-results-message">No matching articles found</p>
         ) : (
-         currentCards
-  .filter((card) => card.author) 
-  .map((card) => (
-    <div
-      key={card.id}
-      className={`card-blog ${card.isActive ? "active-card" : ""}`}
-    >
-      <img
-        src={card.image_url || "/placeholder.svg"}
-        alt="Blog"
-        className="card-image-blog"
-      />
-      <div className="card-meta-blog">
-        <div className="card-meta-detail">
-          <i className="fa-solid fa-user icon-outline"></i>
-          <span className="author">{card.author?.name}</span>
-        </div>
-        <div className="card-meta-detail">
-          <i className="fa-solid fa-calendar icon-outline"></i>
-          <span className="date">{card.publish_date?.slice(0, 10)}</span>
-        </div>
-      </div>
+          currentCards
+            .filter((card) => card.author)
+            .map((card) => (
+              <div
+                key={card.id}
+                className={`card-blog ${card.isActive ? "active-card" : ""}`}
+              >
+                <img
+                  src={card.image_url || "/placeholder.svg"}
+                  alt="Blog"
+                  className="card-image-blog"
+                />
+                <div className="card-meta-blog">
+                  <div className="card-meta-detail">
+                    <i className="fa-solid fa-user icon-outline"></i>
+                    <span className="author">{card.author?.name}</span>
+                  </div>
+                  <div className="card-meta-detail">
+                    <i className="fa-solid fa-calendar icon-outline"></i>
+                    <span className="date">{card.publish_date?.slice(0, 10)}</span>
+                  </div>
+                </div>
 
-      <h3 className={`card-title-blog ${expandedCardId === card.id ? "expanded" : ""}`}>
-        {card.title}
-      </h3>
-      <p className={`card-description-blog ${expandedCardId === card.id ? "expanded" : ""}`}>
-        {card.content}
-      </p>
-      <button
-        className="read-more-button"
-        onClick={() => setExpandedCardId(expandedCardId === card.id ? null : card.id)}
-      >
-        {expandedCardId === card.id ? "SHOW LESS" : "READ MORE"}{" "}
-        <span className="arrow-icon">
-          <ArrowRight color="#FF9000" size={16} />
-        </span>
-      </button>
-    </div>
-  ))
+
+                <h3 className={`card-title-blog ${expandedCardId === card.id ? "expanded" : ""}`}>
+                  {card.title}
+                </h3>
+                <p className={`card-description-blog ${expandedCardId === card.id ? "expanded" : ""}`}>
+                  {card.content}
+                </p>
+                <button
+                  className="read-more-button"
+                  onClick={() => setExpandedCardId(expandedCardId === card.id ? null : card.id)}
+                >
+                  {expandedCardId === card.id ? "SHOW LESS" : "READ MORE"}{" "}
+                  <span className="arrow-icon">
+                    <ArrowRight color="#FF9000" size={16} />
+                  </span>
+                </button>
+              </div>
+            ))
+
 
         )}
       </div>
+
 
       {totalPages > 1 && (
         <div className="pagination-blog">
@@ -135,9 +172,8 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
               <button
                 key={pageNum}
                 onClick={() => handlePageChange(i + 1)}
-                className={`pagination-button ${
-                  currentPage === i + 1 ? "active-page" : ""
-                }`}
+                className={`pagination-button ${currentPage === i + 1 ? "active-page" : ""
+                  }`}
               >
                 {pageNum}
               </button>
@@ -155,4 +191,6 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
   );
 };
 
+
 export default ContentBlog;
+

@@ -11,10 +11,12 @@ import {
 } from "lucide-react";
 import Logout from "../../auth/logout/Logout";
 
+
 function Header({ onSearch }) {
   const [wishlistCount, setWishlistCount] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [productCategories, setProductCategories] = useState([]);
+  const [topCategories, setTopCategories] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,9 +25,11 @@ function Header({ onSearch }) {
   const { cartItems } = useCart();
   const itemCount = cartItems?.length || 0;
 
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -40,18 +44,22 @@ function Header({ onSearch }) {
       setIsLoggedIn(!!token);
     };
 
+
     checkLogin();
     window.addEventListener("storage", checkLogin);
+
 
     return () => {
       window.removeEventListener("storage", checkLogin);
     };
   }, []);
 
+
   const fetchWishlistCount = async () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
+
 
       const userIdRes = await axios.get("https://backendtechstore1-production.up.railway.app/api/user/getUserId", {
         headers: {
@@ -61,6 +69,7 @@ function Header({ onSearch }) {
       });
       const userId = userIdRes.data.userId;
 
+
       const response = await fetch(`https://backendtechstore1-production.up.railway.app/api/user/wishlist/${userId}`, {
         method: "GET",
         headers: {
@@ -69,62 +78,60 @@ function Header({ onSearch }) {
         },
       });
 
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
       const data = await response.json();
-
-      // Nếu data là mảng
       setWishlistCount(data.length);
-
-      // Nếu data có dạng: { wishlist: [...] }
-      // setWishlistCount(data.wishlist.length);
-
     } catch (error) {
       console.error("Failed to fetch wishlist count:", error);
     }
   };
 
 
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("https://backendtechstore1-production.up.railway.app/api/user/product/categories");
-        setCategories(Array.isArray(response.data.data) ? response.data.data : []);
+        const response = await axios.get(`https://backendtechstore1-production.up.railway.app/api/user/product/categories`);
+        setProductCategories(Array.isArray(response.data.data) ? response.data.data : []);
       } catch (err) {
         console.error("Error fetching categories:", err);
-        setCategories([]);
+        setProductCategories([]);
       }
     };
     fetchCategories();
   }, []);
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchTopCategories = async () => {
       try {
-        const response = await axios.get("https://backendtechstore1-production.up.railway.app/api/products/top-images");
-        setCategories(response.data.data);
+        const response = await axios.get(`https://backendtechstore1-production.up.railway.app/api/products/top-images`);
+        setTopCategories(response.data.data || []);
       } catch (error) {
-        console.error("Failed to fetch categories:", error);
+        console.error("Failed to fetch top categories:", error);
       }
     };
-
-    fetchCategories();
+    fetchTopCategories();
   }, []);
+
+
   useEffect(() => {
     fetchWishlistCount();
+
 
     const handleWishlistUpdate = () => {
       fetchWishlistCount();
     };
 
+
     window.addEventListener("wishlist-updated", handleWishlistUpdate);
+
 
     return () => {
       window.removeEventListener("wishlist-updated", handleWishlistUpdate);
     };
   }, []);
+
 
   return (
     <header className="store-header">
@@ -141,6 +148,7 @@ function Header({ onSearch }) {
         </div>
       </div>
 
+
       <div className="welcome-bar">
         <div className="container welcome-content">
           <div className="welcome-text">Welcome to TechStore.</div>
@@ -156,6 +164,7 @@ function Header({ onSearch }) {
         </div>
       </div>
 
+
       <div className="main-nav">
         <div className="container nav-content">
           <div className="logo">
@@ -169,6 +178,7 @@ function Header({ onSearch }) {
               }}
             />
           </div>
+
 
           <div className="nav-icons">
             <a href={isLoggedIn ? "/user/shopping_cart" : "#"} onClick={(e) => {
@@ -192,6 +202,7 @@ function Header({ onSearch }) {
               <span className="badge">{wishlistCount}</span>
             </a>
 
+
             <li className="user-dropdown">
               <a href={isLoggedIn ? "/user/profile" : "/signin"} className="icon-link">
                 <User size={20} />
@@ -212,6 +223,7 @@ function Header({ onSearch }) {
         <div className="category-nav">
           <div className="container category-content">
 
+
             <div
               className="category-dropdown"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -221,8 +233,9 @@ function Header({ onSearch }) {
                   All Category <ChevronDown />
                 </button>
 
+
                 <div className={`dropdown-menu horizontal-menu ${isDropdownOpen ? 'active' : ''}`}>
-                  {Array.isArray(categories) && categories.map((category) => (
+                  {Array.isArray(productCategories) && productCategories.map((category) => (
                     <div
                       key={category.id}
                       className="dropdown-item"
@@ -239,6 +252,7 @@ function Header({ onSearch }) {
                 </div>
               </div>
             </div>
+
 
             <nav className="main-menus">
               <ul className="menu-items">
@@ -305,26 +319,9 @@ function Header({ onSearch }) {
           </div>
         )}
       </div>
-      {searchResults.length > 0 && (
-        <div className="search-results-container">
-          <h3 style={{ marginLeft: "1rem" }}>
-            Search results for: "{searchQuery}"
-          </h3>
-          <div className="results-grid">
-            {searchResults.map((item) => (
-              <div key={item.id} className="result-card">
-                <img src={item.image} alt={item.name} />
-                <h4>{item.name}</h4>
-                <p>{item.price}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )
-      }
-
     </header >
   );
 }
+
 
 export default Header;
