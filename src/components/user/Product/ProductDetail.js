@@ -251,7 +251,7 @@ Product does not exist.
               <BuyNow className="secondary-btn-product-detail" product={product} selectedColor={selectedColor}>
                 <CreditCard size={18} color="#000000" style={{ marginRight: 8 }} />
                 Buy Now
-              </BuyNow>
+              </BuyNow> 
               <AddToWishlist item={product.id} className="secondary-btn-product-detail">
                 <Heart size={18} color="#000000" style={{ marginRight: 8 }} /> Favorited
               </AddToWishlist>
