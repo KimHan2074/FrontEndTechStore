@@ -42,13 +42,53 @@ export default class AddToWishlist extends Component {
     }
   }
 
+  // handleAddToWishlist = async (productId) => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const userIdRes = await axios.get("https://backendtechstore1-production.up.railway.app/api/user/getUserId", {
+  //       headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+  //       withCredentials: true,
+  //     });
+
+  //     const finalUserId = userIdRes.data.userId;
+
+  //     const response = await axios.post(
+  //       "https://backendtechstore1-production.up.railway.app/api/user/wishlist/add",
+  //       { user_id: finalUserId, product_id: productId },
+  //       { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } }
+  //     );
+
+  //     const msg = response.data?.message;
+
+  //     if (msg === "Đã có trong wishlist") {
+  //       toast.info("This product is already in your wishlist.");
+  //     } else {
+  //       toast.success("Successfully added to wishlist!");
+  //       window.dispatchEvent(new Event("wishlist-updated"));
+  //     }
+
+  //   } catch (error) {
+  //     toast.error("Failed to add to wishlist.");
+  //     console.error("Error:", error.response?.data || error.message);
+  //   }
+  // };
+
   handleAddToWishlist = async (productId) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      toast.warning("Please login to add to wishlist.");
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token");
-      const userIdRes = await axios.get("https://backendtechstore1-production.up.railway.app/api/user/getUserId", {
-        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-        withCredentials: true,
-      });
+      const userIdRes = await axios.get(
+        "https://backendtechstore1-production.up.railway.app/api/user/getUserId",
+        {
+          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+          withCredentials: true,
+        }
+      );
 
       const finalUserId = userIdRes.data.userId;
 
@@ -64,6 +104,7 @@ export default class AddToWishlist extends Component {
         toast.info("This product is already in your wishlist.");
       } else {
         toast.success("Successfully added to wishlist!");
+        this.setState({ added: true });
         window.dispatchEvent(new Event("wishlist-updated"));
       }
 

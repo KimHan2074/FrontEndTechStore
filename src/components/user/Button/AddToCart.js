@@ -46,7 +46,7 @@ const AddToCart = ({ product, quantity = 1, selectedColor = null, className = ""
   const handleAddToCart = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      toast.warning("⚠️ Please log in to add products to your cart.");
+      toast.warning("⚠️ Please login to add products to your cart.");
       return;
     }
 
