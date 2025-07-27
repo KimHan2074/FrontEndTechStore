@@ -111,12 +111,12 @@ const BestDealSection = () => {
   }, [featuredProduct]);
 
   const handleProductClick = (productId) => {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
-    if (!token) {
-      toast.warning("Please login to view product details!");
-      return;
-    }
+    // if (!token) {
+    //   toast.warning("Please login to view product details!");
+    //   return;
+    // }
 
     navigate(`/user/product-detail/${productId}`);
   };
