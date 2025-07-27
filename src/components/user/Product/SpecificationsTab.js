@@ -13,12 +13,19 @@ const SpecificationsTab = () => {
   useEffect(() => {
     const fetchSpecifications = async () => {
       try {
-        const res = await axios.get(`${apiUrl}/api/specification/product/${productId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        // const res = await axios.get(`${apiUrl}/api/specification/product/${productId}`, {
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //   },
+        // });
 
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+        const res = await axios.get(`${apiUrl}/api/specification/product/${productId}`, {
+          headers,
+        });
+        
         setSpec(res.data);
       } catch (err) {
         console.error("Error fetching specifications:", err);

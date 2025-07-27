@@ -13,11 +13,19 @@ const ReviewsTab = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
+        // const res = await axios.get(`${apiUrl}/api/reviews/product/${productId}`, {
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //   },
+        // });
+
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
         const res = await axios.get(`${apiUrl}/api/reviews/product/${productId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers,
         });
+
         console.log("Reviews API response:", res.data); 
         setReviews(res.data.data);
       } catch (error) {

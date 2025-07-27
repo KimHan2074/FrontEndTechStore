@@ -13,12 +13,18 @@ const DescriptionTab = () => {
   useEffect(() => {
     const fetchDescription = async () => {
       try {
-        const res = await axios.get(`${apiUrl}/api/description/product/${productId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        // const res = await axios.get(`${apiUrl}/api/description/product/${productId}`, {
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //   },
+        // });
 
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+        const res = await axios.get(`${apiUrl}/api/description/product/${productId}`, {
+          headers,
+        });
 
         setDescriptionData(res.data);
       } catch (error) {
