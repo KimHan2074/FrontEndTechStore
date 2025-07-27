@@ -57,7 +57,45 @@ const ReviewModal = ({ onClose }) => {
     });
   };
 
+  // const handleSubmit = async () => {
+  //   if (overallRating === 0) {
+  //     toast.warning("Please select a rating star.");
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append("rating", overallRating);
+  //   formData.append("comment", reviewDetail);
+  //   if (uploadedImages[0]) {
+  //     formData.append("file", uploadedImages[0].file);
+  //   }
+
+  //   try {
+  //     await axios.post(`${apiUrl}/api/product/${id}/review`, formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+
+  //     toast.success("Thank you for your rating!");
+  //     onClose();
+  //     setOverallRating(0);
+  //     setReviewDetail("");
+  //     setUploadedImages([]);
+  //   } catch (err) {
+  //     console.error(err);
+  //     toast.error("Failed to submit your rating!");
+  //   }
+  // };
+
   const handleSubmit = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.warning("Please login to write a review.");
+      return;
+    }
+
     if (overallRating === 0) {
       toast.warning("Please select a rating star.");
       return;
@@ -74,7 +112,7 @@ const ReviewModal = ({ onClose }) => {
       await axios.post(`${apiUrl}/api/product/${id}/review`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
