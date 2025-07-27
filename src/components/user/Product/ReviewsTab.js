@@ -22,7 +22,7 @@ const ReviewsTab = () => {
         const token = localStorage.getItem("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-        const res = await axios.get(`${apiUrl}/api/reviews/product/${productId}`, {
+        const res = await axios.get(`${apiUrl}/api/user/reviews/product/${productId}`, {
           headers,
         });
 
