@@ -152,7 +152,7 @@ const InformationProductDetail = () => {
           console.log("product.product_id:", product.product_id, product);
           try {
             const res = await axios.get(
-              `http://localhost:8000/api/products/product/${product.product_id}/productcolors`
+              `https://backendtechstore1-production.up.railway.app/api/products/product/${product.product_id}/productcolors`
             );
             const colors = Array.isArray(res.data.colors) ? res.data.colors : [];
             colorData[product.product_id] = colors;
