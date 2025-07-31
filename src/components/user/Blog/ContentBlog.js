@@ -103,7 +103,7 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
         />
 
 
-        <i className="fa-solid fa-magnifying-glass search-icon-blog"></i>
+        {/* <i className="fa-solid fa-magnifying-glass search-icon-blog"></i> */}
       </div>
 
 
