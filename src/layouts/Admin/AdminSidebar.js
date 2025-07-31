@@ -187,7 +187,7 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
         },
       })
       .then((res) => {
-        const { name, email, avatar } = res.data.data;
+        const { name, email, avatar } = res.data;
         setAdminInfo({
           name,
           email,
