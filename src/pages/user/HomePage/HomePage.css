@@ -209,8 +209,9 @@
 }
 
 .price-banner{
-  padding: 0 4px;
+  padding: 0 12px;
 }
+
 .original-price-banner {
   color: #ADB7BC;
   text-decoration: line-through;

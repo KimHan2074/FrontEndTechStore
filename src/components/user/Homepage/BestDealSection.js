@@ -164,6 +164,7 @@ const BestDealSection = () => {
                 />
               </div>
               <div className="product-info-best-deal">
+                <h2 className="product-title-small-best-deal" style={{ color: "#000", fontSize: "20px" }}>{featuredProduct.name}</h2>
                 <div className="rating-container-best-deal">
                   <div className="stars-best-deal">{renderStars(featuredProduct.rating)}</div>
                 </div>
@@ -228,6 +229,9 @@ const BestDealSection = () => {
                   <img src={product.image_url || "/placeholder.svg"} alt={product.title} />
                 </div>
                 <div className="product-details-best-deal">
+                  <p className="product-title-small-best-deal" style={{ color: "#000", fontSize: "16px", }}>
+                    {product.name}
+                  </p>
                   <p className="product-description-best-deal">{product.description}</p>
                   <div className="price-small-best-deal">
                     <span className="current-price-best-deal">${product.price}</span>
