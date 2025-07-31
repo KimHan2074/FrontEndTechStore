@@ -155,7 +155,7 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
   const [adminInfo, setAdminInfo] = useState({
     name: "",
     email: "",
-    avatar: "https://placehold.co/40x40", // avatar mặc định ban đầu
+    avatar: "https://placehold.co/40x40", // Avatar mặc định
   });
 
   const menuItems = [
@@ -173,13 +173,13 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
   };
 
   useEffect(() => {
-    // Gọi API lấy danh sách category
+    // Load categories
     axios
       .get("https://backendtechstore1-production.up.railway.app/api/admin/categories")
       .then((res) => setCategories(res.data.data))
       .catch((err) => console.error("Failed to load categories", err));
 
-    // Gọi API lấy thông tin admin đang đăng nhập
+    // Step 1: Get user ID
     axios
       .get("https://backendtechstore1-production.up.railway.app/api/user/getUserId", {
         headers: {
@@ -187,8 +187,20 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
         },
       })
       .then((res) => {
-        console.log(res.data);
-        const { name, email, avatar } = res.data;
+        const userId = res.data.userId;
+
+        // Step 2: Get full user info
+        return axios.get(
+          `https://backendtechstore1-production.up.railway.app/api/user/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+      })
+      .then((res) => {
+        const { name, email, avatar } = res.data.data;
         setAdminInfo({
           name,
           email,
@@ -220,7 +232,7 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
                     setActiveItem("Product");
                   } else {
                     setActiveItem(item.name);
-                    setShowProductSubmenu(false); // Ẩn submenu nếu click mục khác
+                    setShowProductSubmenu(false);
                   }
                 }}
               >
@@ -280,5 +292,6 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
 };
 
 export default Sidebar;
+
 
 
