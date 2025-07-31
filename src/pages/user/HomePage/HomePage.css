@@ -1273,7 +1273,8 @@
 
 .promo-best-seller {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  margin-bottom: 8px;
 }
 
 .promo-content-best-seller {
@@ -1290,10 +1291,9 @@
 }
 
 .promo-price-best-seller {
-  font-size: 32px;
-  font-weight: bold;
-  color: #1a1a1a;
-  background-color: #FFF;
+  font-size: 28px;
+  font-weight: 600;
+  color: #2da5f3;
   height: auto;
 }
 
