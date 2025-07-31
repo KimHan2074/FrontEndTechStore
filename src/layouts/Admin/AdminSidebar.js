@@ -181,7 +181,7 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
 
     // Gọi API lấy thông tin admin đang đăng nhập
     axios
-      .get("https://backendtechstore1-production.up.railway.app/user/getUserId", {
+      .get("https://backendtechstore1-production.up.railway.app/api/user/getUserId", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
