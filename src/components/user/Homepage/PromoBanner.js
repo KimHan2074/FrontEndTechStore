@@ -110,7 +110,7 @@ if (products.length === 0 && !summerSaleProduct) return null;
             </div>
             <div className="price-info-banner">
               <p className="sale-badge-banner-description">{displayProduct.name}</p>
-              <p>
+              <p className="price-banner">
                 <span className="sale-price-banner">${formatPrice(displayProduct.price)}</span>
                 <span className="original-price-banner">${formatPrice(displayProduct.old_price)}</span>
               </p>

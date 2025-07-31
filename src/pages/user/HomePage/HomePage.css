@@ -64,6 +64,7 @@
   justify-content: center;
   align-self: flex-start;
   outline: none;
+  margin-top: 4px;
 }
 
 .buy-button-banner:hover {
@@ -207,6 +208,9 @@
   margin-right: 10px;
 }
 
+.price-banner{
+  padding: 0 4px;
+}
 .original-price-banner {
   color: #ADB7BC;
   text-decoration: line-through;
