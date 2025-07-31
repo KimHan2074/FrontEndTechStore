@@ -28,6 +28,10 @@
     margin-bottom: 1.5rem;
 }
 
+.who-we-are{
+    margin-bottom: 10px;
+}
+
 @media (min-width: 768px) {
     .text-container {
         width: 50%;
