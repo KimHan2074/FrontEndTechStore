@@ -212,7 +212,7 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
 
   return (
     <div className="admin-sidebar">
-      <div>
+      <div className="admin-top">
         <div className="admin-profile">
           <img src={adminInfo.avatar} alt="avatar" />
           <div className="admin-profile-info">
