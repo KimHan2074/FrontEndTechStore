@@ -160,10 +160,6 @@ body {
   margin-left: 20px;
 }
 
-/* .change-password .input-group {
-  margin-bottom: 15px;
-} */
-
 .input-row {
   display: flex;
   gap: 50px;
@@ -178,12 +174,6 @@ body {
 .input-row .input-group input {
   width: 100%;
 }
-
-
-/* .change-password .input-row .input-group input {
-  flex: 3;
-  min-width: 450px;
-} */
 
 .change-password input {
   width: 100%;

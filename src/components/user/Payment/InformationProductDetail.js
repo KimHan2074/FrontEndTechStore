@@ -198,41 +198,43 @@ const InformationProductDetail = () => {
             products.map((product, index) => (
               <div key={`${product.id || index}`} className="product-item-information-order">
                 <img src={product.image} alt={product.name} className="product-image-information-order" />
-                <div className="product-details-information-order">
-                  <h4>{product.name}</h4>
-                  <p>Quantity: {product.quantity}</p>
-                  <div
-                    className="color-information-order"
-                    style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                  >
-                    <p style={{ margin: 0 }}>
-                      Color: <strong>{product.color || "Black"}</strong>
-                    </p>
-                    {(productColors[product.product_id] || []).length > 0 && (
-                      <select
-                        value={product.color}
-                        onChange={(e) => handleColorChange(index, e.target.value)}
-                        style={{
-                          margin: 0,
-                          padding: "4px 8px",
-                          borderRadius: "4px",
-                        }}
-                      >
-                        <option value="">Chọn màu</option>
-                        {(productColors[product.product_id] || []).map((colorName, i) => (
-                          <option key={i} value={colorName}>
-                            {colorName}
-                          </option>
-                        ))}
-                      </select>
-                    )}
+                  <div className="product-details-information-order">
+                    <h4>{product.name}</h4>
+                    <p>Quantity: {product.quantity}</p>
+                    <div
+                      className="color-information-order"
+                      style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                    >
+                      <p style={{ margin: 0 }}>
+                        Color: <strong>{product.color || "Black"}</strong>
+                      </p>
+                      {(productColors[product.product_id] || []).length > 0 && (
+                        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                          <select
+                            value={product.color}
+                            onChange={(e) => handleColorChange(index, e.target.value)}
+                            style={{
+                              margin: 0,
+                              padding: "4px 8px",
+                              borderRadius: "4px",
+                            }}
+                          >
+                            <option value="">Select color</option>
+                            {(productColors[product.product_id] || []).map((colorName, i) => (
+                              <option key={i} value={colorName}>
+                                {colorName}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+                    </div>
+                    <div className="price-container-information-order">
+                      <span className="current-price-information-order">
+                        ${Number(product.unit_price * product.quantity).toFixed(2)}
+                      </span>
+                    </div>
                   </div>
-                  <div className="price-container-information-order">
-                    <span className="current-price-information-order">
-                      ${Number(product.unit_price * product.quantity).toFixed(2)}
-                    </span>
-                  </div>
-                </div>
               </div>
             ))
           )}
