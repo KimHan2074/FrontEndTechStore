@@ -159,9 +159,9 @@ body {
   margin-left: 20px;
 }
 
-.change-password .input-group {
+/* .change-password .input-group {
   margin-bottom: 15px;
-}
+} */
 
 .input-row {
   display: flex;
@@ -179,10 +179,10 @@ body {
 }
 
 
-.change-password .input-row .input-group input {
+/* .change-password .input-row .input-group input {
   flex: 3;
   min-width: 450px;
-}
+} */
 
 .change-password input {
   width: 100%;

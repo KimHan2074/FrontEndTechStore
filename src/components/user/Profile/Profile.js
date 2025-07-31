@@ -360,7 +360,6 @@ const UserProfile = () => {
                 </div>
               </div>
             </div>
-
             <button type="submit" className="change-password-btn">
               Save Changes
             </button>
