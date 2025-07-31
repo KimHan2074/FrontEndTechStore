@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import BuyNow from "../../../components/user/Button/BuyNow";
 import AddToCart from "../../../components/user/Button/AddToCart";
+import { Heart } from "lucide-react";
 export default function Wishlist() {
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
@@ -145,7 +146,7 @@ export default function Wishlist() {
                   onClick={() => handleRemoveFromWishlist(item)}
                   title="Remove from wishlist"
                 >
-                  ❤️
+                <Heart size={24} color="red" />
                 </button>
               </div>
             </div>
