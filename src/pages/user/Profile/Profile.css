@@ -152,6 +152,7 @@ body {
 .change-password label {
   display: block;
   margin-bottom: 10px;
+  margin-top: 18px;
 }
 
 .change-password {
@@ -197,9 +198,10 @@ body {
   color: #fff;
   border: none;
   padding: 12px 24px;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
+  margin-top: 14px;
 }
 
 .profile-form {
