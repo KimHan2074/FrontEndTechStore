@@ -117,7 +117,7 @@ body {
   color: #fff;
   border: none;
   padding: 12px 24px;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
   display: block;
@@ -141,7 +141,7 @@ body {
   color: #074785;
   border: 2px solid #074785;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
 }
 

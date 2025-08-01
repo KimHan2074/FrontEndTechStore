@@ -1,6 +1,6 @@
 .history-wrapper {
   display: flex;
-  padding-left: 20px;
+  /* padding-left: 20px; */
   padding-right: calc((100% - 1160px) / 2 + 15px);
   max-width: 100%;
   box-sizing: border-box;
