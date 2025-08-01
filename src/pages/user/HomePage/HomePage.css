@@ -337,15 +337,6 @@
   transform: translateY(-4px);
 }
 
-/* .category-icon img.category-image {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  margin-bottom: 8px;
-  border-radius: 5px;
-  padding: 10px;
-} */
-
 .category-image {
   width: 100px;
   height: 100px;
