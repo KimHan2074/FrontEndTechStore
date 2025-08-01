@@ -1,4 +1,4 @@
-body {
+/* body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
@@ -91,5 +91,127 @@ body {
 .menu-item.active .menu-link {
   color: white; 
   border-radius: 8px; 
+} */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
+
+
+.profile-sidebarr {
+  background-color: #1B6392;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+
+
+  width: 350px;          
+  min-width: 350px;      
+  max-width: 350px;      
+  flex-shrink: 0;        
+
+
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: auto;
+  box-sizing: border-box;
+  position: sticky;    
+  top: 0;
+}
+
+
+.profile-infor {
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+
+.profile-infor .avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+
+.profile-infor div {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.profile-infor h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: left;
+  margin-left: 10px;
+}
+
+
+.profile-infor p {
+  margin: 10px;
+  font-size: 14px;
+  color: #cfd8e3;
+  text-align: left;
+  margin-left: 10px;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+
+
+
+.menus {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+.menus-item {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: black;
+  padding: 10px 10px 10px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: color 0.3s, background-color 0.3s;
+  margin-bottom: 30px;
+}
+
+
+.menus-item:hover {
+  background-color: #0574c8;
+}
+
+
+.menus-link{
+  text-decoration: none;
+  color: black;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+
+.menus-item.active .menus-link {
+  color: white;
+  border-radius: 8px;
+}
+
 
