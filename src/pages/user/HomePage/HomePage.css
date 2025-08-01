@@ -346,7 +346,7 @@
   padding: 10px;
 } */
 
-.category-icon img.category-image {
+.category-image {
   width: 100px;
   height: 100px;
   object-fit: contain;
