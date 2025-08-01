@@ -143,11 +143,9 @@ import {
   MessageSquare,
   ShoppingCart,
   LogOut,
-  Sun,
-  Moon,
 } from "lucide-react";
 
-const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
+const Sidebar = ({ activeItem, setActiveItem}) => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [showProductSubmenu, setShowProductSubmenu] = useState(false);
@@ -264,22 +262,7 @@ const Sidebar = ({ activeItem, setActiveItem, theme, setTheme }) => {
             </React.Fragment>
           ))}
         </ul>
-
-        <div className="admin-theme-toggle">
-          <button
-            className={`admin-theme-btn light ${theme === "light" ? "active" : ""}`}
-            onClick={() => setTheme("light")}
-          >
-            <Sun size={16} /> Light
-          </button>
-          <button
-            className={`admin-theme-btn dark ${theme === "dark" ? "active" : ""}`}
-            onClick={() => setTheme("dark")}
-          >
-            <Moon size={16} /> Dark
-          </button>
-        </div>
-
+        
         <div className="admin-logout" onClick={handleLogout}>
           <span className="icon">
             <LogOut size={18} />
