@@ -596,7 +596,7 @@ body {
 .product-card-product-detail img {
   width: 80%;
   height: 120px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 4px;
   margin: 0 auto 10px;
   display: block;
