@@ -1,11 +1,11 @@
 .admin-sidebar {
   width: 285px;
-  height: 760px;
+  height: 740px;
   background-color: #0D1B2A;
   color: white;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 20px 20px 0 20px;
   font-family: Arial, sans-serif;
   overflow-y: auto;
 }
