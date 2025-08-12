@@ -16,7 +16,6 @@
 }
 
 
-
 /* Dashboard Title */
 .dashboard-title {
   font-size: 2rem;
@@ -91,25 +90,17 @@
 }
 
 /* Charts Grid */
-/* .charts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-  gap: 24px;
-} */
-
 .charts-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Mặc định 1 cột */
+  grid-template-columns: 1fr; 
   gap: 24px;
 }
 
-/* Màn hình lớn: biểu đồ 3 và 4 cùng 1 hàng */
 @media (min-width: 1024px) {
   .charts-grid {
-    grid-template-columns: 1fr; /* Giữ nguyên */
+    grid-template-columns: 1fr; 
   }
 
-  /* Gom biểu đồ 3 và 4 thành một grid riêng */
   .chart-row-double {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
