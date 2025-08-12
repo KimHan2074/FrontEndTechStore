@@ -16,48 +16,118 @@ import {
   AreaChart,
 } from "recharts"
 import { DollarSign, ShoppingCart, Users } from "lucide-react"
+// const wrapText = (text, maxLength = 12) => {
+//   if (!text || typeof text !== "string") return text
+
+//   if (text.length <= maxLength) return [text]
+
+//   const words = text.split(" ")
+
+//   if (words.length === 1) {
+//     const chunks = []
+//     for (let i = 0; i < text.length; i += maxLength) {
+//       chunks.push(text.slice(i, i + maxLength))
+//     }
+//     return chunks
+//   }
+
+//   const lines = []
+//   let currentLine = ""
+
+//   for (const word of words) {
+//     const testLine = currentLine ? `${currentLine} ${word}` : word
+
+//     if (testLine.length <= maxLength) {
+//       currentLine = testLine
+//     } else {
+//       if (currentLine) {
+//         lines.push(currentLine)
+//         currentLine = word
+//       } else {
+//         lines.push(word.slice(0, maxLength))
+//         currentLine = word.slice(maxLength)
+//       }
+//     }
+//   }
+
+//   if (currentLine) {
+//     lines.push(currentLine)
+//   }
+
+//   return lines.length > 0 ? lines : [text]
+// }
+
 const wrapText = (text, maxLength = 12) => {
-  if (!text || typeof text !== "string") return text
+  if (!text || typeof text !== "string") return text;
 
-  if (text.length <= maxLength) return [text]
+  if (text.length <= maxLength) return [text];
 
-  const words = text.split(" ")
+  const words = text.split(" ");
 
+  // Nếu không có dấu cách → cắt theo chunk
   if (words.length === 1) {
-    const chunks = []
+    const chunks = [];
     for (let i = 0; i < text.length; i += maxLength) {
-      chunks.push(text.slice(i, i + maxLength))
+      chunks.push(text.slice(i, i + maxLength));
     }
-    return chunks
+    return chunks;
   }
 
-  const lines = []
-  let currentLine = ""
+  // Nếu có dấu cách → cắt theo từ
+  const lines = [];
+  let currentLine = "";
 
   for (const word of words) {
-    const testLine = currentLine ? `${currentLine} ${word}` : word
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
 
     if (testLine.length <= maxLength) {
-      currentLine = testLine
+      currentLine = testLine;
     } else {
       if (currentLine) {
-        lines.push(currentLine)
-        currentLine = word
+        lines.push(currentLine);
+        currentLine = word;
       } else {
-        lines.push(word.slice(0, maxLength))
-        currentLine = word.slice(maxLength)
+        lines.push(word.slice(0, maxLength));
+        currentLine = word.slice(maxLength);
       }
     }
   }
 
   if (currentLine) {
-    lines.push(currentLine)
+    lines.push(currentLine);
   }
 
-  return lines.length > 0 ? lines : [text]
-}
+  return lines.length > 0 ? lines : [text];
+};
 
-const CustomTick = ({ x, y, payload, textAnchor = "middle", maxWidth = 100 }) => {
+// const CustomTick = ({ x, y, payload, textAnchor = "middle", maxWidth = 100 }) => {
+//   const lines = wrapText(payload.value, 12);
+//   const lineHeight = 14;
+//   const offsetY = 20;
+//   const startY = y + offsetY;
+
+//   return (
+//     <g transform={`translate(${x},${startY})`}>
+//       {lines.map((line, index) => (
+//         <text
+//           key={index}
+//           x={0}
+//           y={index * lineHeight}
+//           dy={4}
+//           textAnchor={textAnchor}
+//           fill="#6b7280"
+//           fontSize="11"
+//           fontWeight="400"
+//         >
+//           {line}
+//         </text>
+//       ))}
+//     </g>
+//   );
+// }; 
+
+// Component hiển thị custom tick
+const CustomTick = ({ x, y, payload, textAnchor = "middle" }) => {
   const lines = wrapText(payload.value, 12);
   const lineHeight = 14;
   const offsetY = 20;
@@ -82,6 +152,7 @@ const CustomTick = ({ x, y, payload, textAnchor = "middle", maxWidth = 100 }) =>
     </g>
   );
 };
+
 
 const COLORS = ["#00C49F", "#FFBB28", "#FF8042", "#FF4B4B"]
 
@@ -172,7 +243,7 @@ const DashboardAnalytics = ({ summary, monthlyRevenue, categorySales, orderStatu
           </div>
         </div>
 
-        <div className="chart-box">
+        {/* <div className="chart-box">
           <div className="chart-header">
             <h3 className="chart-title">Sales By Category</h3>
             <p className="chart-description">Number Of Items Sold By Category</p>
@@ -203,7 +274,48 @@ const DashboardAnalytics = ({ summary, monthlyRevenue, categorySales, orderStatu
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </div>
+        </div> */}
+
+        <div className="chart-box">
+          <div className="chart-header">
+            <h3 className="chart-title">Sales By Category</h3>
+            <p className="chart-description">Number Of Items Sold By Category</p>
+          </div>
+          <div className="chart-container">
+            <ResponsiveContainer width="100%" height={350}>
+              <BarChart
+                data={categorySales}
+                margin={{ top: 20, right: 30, left: 20, bottom: 70 }} // tăng bottom để đủ chỗ text
+                barCategoryGap={30} // tạo khoảng cách giữa các cột
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={<CustomTick />}
+                  height={80}
+                  interval={0}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 12, fill: "#6b7280" }}
+                />
+                <Tooltip
+                  formatter={(value) => [value, "Quantity"]}
+                  labelStyle={{ color: "#374151" }}
+                  contentStyle={{
+                    backgroundColor: "white",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "6px",
+                  }}
+                />
+                <Bar dataKey="quantity" fill="#14b8a6" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>;
 
         <div className="chart-box">
           <div className="chart-header">
