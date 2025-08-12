@@ -74,6 +74,9 @@ const fetchGalleryImages = async () => {
     fetchGalleryImages();
   }, []);
 
+  const handleProductClick = (productId) => {
+    navigate(`/user/product-detail/${productId}`);
+  };
 
   const handleCategoryClick = async (categoryId) => {
     setSelectedCategoryId(categoryId);
@@ -94,6 +97,8 @@ if (categoryId) {
 }
 navigate(`/user/product?${params.toString()}`);
   };
+
+  
 
   return (
     <div className="mobile-interface">
@@ -138,6 +143,7 @@ navigate(`/user/product?${params.toString()}`);
                 src={product.images?.[0]?.image_url || "https://via.placeholder.com/150"}
                 alt={product.name}
                 className="product-image"
+                onClick={() => handleProductClick(product.id)}
               />
               <div className="product-content">
                 <p className="product-name">{product.name}</p>
