@@ -1,6 +1,6 @@
 .admin-sidebar {
   width: 285px;
-  height: 740px;
+  height: 800px;
   background-color: #0D1B2A;
   color: white;
   display: flex;
@@ -8,6 +8,7 @@
   padding: 20px 20px 0 20px;
   font-family: Arial, sans-serif;
   overflow-y: auto;
+  position: fixed;
 }
 
 .admin-top {
@@ -164,7 +165,7 @@
   background-color: transparent;
   transition: 0.3s;
   margin-top: auto;
-  margin-bottom: 20px;
+  margin-bottom: 60px;
 }
 
 .admin-logout:hover {
