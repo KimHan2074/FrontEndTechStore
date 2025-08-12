@@ -1,12 +1,13 @@
 import React from 'react';
 import '../../../pages/user/Footer/Footer.css';
-import {
-    Play, Apple
-} from "lucide-react"
+import { Play, Apple } from "lucide-react";
+
 const Footer = () => {
     return (
         <footer className="footer">
             <div className="footer-container">
+                
+                {/* Cột Logo & Liên hệ */}
                 <div className="footer-column">
                     <div className="footer-logo">
                         <img
@@ -15,7 +16,6 @@ const Footer = () => {
                             alt="Footer Logo"
                         />
                     </div>
-
                     <div className="footer-contact">
                         <p className="footer-support">Customer Support:</p>
                         <p className="footer-phone">(629) 555-0129</p>
@@ -25,50 +25,29 @@ const Footer = () => {
                     </div>
                 </div>
 
+                {/* Cột TOP CATEGORY */}
                 <div className="footer-column">
                     <h3 className="footer-title">TOP CATEGORY</h3>
-                    <ul className="footer-links">
-                        <li><a href="#">Computer & Laptop</a></li>
-                        <li><a href="#">Smartphone</a></li>
-                        <li><a href="#">Headphone</a></li>
-                        <li><a href="#">Accessories</a></li>
-                        <li><a href="#">Camera & Photo</a></li>
-                        <li><a href="#">TV/Home</a></li>
-                        <li><a href="#" className="footer-browse">Browse All Product <span>→</span></a></li>
+                    <ul className="footer-links footer-links-multi">
+                        <li><a href="/user/product?categoryId=2">Computer & Laptop</a></li>
+                        <li><a href="/user/product?categoryId=1">Smartphone</a></li>
+                        <li><a href="/user/product?categoryId=3">Headphone</a></li>
+                        <li><a href="/user/product?categoryId=5">Accessories</a></li>
+                        <li><a href="/user/product?categoryId=6">Camera & Photo</a></li>
+                        <li><a href="/user/product?categoryId=10">TV/Home</a></li>
+                        <li><a href="/user/Product" className="footer-browse">Browse All Product <span>→</span></a></li>
                     </ul>
                 </div>
 
-                <div className="footer-column">
-                    <h3 className="footer-title">QUICK LINKS</h3>
-                    <ul className="footer-links">
-                        <li><a href="#">Shop Product</a></li>
-                        <li><a href="#">Shopping Cart</a></li>
-                        <li><a href="#">Wishlist</a></li>
-                        <li><a href="#">Compare</a></li>
-                        <li><a href="#">Track Order</a></li>
-                        <li><a href="#">Customer Help</a></li>
-                        <li><a href="#">About Us</a></li>
-                    </ul>
-                </div>
-
-                <div className="footer-column">
+                {/* Cột DOWNLOAD APP */}
+                <div className="footer-column download-app">
                     <h3 className="footer-title">DOWNLOAD APP</h3>
                     <div className="footer-apps">
-                        <a href="#"><span><Play color="#ffff" strokeWidth={3} absoluteStrokeWidth />Google Play</span></a>
-                        <a href="#">
-                            <span><Apple color="#ffff" strokeWidth={3} absoluteStrokeWidth />App Store</span>
-                        </a>
+                        <a href="https://play.google.com/store/games?device=windows"><span><Play color="#ffff" strokeWidth={3} absoluteStrokeWidth />Google Play</span></a>
+                        <a href="https://www.apple.com/vn/app-store/"><span><Apple color="#ffff" strokeWidth={3} absoluteStrokeWidth />App Store</span></a>
                     </div>
                 </div>
 
-                <div className="footer-column">
-                    <h3 className="footer-title">POPULAR TAG</h3>
-                    <div className="footer-tags">
-                        {["iPhone", "TV", "Asus Laptop", "MacBook", "SSD", "Graphics Card", "Power Bank", "Smart TV", "Speaker", "Tablet", "Microwave", "Samsung"].map((tag, index) => (
-                            <a href="#" key={index} className="footer-tag">{tag}</a>
-                        ))}
-                    </div>
-                </div>
             </div>
 
             <div className="footer-copyright">

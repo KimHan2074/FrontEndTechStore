@@ -14,7 +14,7 @@
 }
 
 .footer-column {
-  width: 20%;
+  width: 29%;
   min-width: 200px;
   margin-bottom: 30px;
 }
@@ -26,19 +26,12 @@
   cursor: pointer;
 }
 
-.footer-logo-icon {
-  margin-right: 10px;
-}
-
-.footer-logo-text {
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
 .footer-contact {
   font-size: 12px;
   line-height: 1.5;
+  column-count: 2;
+  column-gap: 20px;
+
 }
 
 .footer-support {
@@ -98,25 +91,6 @@
 .footer-browse span {
   margin-left: 5px;
 }
-.footer-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.footer-tag {
-  background-color: #333333;
-  color: #ffffff;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  text-decoration: none;
-  transition: background-color 0.2s;
-}
-
-.footer-tag:hover {
-  background-color: #444444;
-}
 
 .footer-copyright {
   border-top: 1px solid #ffffff;
@@ -159,4 +133,13 @@
   align-items: center;
   gap: 5px;
   width: 100%;
+}
+.footer-links-multi {
+  column-count: 2;
+  column-gap: 20px;
+}
+
+.footer-column:nth-child(2),
+.footer-column.download-app {
+  margin-top: 20px; 
 }
