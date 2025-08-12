@@ -99,24 +99,21 @@
 
 .charts-grid {
   display: grid;
-  grid-template-columns: 1fr; /* mặc định 1 cột */
+  grid-template-columns: 1fr; /* Mặc định 1 cột */
   gap: 24px;
 }
 
-/* Hai biểu đồ cuối hiển thị chung hàng */
-.charts-grid .chart-box:nth-child(3),
-.charts-grid .chart-box:nth-child(4) {
-  display: inline-block;
-  width: calc(50% - 12px); /* chia 2 cột, trừ khoảng cách */
-  vertical-align: top;
-}
+/* Màn hình lớn: biểu đồ 3 và 4 cùng 1 hàng */
+@media (min-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: 1fr; /* Giữ nguyên */
+  }
 
-/* Đảm bảo bố cục đẹp khi màn nhỏ */
-@media (max-width: 1024px) {
-  .charts-grid .chart-box:nth-child(3),
-  .charts-grid .chart-box:nth-child(4) {
-    width: 100%;
-    display: block;
+  /* Gom biểu đồ 3 và 4 thành một grid riêng */
+  .chart-row-double {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
   }
 }
 
