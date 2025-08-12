@@ -91,10 +91,33 @@
 }
 
 /* Charts Grid */
-.charts-grid {
+/* .charts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   gap: 24px;
+} */
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* mặc định 1 cột */
+  gap: 24px;
+}
+
+/* Hai biểu đồ cuối hiển thị chung hàng */
+.charts-grid .chart-box:nth-child(3),
+.charts-grid .chart-box:nth-child(4) {
+  display: inline-block;
+  width: calc(50% - 12px); /* chia 2 cột, trừ khoảng cách */
+  vertical-align: top;
+}
+
+/* Đảm bảo bố cục đẹp khi màn nhỏ */
+@media (max-width: 1024px) {
+  .charts-grid .chart-box:nth-child(3),
+  .charts-grid .chart-box:nth-child(4) {
+    width: 100%;
+    display: block;
+  }
 }
 
 .chart-box {
