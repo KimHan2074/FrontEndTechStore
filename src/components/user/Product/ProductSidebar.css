@@ -1,11 +1,11 @@
 .sidebar-section {
   width: 30%;
-  margin-top: 40px;
+  margin-top: 1px; 
 }
 
 .content-section {
   width: 70%;
-  margin-top: 70px;
+  margin-top: 30px; 
 }
 
 .mobile-interface {
@@ -57,12 +57,24 @@
   border-radius: 50%;
   margin-right: 10px;
   position: relative;
+  cursor: pointer;
   transition: all 0.3s ease;
-  align-items: center;
 }
 
 .category-label input[type="radio"]:checked {
   border-color: #FA8232;
+}
+
+.category-label input[type="radio"]:checked::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background-color: #FA8232;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .category-item-slidebar {
@@ -283,3 +295,4 @@
   background-color: #FA8232;
   color: #fff;
 }
+
