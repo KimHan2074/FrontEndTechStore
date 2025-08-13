@@ -16,6 +16,7 @@ import {
   AreaChart,
 } from "recharts"
 import { DollarSign, ShoppingCart, Users } from "lucide-react"
+
 const wrapText = (text, maxLength = 12) => {
   if (!text || typeof text !== "string") return text
 
@@ -81,7 +82,7 @@ const CustomTick = ({ x, y, payload, textAnchor = "middle", maxWidth = 100 }) =>
       ))}
     </g>
   );
-};
+}; 
 
 const COLORS = ["#00C49F", "#FFBB28", "#FF8042", "#FF4B4B"]
 
@@ -204,94 +205,96 @@ const DashboardAnalytics = ({ summary, monthlyRevenue, categorySales, orderStatu
             </ResponsiveContainer>
           </div>
         </div>
-
-        <div className="chart-box">
-          <div className="chart-header">
-            <h3 className="chart-title">Order Status</h3>
-            <p className="chart-description">Distribution Of Order Statuses</p>
-          </div>
-          <div className="chart-container">
-            <div className="pie-chart-wrapper">
-              <div className="pie-chart">
-                <ResponsiveContainer width="100%" height={250}>
-                  <PieChart>
-                    <Pie
-                      data={orderStatus}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={40}
-                      outerRadius={80}
-                    >
-                      {orderStatus.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      formatter={(value) => [value, "Orders"]}
-                      labelStyle={{ color: "#374151" }}
-                      contentStyle={{
-                        backgroundColor: "white",
-                        border: "1px solid #e5e7eb",
-                        borderRadius: "6px",
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="pie-legend">
-                {orderStatus.map((item, index) => (
-                  <div key={index} className="legend-item">
-                    <div className="legend-color" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
-                    <span className="legend-label">{item.name}</span>
-                    <span className="legend-value">{item.value}</span>
-                  </div>
-                ))}
+        
+        <div className="chart-row-double">
+          <div className="chart-box">
+            <div className="chart-header">
+              <h3 className="chart-title">Order Status</h3>
+              <p className="chart-description">Distribution Of Order Statuses</p>
+            </div>
+            <div className="chart-container">
+              <div className="pie-chart-wrapper">
+                <div className="pie-chart">
+                  <ResponsiveContainer width="100%" height={250}>
+                    <PieChart>
+                      <Pie
+                        data={orderStatus}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={40}
+                        outerRadius={80}
+                      >
+                        {orderStatus.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        formatter={(value) => [value, "Orders"]}
+                        labelStyle={{ color: "#374151" }}
+                        contentStyle={{
+                          backgroundColor: "white",
+                          border: "1px solid #e5e7eb",
+                          borderRadius: "6px",
+                        }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="pie-legend">
+                  {orderStatus.map((item, index) => (
+                    <div key={index} className="legend-item">
+                      <div className="legend-color" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
+                      <span className="legend-label">{item.name}</span>
+                      <span className="legend-value">{item.value}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="chart-box">
-          <div className="chart-header">
-            <h3 className="chart-title">Top Best-Selling Products</h3>
-            <p className="chart-description">Top 5 Best-Selling Products of the Month</p>
+          <div className="chart-box">
+            <div className="chart-header">
+              <h3 className="chart-title">Top Best-Selling Products</h3>
+              <p className="chart-description">Top 5 Best-Selling Products of the Month</p>
+            </div>
+            <div className="chart-container">
+              <ResponsiveContainer width="100%" height={350}>
+                <LineChart data={topProducts} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                  <XAxis
+                    dataKey="name"
+                    axisLine={false}
+                    tickLine={false}
+                    tick={<CustomTick />}
+                    height={80}
+                    interval={0}
+                  />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "#6b7280" }} />
+                  <Tooltip
+                    formatter={(value) => [`${value}`, "Sales"]}
+                    labelStyle={{ color: "#374151" }}
+                    contentStyle={{
+                      backgroundColor: "white",
+                      border: "1px solid #e5e7eb",
+                      borderRadius: "6px",
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="sales"
+                    stroke="#14b8a6"
+                    strokeWidth={2}
+                    dot={{ r: 5 }}
+                    activeDot={{ r: 7 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-          <div className="chart-container">
-            <ResponsiveContainer width="100%" height={350}>
-              <LineChart data={topProducts} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis
-                  dataKey="name"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={<CustomTick />}
-                  height={80}
-                  interval={0}
-                />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "#6b7280" }} />
-                <Tooltip
-                  formatter={(value) => [`${value}`, "Sales"]}
-                  labelStyle={{ color: "#374151" }}
-                  contentStyle={{
-                    backgroundColor: "white",
-                    border: "1px solid #e5e7eb",
-                    borderRadius: "6px",
-                  }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="sales"
-                  stroke="#14b8a6"
-                  strokeWidth={2}
-                  dot={{ r: 5 }}
-                  activeDot={{ r: 7 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+        </div> 
       </div>
     </div>
   )
