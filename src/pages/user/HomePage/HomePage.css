@@ -4,11 +4,12 @@
   margin: 0 auto;
   display: flex;
   gap: 20px;
+  cursor: pointer;
 }
 
 .main-product-banner {
-  margin-top: 100px;
-  margin-bottom: 100px;
+  margin-top: 30px;
+  margin-bottom: 40px;
   flex: 2;
   border-radius: 20px;
   padding: 40px;
@@ -84,17 +85,18 @@
 }
 
 .product-image-banner img {
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
+  width: 100%;
+  height: 200px;       
+  object-fit: cover;
+  display: block;
 }
 
+
 .side-products-banner {
-  margin-top: 100px;
-  margin-bottom: 100px;
+  margin-top: 30px;
+  margin-bottom: 40px;
   flex: 1;
   display: flex;
-  flex-direction: column;
   gap: 20px;
 }
 
@@ -104,7 +106,12 @@
   padding: 20px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
+
 
 .product-card-banner:hover {
   transform: translateY(-5px);
@@ -186,17 +193,10 @@
   right: 10px;
 }
 
-/* .product-card-banner-top .card-image-banner {
-  width: 220px;
-  height: 150px;
-  object-fit: contain;
-} */
-
 .card-image-banner {
-  width: 80px;
-  height: 80px;
-  margin-top: 20px;
-  object-fit: contain;
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
 }
 
 .price-info-banner {
@@ -285,13 +285,12 @@
   max-width: 1080px;
   margin: 0 auto;
   gap: 15px;
-  padding-bottom: 10px;
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 .category-item{
-  flex: 0 0 calc((100% - (25px * 5)) / 6);
+  flex: 0 0 calc((100% - (15px * 5)) / 6);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -461,11 +460,6 @@
 }
 
 /* FeaturedProductSection */
-.product-showcase-featured {
-  margin-top: 50px;
-  margin-bottom: 50px;
-}
-
 .showcase-container-featured {
   max-width: 1080px;
   margin: 0 auto;
@@ -626,6 +620,84 @@
   color: #ADB7BC;
   text-decoration: line-through;
 }
+
+@media (max-width: 768px) {
+  .showcase-container-featured {
+    flex-direction: column; /* Chuyển từ hàng sang cột */
+    max-width: 100%;
+    padding: 0 15px;
+    gap: 20px;
+  }
+
+  .products-grid-featured {
+    grid-template-columns: repeat(2, 1fr); /* 2 cột */
+    gap: 15px;
+  }
+
+  .category-tabs-featured {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .category-tab-featured {
+    font-size: 13px;
+    padding: 5px 10px;
+  }
+
+  .product-card-featured {
+    padding: 15px;
+  }
+
+  .product-name-featured {
+    font-size: 13px;
+    -webkit-line-clamp: 2; /* Giới hạn 2 dòng */
+  }
+
+  .product-price-featured {
+    gap: 6px;
+  }
+
+  .current-price-featured {
+    font-size: 13px;
+  }
+
+  .original-price-featured {
+    font-size: 11px;
+  }
+}
+
+/* Responsive cho màn hình nhỏ hơn hoặc bằng 480px (mobile nhỏ hơn) */
+@media (max-width: 480px) {
+  .products-grid-featured {
+    grid-template-columns: 1fr; /* 1 cột full width */
+    gap: 12px;
+  }
+
+  .category-tabs-featured {
+    align-items: center;
+  }
+
+  .category-tab-featured {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .product-name-featured {
+    font-size: 12px;
+    -webkit-line-clamp: 2;
+  }
+
+  .current-price-featured {
+    font-size: 12px;
+  }
+
+  .original-price-featured {
+    font-size: 10px;
+  }
+}
+
 
 
 /* ------BestDealSection------ */
@@ -1102,8 +1174,9 @@
 .container-best-seller {
   max-width: 1080px;
   margin: 0 auto;
-  margin-bottom: 100px;
+  margin-bottom: 30px;
   cursor: pointer;
+  margin-top: 30px;
 }
 
 .header-best-seller {
@@ -1130,11 +1203,7 @@
   color: #2563eb;
 }
 
-.main-content-best-seller {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
-}
+
 
 .products-section-best-seller {
   display: flex;
@@ -1144,7 +1213,7 @@
 .products-grid-best-seller {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 20px;
 }
 
 .product-card-best-seller {
@@ -1164,6 +1233,7 @@
 .product-card-best-seller {
   position: relative;
   z-index: 1;
+  padding: 15px;
 }
 
 .badge-best-seller {
@@ -1197,21 +1267,21 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-color: #f4f4f4;
   border-radius: 8px;
 }
 
 .product-image-best-seller img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  width: 90%;
+  height: 90%;
+  object-fit: cover;
   margin-bottom:5px;
-  padding: 10px;
+  border-radius: 5px;
 }
 
 .product-info-best-seller {
   display: flex;
   flex-direction: column;
+  padding: 10px;
 }
 
 .star-rating-best-seller {
@@ -1381,7 +1451,7 @@
   }
 
   .header-best-seller {
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 16px;
     text-align: center;
   }
@@ -1428,7 +1498,6 @@
 
 /* MacbookProAdBanner */
 .macbook-showcase {
-  width: 100%;
   max-width: 1080px;
   height: 400px;
   margin: 0 auto;
@@ -1437,7 +1506,6 @@
   align-items: center;
   overflow: hidden;
   position: relative;
-  margin-bottom: 80px;
 }
 .save-badge {
   background: #B1DDFF;
@@ -1490,20 +1558,13 @@
   z-index: 10;
 }
 
-
-.macbook-image{
-
-  transform: scale(1.02) translateY(-5px);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
-}
-
 /* Responsive cho tablet */
 @media (max-width: 768px) {
   .macbook-showcase {
     flex-direction: column;
     padding: 40px 30px;
     gap: 40px;
-    text-align: center;
+    text-align: left;
   }
 
   .content-left {
@@ -1575,8 +1636,6 @@
     gap: 24px;
 }
 .content-left {
-  /* flex: 1; */
-
   padding-right: 20px;
   height: 100%;
   display: flex;
@@ -1594,13 +1653,12 @@
 }
 
 .macbook-image {
-  width: 100%;
-  max-height: 400px;
-  object-fit: contain;
-  border-radius: 10px;
-  display: block;
-  margin: 0 auto;
-
+  width: 400px;
+  height: 300px;
+  object-fit: cover;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .product-title-macbook {
@@ -1618,6 +1676,217 @@
   font-size: 24px;
   font-weight: bold;
 }
+@media (max-width: 768px) {
+  .macbook-showcase {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 40px 30px;
+    gap: 30px;
+    text-align: left;
+  }
+
+  .content-left {
+    padding-right: 0;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .product-title-macbook {
+    font-size: 32px;
+  }
+
+  .product-description-macbook {
+    font-size: 16px;
+  }
+
+  .macbook-image {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .price-tag {
+    top: 10px;
+    right: 20px;
+    left: auto;
+    transform: none;
+    font-size: 18px;
+    padding: 6px 12px;
+  }
+}
+
+/* Responsive cho mobile (dưới 480px) */
+@media (max-width: 480px) {
+  .macbook-showcase {
+    padding: 20px 15px;
+    gap: 20px;
+  }
+
+  .product-title-macbook {
+    font-size: 26px;
+  }
+
+  .product-description-macbook {
+    font-size: 14px;
+  }
+
+  .macbook-image {
+    max-width: 280px;
+    height: auto;
+  }
+
+  .price-tag {
+    font-size: 16px;
+    padding: 6px 10px;
+    top: 5px;
+    right: 15px;
+  }
+
+  .save-badge {
+    width: 70%;
+    font-size: 12px;
+    padding: 8px 15px;
+  }
+}
+
+/* Responsive cho màn hình rất nhỏ (dưới 360px) */
+@media (max-width: 360px) {
+  .product-title-macbook {
+    font-size: 22px;
+  }
+
+  .product-description-macbook {
+    font-size: 13px;
+  }
+
+  .macbook-image {
+    max-width: 220px;
+  }
+
+  .price-tag {
+    font-size: 14px;
+    padding: 4px 8px;
+    top: 5px;
+    right: 10px;
+  }
+
+  .save-badge {
+    width: 90%;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+}
+
+
+/* Responsive cho tablet nhỏ hơn 768px */
+@media (max-width: 768px) {
+  .macbook-showcase {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 40px 30px;
+    gap: 30px;
+    text-align: left;
+  }
+
+  .content-left {
+    padding-right: 0;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .product-title-macbook {
+    font-size: 32px;
+  }
+
+  .product-description-macbook {
+    font-size: 16px;
+  }
+
+  .macbook-image {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .price-tag {
+    top: 10px;
+    left: 10px;      /* Căn bên trái */
+    right: auto;     /* Bỏ right */
+    transform: none; /* Bỏ dịch translate */
+    font-size: 18px;
+    padding: 6px 12px;
+  }
+}
+
+/* Responsive cho mobile (dưới 480px) */
+@media (max-width: 480px) {
+  .macbook-showcase {
+    padding: 20px 15px;
+    gap: 20px;
+  }
+
+  .product-title-macbook {
+    font-size: 26px;
+  }
+
+  .product-description-macbook {
+    font-size: 14px;
+  }
+
+  .macbook-image {
+    max-width: 280px;
+    height: auto;
+  }
+
+  .price-tag {
+    font-size: 16px;
+    padding: 6px 10px;
+    top: 5px;
+    left: 10px;      /* Vẫn giữ bên trái */
+    right: auto;
+    transform: none;
+  }
+
+  .save-badge {
+    width: 70%;
+    font-size: 12px;
+    padding: 8px 15px;
+  }
+}
+
+/* Responsive cho màn hình rất nhỏ (dưới 360px) */
+@media (max-width: 360px) {
+  .product-title-macbook {
+    font-size: 22px;
+  }
+
+  .product-description-macbook {
+    font-size: 13px;
+  }
+
+  .macbook-image {
+    max-width: 220px;
+  }
+
+  .price-tag {
+    font-size: 14px;
+    padding: 4px 8px;
+    top: 5px;
+    left: 8px;
+    right: auto;
+    transform: none;
+  }
+
+  .save-badge {
+    width: 90%;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+}
 
 /* LatestHomePage */
 .last-home-container {
@@ -1625,14 +1894,13 @@
   max-width: 1080px;
   margin: 0 auto;
   cursor: pointer;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .cards-container-last-home {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 70px;
-  justify-content: center;
+  grid-template-columns: repeat(4, 1fr); /* 4 cột đều nhau */
+  gap: 16px; /* khoảng cách giữa các card */
 }
 
 .card-last-home {
@@ -1655,10 +1923,14 @@
 }
 
 .card-image-last-home {
-  width: 100%;
+  width: 80%;
   height: 200px;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
+  margin: 0 auto;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
 }
 
 .card-meta-last-home {
@@ -1695,7 +1967,14 @@
   font-weight: 500;
   color: #000000;
 }
-
+.author-last-home {
+  display: inline-block;
+  max-width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
 .card-title-last-home {
   padding: 16px 20px 8px;
   margin: 0;
@@ -1819,13 +2098,8 @@
     margin: 12px 16px 16px;
   }
 }
-
-.card-image-last-home {
-  width: 80%;
-  height: 200px;
-  object-fit: cover;
-  display: block;
-  margin: 0 auto;
-  padding: 10px;
-  margin-top: 10px;
+.products-grid-best-seller {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
 }
