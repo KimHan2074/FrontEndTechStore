@@ -10,7 +10,7 @@ const LatestHomePage = () => {
 
   const getRandomThree = (cards) => {
     const shuffled = [...cards].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 3);
+    return shuffled.slice(0, 4);
   };
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const LatestHomePage = () => {
 
  return visibleCards.length === 0 ? null : (
   <div className="last-home-container">
-    <div className="cards-container-last-home">
+    <div className="cards-container-last-home"  onClick={() => navigate(`/user/blog`)}>
       {visibleCards.map((card) => (
         <div key={card.id} className="card-last-home">
           <img

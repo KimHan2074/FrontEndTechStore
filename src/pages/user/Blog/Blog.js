@@ -10,13 +10,13 @@ const Blog = () => {
   return (
     <>
       <div className="blog-wrapper">
-        <div className="sidebar-section">
+        <div className="sidebar-section-blog">
           <BlogSlideBar
             selectedCategoryId={selectedCategoryId}
             setSelectedCategoryId={setSelectedCategoryId}
           />
         </div>
-        <div className="content-section">
+        <div className="content-section-blog">
           {hasResults ? (
             <ContentBlog
               selectedCategoryId={selectedCategoryId}

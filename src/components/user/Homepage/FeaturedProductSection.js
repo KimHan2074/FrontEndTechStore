@@ -8,11 +8,12 @@ const FeaturedProductSection = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
+const baseURL = process.env.REACT_APP_BE_URL;
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
       try {
-        const res = await axios.get("https://backendtechstore1-production.up.railway.app/api/user/product/promoted");
+const res = await axios.get(`${baseURL}/api/user/product/promoted`);
         const allPromoted = res.data?.data || [];
 
         const featured = allPromoted
