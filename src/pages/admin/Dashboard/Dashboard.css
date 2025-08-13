@@ -16,7 +16,6 @@
 }
 
 
-
 /* Dashboard Title */
 .dashboard-title {
   font-size: 2rem;
@@ -93,8 +92,20 @@
 /* Charts Grid */
 .charts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-template-columns: 1fr; 
   gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: 1fr; 
+  }
+
+  .chart-row-double {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
 }
 
 .chart-box {

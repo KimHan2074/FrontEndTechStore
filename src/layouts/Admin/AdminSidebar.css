@@ -1,6 +1,6 @@
 .admin-sidebar {
   width: 285px;
-  height: 740px;
+  height: 800px;
   background-color: #0D1B2A;
   color: white;
   display: flex;
@@ -8,6 +8,7 @@
   padding: 20px 20px 0 20px;
   font-family: Arial, sans-serif;
   overflow-y: auto;
+  position: fixed;
 }
 
 .admin-top {
@@ -62,20 +63,13 @@
   color: white;
 }
 
-/* .admin-profile-info .admin-email {
-  font-weight: normal;
-  margin: 0;
-  color: white;
-  opacity: 0.8;
-} */
-
 .admin-profile-info .admin-email {
   font-weight: normal;
   margin: 0;
   color: white;
   opacity: 0.8;
-  word-break: break-word; /* ✅ Cho phép xuống dòng nếu dài quá */
-  white-space: normal;     /* ✅ Bỏ hạn chế 1 dòng */
+  word-break: break-word;
+  white-space: normal;    
 }
 
 .admin-menu {
@@ -164,7 +158,7 @@
   background-color: transparent;
   transition: 0.3s;
   margin-top: auto;
-  margin-bottom: 20px;
+  margin-bottom: 70px;
 }
 
 .admin-logout:hover {
@@ -183,14 +177,6 @@
   display: none;
 }
 
-
-/* pagination-controls {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 12px;
-  margin-top: 16px;
-} */
 .pagination-controls {
   display: flex;
   justify-content: flex-end;

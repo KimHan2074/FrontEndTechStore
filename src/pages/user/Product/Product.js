@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import AddToWishlist from "../../../components/user/Button/AddToWishlist";
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
 import AddToCart from "../../../components/user/Button/AddToCart";
+import { toast } from "react-toastify"; // nếu bạn dùng react-toastify
 
 const ProductList = ({ searchQuery }) => {
   const [products, setProducts] = useState([]);
@@ -18,16 +19,18 @@ const ProductList = ({ searchQuery }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Lấy categoryId từ URL (query param)
   const params = new URLSearchParams(location.search);
   const categoryId = params.get("categoryId");
+
+  // ✅ Lấy trạng thái đăng nhập (ví dụ token trong localStorage)
+  const isLoggedIn = Boolean(localStorage.getItem("token"));
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
         let url = `https://backendtechstore1-production.up.railway.app/api/products/list?page=${currentPage}&per_page=${itemsPerPage}`;
-         if (categoryId) {
+        if (categoryId) {
           url += `&category_id=${categoryId}`;
         } else if (searchQuery) {
           url += `&q=${searchQuery}`;
@@ -59,6 +62,26 @@ const ProductList = ({ searchQuery }) => {
     }
   };
 
+  // ✅ Xử lý khi click Add to Cart
+  const handleAddToCart = (e, product) => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+      toast.warning("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
+      return;
+    }
+    // Gọi AddToCart component
+  };
+
+  // ✅ Xử lý khi click Wishlist
+  const handleAddToWishlist = (e, product) => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+      toast.warning("Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích!");
+      return;
+    }
+    // Gọi AddToWishlist component
+  };
+
   if (loading) return <LoadingSpinner />;
   if (error) return <div>Error: {error}</div>;
 
@@ -80,8 +103,13 @@ const ProductList = ({ searchQuery }) => {
             <div>No products found.</div>
           ) : (
             products.map((product) => (
-              <div key={product.id} className="product-card-product-list border rounded-md shadow-sm p-4 flex items-center mb-4">
-                {product.promotion_type && <div className="promotion-label-product-list">{product.promotion_type}</div>}
+              <div
+                key={product.id}
+                className="product-card-product-list border rounded-md shadow-sm p-4 flex items-center mb-4"
+              >
+                {product.promotion_type && (
+                  <div className="promotion-label-product-list">{product.promotion_type}</div>
+                )}
                 <img
                   src={product.images?.[0]?.image_url || "https://via.placeholder.com/165"}
                   alt={product.name}
@@ -99,12 +127,22 @@ const ProductList = ({ searchQuery }) => {
                       <span className="line-through">${product.old_price}</span>
                       <span className="text-red-500">${product.price}</span>
                     </div>
-                    <AddToCart product={product} className="bg-red-500 text-white px-3 py-2 rounded flex items-center justify-center gap-2 hover:bg-red-600 transition mb-2">
+
+                    {/* ADD TO CART */}
+                    <button
+                      onClick={(e) => handleAddToCart(e, product)}
+                      className="bg-red-500 text-white px-3 py-2 rounded flex items-center justify-center gap-2 hover:bg-red-600 transition mb-2"
+                    >
                       <FaShoppingCart /> ADD TO CART
-                    </AddToCart>
-                    <AddToWishlist item={product} className="text-gray-500 flex items-center justify-center gap-2 hover:text-red-500 transition">
+                    </button>
+
+                    {/* WISHLIST */}
+                    <button
+                      onClick={(e) => handleAddToWishlist(e, product)}
+                      className="text-gray-500 flex items-center justify-center gap-2 hover:text-red-500 transition"
+                    >
                       <FaHeart /> Wishlist
-                    </AddToWishlist>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -117,11 +155,18 @@ const ProductList = ({ searchQuery }) => {
             <FaChevronLeft />
           </button>
           {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
-            <button key={page} onClick={() => handlePageChange(page)} className={currentPage === page ? "active" : ""}>
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={currentPage === page ? "active" : ""}
+            >
               {page}
             </button>
           ))}
-          <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
             <FaChevronRight />
           </button>
         </div>
