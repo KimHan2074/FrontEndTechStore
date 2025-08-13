@@ -36,7 +36,7 @@ const BlogSlideBar = ({ selectedCategoryId, setSelectedCategoryId }) => {
   }, []);
 
   return (
-    <div className="mobile-interface">
+    <div className="mobile-interface-blog">
       <div className="section">
         <h2 className="section-title">CATEGORIES</h2>
         <ul className="category-list">

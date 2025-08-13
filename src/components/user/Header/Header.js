@@ -8,6 +8,7 @@ import {
   ShoppingCart, Heart, User, ChevronDown, Phone,
   Twitter, Facebook, Youtube, Instagram, MessageCircleHeart,
   CreditCard, House, AlignJustify, Archive, Search,
+  Menu,
 } from "lucide-react";
 import Logout from "../../auth/logout/Logout";
 
@@ -24,7 +25,7 @@ function Header({ onSearch }) {
   const token = localStorage.getItem("token");
   const { cartItems } = useCart();
   const itemCount = cartItems?.length || 0;
-
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -136,19 +137,6 @@ function Header({ onSearch }) {
 
   return (
     <header className="store-header">
-      <div className="promo-banner">
-        <div className="container banner-content">
-          <div className="black-friday-label">
-            <span className="black-label">Black</span>
-            <span className="friday-label">Friday</span>
-          </div>
-          <div className="promo-text">
-            Up to <span className="discount-percentage">59%</span> OFF
-          </div>
-          <button className="shop-now-btn">SHOP NOW</button>
-        </div>
-      </div>
-
 
       <div className="welcome-bar">
         <div className="container welcome-content">
@@ -221,89 +209,103 @@ function Header({ onSearch }) {
             </li>
           </div>
         </div>
-        <div className="category-nav">
-          <div className="container category-content">
+    <div className="category-nav">
+      <div className="container category-content">
+        <div
+          className="category-dropdown"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
+          <div className="dropdown-wrapper">
+            <button className="dropdown-btn">
+          All Category <ChevronDown />
+        </button>
 
-
-            <div
-              className="category-dropdown"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              <div className="dropdown-wrapper">
-                <button className="dropdown-btn">
-                  All Category <ChevronDown />
-                </button>
-
-
-                <div className={`dropdown-menu horizontal-menu ${isDropdownOpen ? 'active' : ''}`}>
-                  {Array.isArray(productCategories) && productCategories.map((category) => (
-                    <div
-                      key={category.id}
-                      className="dropdown-item"
-                      onClick={() => handleCategoryClick(category.id, category.name)}
-                    >
-                      <img
-                        src={category.image_url || "https://via.placeholder.com/50"}
-                        alt={category.name}
-                        className="category-image"
-                      />
-                      <span>{category.name}</span>
-                    </div>
-                  ))}
+            <div className={`dropdown-menu horizontal-menu ${isDropdownOpen ? 'active' : ''}`}>
+              {productCategories.map((category) => (
+                <div
+                  key={category.id}
+                  className="dropdown-item"
+                  onClick={() => handleCategoryClick(category.id, category.name)}
+                >
+                  <img
+                    src={category.image_url || "https://via.placeholder.com/50"}
+                    alt={category.name}
+                    className="category-image"
+                  />
+                  <span>{category.name}</span>
                 </div>
-              </div>
-            </div>
-
-
-            <nav className="main-menus">
-              <ul className="menu-items">
-                <li className="menu-item-header">
-                  <NavLink
-                    to="/"
-                    className={({ isActive }) =>
-                      isActive ? "menu-link-header active" : "menu-link-header"
-                    }
-                  >
-                    <House size={18} /> Homepage
-                  </NavLink>
-                </li>
-                <li className="menu-item-header">
-                  <NavLink
-                    to="/user/Product"
-                    className={({ isActive }) =>
-                      isActive ? "menu-link-header active" : "menu-link-header"
-                    }
-                  >
-                    <AlignJustify size={18} /> Product List
-                  </NavLink>
-                </li>
-                <li className="menu-item-header">
-                  <NavLink
-                    to="/user/blog"
-                    className={({ isActive }) =>
-                      isActive ? "menu-link-header active" : "menu-link-header"
-                    }
-                  >
-                    <Archive size={18} /> Blog
-                  </NavLink>
-                </li>
-                <li className="menu-item-header">
-                  <NavLink
-                    to="/user/about_us"
-                    className={({ isActive }) =>
-                      isActive ? "menu-link-header active" : "menu-link-header"
-                    }
-                  >
-                    <Archive size={18} /> About Us
-                  </NavLink>
-                </li>
-              </ul>
-            </nav>
-            <div className="contact-phone">
-              <Phone size={18} />
-              <span className="phone-number">+1-202-555-0104</span>
+              ))}
             </div>
           </div>
+          <button
+      className="mobile-menu-icon"
+      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      aria-label="Toggle mobile menu"
+    >
+      <Menu size={24} />
+    </button>
+        </div>
+
+
+      
+
+        {/* Menu chính - ẩn trên mobile, hiện trên desktop */}
+        <nav className={`main-menus ${isMobileMenuOpen ? "mobile-active" : ""}`}>
+          <ul className="menu-items">
+            <li className="menu-item-header">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive ? "menu-link-header active" : "menu-link-header"
+                }
+                onClick={() => setIsMobileMenuOpen(false)} // tắt menu khi chọn
+              >
+                <House size={18} /> Homepage
+              </NavLink>
+            </li>
+            <li className="menu-item-header">
+              <NavLink
+                to="/user/Product"
+                className={({ isActive }) =>
+                  isActive ? "menu-link-header active" : "menu-link-header"
+                }
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <AlignJustify size={18} /> Product List
+              </NavLink>
+            </li>
+            <li className="menu-item-header">
+              <NavLink
+                to="/user/blog"
+                className={({ isActive }) =>
+                  isActive ? "menu-link-header active" : "menu-link-header"
+                }
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Archive size={18} /> Blog
+              </NavLink>
+            </li>
+            <li className="menu-item-header">
+              <NavLink
+                to="/user/about_us"
+                className={({ isActive }) =>
+                  isActive ? "menu-link-header active" : "menu-link-header"
+                }
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Archive size={18} /> About Us
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+
+        <div className="contact-phone">
+          <Phone size={18} />
+          <span className="phone-number">+1-202-555-0104</span>
+        </div>
+
+      </div>
+    </div>
         </div>
         {searchResults.length > 0 && (
           <div className="search-results-container">
@@ -319,7 +321,7 @@ function Header({ onSearch }) {
             </div>
           </div>
         )}
-      </div>
+      {/* </div> */}
     </header >
   );
 }
