@@ -163,7 +163,6 @@ const InformationOrder = ({ onContinue, setCurrentStep }) => {
                   <input name="address" value={formData.address} onChange={handleInputChange} placeholder="Enter your address (street, house number, etc.)" required />
                 </div>
 
-                {/* Province / District / Ward */}
                 <div className="form-row-information-order">
                   <div className="form-group-information-order">
                     <label>Province</label>
