@@ -42,14 +42,8 @@ const AboutUs = () => {
 
         fetchPromotedProducts();
     }, []);
+    
     const handleProductClick = (productId) => {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-            toast.warning("Please login to view product details!");
-            return;
-        }
-
         navigate(`/user/product-detail/${productId}`);
     };
 
