@@ -50,7 +50,7 @@ const BestSellerSection = () => {
   useEffect(() => {
     const fetchBestDeals = async () => {
       try {
-        const res = await axios.get("https://localhost:8000/api/user/product/promoted");
+        const res = await axios.get("https://backendtechstore1-production.up.railway.app/api/user/product/promoted");
         const bestDeals = (res.data.data || []).filter(
           (p) => p.promotion_type === "best deal"
         );
