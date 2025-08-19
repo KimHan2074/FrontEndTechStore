@@ -199,15 +199,30 @@ export default class AddToWishlist extends Component {
       const finalUserId = userIdRes.data.userId;
 
       if (this.state.added) {
-        // ✅ Remove khỏi wishlist
+        // // ✅ Remove khỏi wishlist
+        // await axios.delete(
+        //   `https://backendtechstore1-production.up.railway.app/api/user/delete/wishlist/${productId}`,
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${token}`,
+        //       Accept: "application/json",
+        //     },
+        //     withCredentials: true,
+        //   }
+        // );
+        // toast.info("Removed from wishlist");
+        // this.setState({ added: false });
+        // window.dispatchEvent(new Event("wishlist-updated"));
+
+        // ✅ Remove khỏi wishlist, gửi userId + productId trong body
         await axios.delete(
-          `https://backendtechstore1-production.up.railway.app/api/user/delete/wishlist/${productId}`,
+          "https://backendtechstore1-production.up.railway.app/api/user/delete/wishlist",
           {
             headers: {
               Authorization: `Bearer ${token}`,
               Accept: "application/json",
             },
-            withCredentials: true,
+            data: { user_id: userId, product_id: productId }, // gửi body
           }
         );
         toast.info("Removed from wishlist");
