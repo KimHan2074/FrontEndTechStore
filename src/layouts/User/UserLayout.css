@@ -1,9 +1,10 @@
 .layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* luôn cao bằng chiều cao màn hình */
+  min-height: 1000px;
+  margin-top: 150px;
 }
 
 .content {
-  flex: 1; /* chiếm hết khoảng trống giữa header và footer */
+  flex: 1; 
 }
