@@ -28,7 +28,7 @@ export default function ShoppingCart({
           <div className="cart-table-header">
             {/* <div className="cart-header-product">Product</div> */}
             <div className="cart-header-product">
-              <input
+              {/* <input
                 type="checkbox"
                 className="cart-header-checkbox"
                 onChange={handleSelectAll}
@@ -48,7 +48,28 @@ export default function ShoppingCart({
                     : "Select all products"
                 }
               />
-              Product
+              Product */}
+              <input
+                type="checkbox"
+                className="cart-header-checkbox"
+                onChange={(e) => handleSelectAll(e.target.checked)}   // truyền trạng thái checked
+                checked={
+                  selectedItems.length === cartItems.filter(item => item.stock > 0).length &&
+                  cartItems.length > 0
+                }
+                disabled={
+                  cartItems.length === 0 ||
+                  cartItems.every(item => item.stock === 0 || item.stock === undefined)
+                }
+                title={
+                  cartItems.length === 0
+                    ? "Cart is empty"
+                    : cartItems.every(item => item.stock === 0 || item.stock === undefined)
+                    ? "All products are out of stock"
+                    : "Select all products"
+                }
+              />
+              <span style={{ marginLeft: "8px" }}>Product</span>
             </div>
             <div className="cart-header-price">Price</div>
             <div className="cart-header-quantity">Quantity</div>
