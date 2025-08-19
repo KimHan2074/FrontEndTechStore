@@ -69,7 +69,7 @@ export default function ShoppingCart({
                     : "Select all products"
                 }
               />
-              <span style={{ marginLeft: "8px" }}>Product</span>
+              <span style={{ marginLeft: "14px" }}>Product</span>
             </div>
             <div className="cart-header-price">Price</div>
             <div className="cart-header-quantity">Quantity</div>
