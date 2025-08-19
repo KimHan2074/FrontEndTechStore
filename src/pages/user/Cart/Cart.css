@@ -1,9 +1,10 @@
 .cart-container {
-  padding-top: 20px;
+  flex: 1;
+  padding-top: 30px;
   display: flex;
   max-width: 1080px;
   margin: 0 auto;
-  padding-bottom: 80px;
+  padding-bottom: 80px; 
 }
 
 .cart-title {

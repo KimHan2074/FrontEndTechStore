@@ -1,4 +1,4 @@
-.layout {
+/* .layout {
   display: flex;
   flex-direction: column;
   min-height: 1000px;
@@ -7,4 +7,16 @@
 
 .content {
   flex: 1; 
+} */
+
+.user-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 1000px;
+  margin-top: 150px;
+}
+
+.content {
+  flex: 1; /* đẩy Footer xuống đáy */
+  /* padding: 20px; tuỳ chỉnh */
 }

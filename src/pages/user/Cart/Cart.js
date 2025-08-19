@@ -20,6 +20,10 @@ export default function Cart() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const fetchCartItems = () => {
       axios
         .get(`${apiUrl}/api/user/cart`, {

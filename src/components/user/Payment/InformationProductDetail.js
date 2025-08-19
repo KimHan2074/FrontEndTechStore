@@ -71,14 +71,14 @@ const InformationProductDetail = () => {
   }, [products]);
 
 
-  const handleColorChange = (index, newColor) => {
-    const updatedProducts = [...products];
-    updatedProducts[index].color = newColor;
-    setProducts(updatedProducts);
-    const checkoutData = JSON.parse(localStorage.getItem("checkoutData") || "{}");
-    checkoutData.items = updatedProducts;
-    localStorage.setItem("checkoutData", JSON.stringify(checkoutData));
-  };
+  // const handleColorChange = (index, newColor) => {
+  //   const updatedProducts = [...products];
+  //   updatedProducts[index].color = newColor;
+  //   setProducts(updatedProducts);
+  //   const checkoutData = JSON.parse(localStorage.getItem("checkoutData") || "{}");
+  //   checkoutData.items = updatedProducts;
+  //   localStorage.setItem("checkoutData", JSON.stringify(checkoutData));
+  // };
 
 
   return (
@@ -104,7 +104,7 @@ const InformationProductDetail = () => {
                       </p>
                       {(productColors[product.product_id] || []).length > 0 && (
                         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                          <select
+                          {/* <select
                             value={product.color}
                             onChange={(e) => handleColorChange(index, e.target.value)}
                             style={{
@@ -119,7 +119,7 @@ const InformationProductDetail = () => {
                                 {colorName}
                               </option>
                             ))}
-                          </select>
+                          </select> */}
                         </div>
                       )}
                     </div>
