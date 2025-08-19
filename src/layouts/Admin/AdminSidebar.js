@@ -307,6 +307,7 @@ import {
   MessageSquare,
   ShoppingCart,
   LogOut,
+  FileText,
 } from "lucide-react";
 
 const Sidebar = ({ activeItem, setActiveItem}) => {
@@ -322,10 +323,11 @@ const Sidebar = ({ activeItem, setActiveItem}) => {
 
   const menuItems = [
     { name: "Dashboard", icon: <LayoutDashboard size={18} /> },
-    { name: "Product", icon: <Package size={18} /> },
+    { name: "Product", icon: <Package size={18} /> },              
     { name: "User", icon: <Users size={18} /> },
     { name: "Review", icon: <MessageSquare size={18} /> },
     { name: "Order", icon: <ShoppingCart size={18} /> },
+    { name: "Blog", icon: <FileText size={18} /> }
   ];
 
   const handleLogout = () => {
