@@ -176,6 +176,68 @@ export default class AddToWishlist extends Component {
     }
   }
 
+  // handleAddToWishlist = async (productId) => {
+  //   const token = localStorage.getItem("token");
+
+  //   if (!token) {
+  //     toast.warning("Please login to use wishlist.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const userIdRes = await axios.get(
+  //       "https://backendtechstore1-production.up.railway.app/api/user/getUserId",
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           Accept: "application/json",
+  //         },
+  //         withCredentials: true,
+  //       }
+  //     );
+
+  //     const finalUserId = userIdRes.data.userId;
+
+  //     if (this.state.added) {
+  //       // ✅ Remove khỏi wishlist
+  //       await axios.delete(
+  //         `https://backendtechstore1-production.up.railway.app/api/user/delete/wishlist/${productId}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //             Accept: "application/json",
+  //           },
+  //           withCredentials: true,
+  //         }
+  //       );
+  //       toast.info("Removed from wishlist");
+  //       this.setState({ added: false });
+  //       window.dispatchEvent(new Event("wishlist-updated"));
+  //     } else {
+  //       // ✅ Add vào wishlist
+  //       const response = await axios.post(
+  //         "https://backendtechstore1-production.up.railway.app/api/user/wishlist/add",
+  //         { user_id: finalUserId, product_id: productId },
+  //         {
+  //           headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+  //         }
+  //       );
+
+  //       const msg = response.data?.message;
+  //       if (msg === "Đã có trong wishlist") {
+  //         toast.info("This product is already in your wishlist.");
+  //       } else {
+  //         toast.success("Added to wishlist!");
+  //         this.setState({ added: true });
+  //         window.dispatchEvent(new Event("wishlist-updated"));
+  //       }
+  //     }
+  //   } catch (error) {
+  //     toast.error("Wishlist update failed.");
+  //     console.error("Error:", error.response?.data || error.message);
+  //   }
+  // };
+
   handleAddToWishlist = async (productId) => {
     const token = localStorage.getItem("token");
 
@@ -198,54 +260,22 @@ export default class AddToWishlist extends Component {
 
       const finalUserId = userIdRes.data.userId;
 
-      if (this.state.added) {
-        // // ✅ Remove khỏi wishlist
-        // await axios.delete(
-        //   `https://backendtechstore1-production.up.railway.app/api/user/delete/wishlist/${productId}`,
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${token}`,
-        //       Accept: "application/json",
-        //     },
-        //     withCredentials: true,
-        //   }
-        // );
-        // toast.info("Removed from wishlist");
-        // this.setState({ added: false });
-        // window.dispatchEvent(new Event("wishlist-updated"));
-
-        // ✅ Remove khỏi wishlist, gửi userId + productId trong body
-        await axios.delete(
-          "https://backendtechstore1-production.up.railway.app/api/user/delete/wishlist",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: "application/json",
-            },
-            data: { user_id: finalUserId, product_id: productId }, // gửi body
-          }
-        );
-        toast.info("Removed from wishlist");
-        this.setState({ added: false });
-        window.dispatchEvent(new Event("wishlist-updated"));
-      } else {
-        // ✅ Add vào wishlist
-        const response = await axios.post(
-          "https://backendtechstore1-production.up.railway.app/api/user/wishlist/add",
-          { user_id: finalUserId, product_id: productId },
-          {
-            headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-          }
-        );
-
-        const msg = response.data?.message;
-        if (msg === "Đã có trong wishlist") {
-          toast.info("This product is already in your wishlist.");
-        } else {
-          toast.success("Added to wishlist!");
-          this.setState({ added: true });
-          window.dispatchEvent(new Event("wishlist-updated"));
+      // ✅ Chỉ còn phần Add vào wishlist
+      const response = await axios.post(
+        "https://backendtechstore1-production.up.railway.app/api/user/wishlist/add",
+        { user_id: finalUserId, product_id: productId },
+        {
+          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
         }
+      );
+
+      const msg = response.data?.message;
+      if (msg === "Đã có trong wishlist") {
+        toast.info("This product is already in your wishlist.");
+      } else {
+        toast.success("Added to wishlist!");
+        this.setState({ added: true });
+        window.dispatchEvent(new Event("wishlist-updated"));
       }
     } catch (error) {
       toast.error("Wishlist update failed.");
