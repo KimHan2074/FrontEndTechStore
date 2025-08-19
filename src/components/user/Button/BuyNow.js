@@ -7,7 +7,7 @@ const BuyNow = ({ product, selectedColor = "black", className = "", children }) 
   const navigate = useNavigate();
 
   const handleBuyNow = async () => {
-    // Kiểm tra tồn kho trước
+    // Kiểm tra tồn kho trước và thông báo
     if (!product || product.stock <= 0) {
       toast.warning("⚠️ This product is out of stock.");
       return;
