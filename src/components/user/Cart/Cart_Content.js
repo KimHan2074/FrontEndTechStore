@@ -26,7 +26,30 @@ export default function ShoppingCart({
 
         <div className="cart-table-container">
           <div className="cart-table-header">
-            <div className="cart-header-product">Product</div>
+            {/* <div className="cart-header-product">Product</div> */}
+            <div className="cart-header-product">
+              <input
+                type="checkbox"
+                className="cart-header-checkbox"
+                onChange={handleSelectAll}
+                checked={
+                  selectedItems.length === cartItems.filter(item => item.stock > 0).length &&
+                  cartItems.length > 0
+                }
+                disabled={
+                  cartItems.length === 0 || 
+                  cartItems.every(item => item.stock === 0 || item.stock === undefined)
+                }
+                title={
+                  cartItems.length === 0
+                    ? "Cart is empty"
+                    : cartItems.every(item => item.stock === 0 || item.stock === undefined)
+                    ? "All products are out of stock"
+                    : "Select all products"
+                }
+              />
+              Product
+            </div>
             <div className="cart-header-price">Price</div>
             <div className="cart-header-quantity">Quantity</div>
             <div className="cart-header-subtotal">Subtotal</div>
@@ -129,9 +152,9 @@ export default function ShoppingCart({
             <button className="cart-empty-btn" onClick={handleEmptyCart}>
               Empty Cart
             </button>
-            <button className="cart-selectAll-btn" onClick={handleSelectAll}>
+            {/* <button className="cart-selectAll-btn" onClick={handleSelectAll}>
               Select All
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
