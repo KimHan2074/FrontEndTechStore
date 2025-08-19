@@ -4,6 +4,7 @@ import UserManagement from "../../pages/admin/User_managemet/User_management";
 import OrderManagement from "../../pages/admin/Order_Management/OrderManagement";
 import ReviewManagement from "../../pages/admin/Review_management/ReviewManagement";
 import ProductManagement from "../../pages/admin/Product_Management/ProductManagement";
+import BlogManagement from "../../pages/admin/Blog_Management/BlogManagement";
 import Dashboard from "../../pages/admin/Dashboard/Dashboard";
 
 export default function AdminLayout() {
@@ -25,6 +26,8 @@ export default function AdminLayout() {
         return <ReviewManagement />;
       case "Order":
         return <OrderManagement />;
+      case "Blog":
+        return <BlogManagement />;
       default:
         return <Dashboard/>
     }

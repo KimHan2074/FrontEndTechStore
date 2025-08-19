@@ -26,6 +26,7 @@ import UserManagement from "./pages/admin/User_managemet/User_management.js";
 import ReviewManagement from "./pages/admin/Review_management/ReviewManagement.js";
 import OrderManagement from "./pages/admin/Order_Management/OrderManagement.js";
 import ProductManagement from "./pages/admin/Product_Management/ProductManagement.js";
+import BlogManagement from "./pages/admin/Blog_Management/BlogManagement.js";
 
 function AppRoutes() {
   return (
@@ -68,6 +69,7 @@ function AppRoutes() {
           <Route path="reviewmanagement" element={<ReviewManagement/>} />
           <Route path="ordermanagement" element={<OrderManagement/>} />
           <Route path="productmanagement" element={<ProductManagement/>} />
+          <Route path="blogmanagement" element={<BlogManagement/>} />
         </Route>
       </Routes>
     </>
