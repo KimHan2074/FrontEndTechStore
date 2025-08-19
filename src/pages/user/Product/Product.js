@@ -18,7 +18,6 @@ const ProductList = ({ searchQuery }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Lấy categoryId từ URL (query param)
   const params = new URLSearchParams(location.search);
   const categoryId = params.get("categoryId");
 
@@ -83,10 +82,9 @@ const ProductList = ({ searchQuery }) => {
               <div
                 key={product.id}
                 className="product-card-product-list border rounded-md shadow-sm p-4 flex items-center mb-4"
-                onClick={() => handleProductClick(product.id)}
               >
                 {product.promotion_type && (
-                  <div className="promotion-label-product-list">{product.promotion_type}</div>
+                  <div className="promotion-label-product-list" onClick={() => handleProductClick(product.id)}>{product.promotion_type}</div>
                 )}
 
                 <img
@@ -95,14 +93,14 @@ const ProductList = ({ searchQuery }) => {
                   className="w-24 h-24 object-cover mr-4"
                   onClick={() => handleProductClick(product.id)}
                 />
-                <div className="product-details">
+                <div className="product-details" onClick={() => handleProductClick(product.id)}>
                   <h3 className="text-gray-600 text-sm">{product.category}</h3>
                   <h2 className="text-lg font-semibold">{product.name}</h2>
                   <p className="text-sm text-gray-500">{product.description}</p>
                 </div>
                 <div className="actions">
                   <div className="actions-container">
-                    <div className="price-wrapper">
+                    <div className="price-wrapper" onClick={() => handleProductClick(product.id)}>
                       <span className="line-through">${product.old_price}</span>
                       <span className="text-red-500">${product.price}</span>
                     </div>

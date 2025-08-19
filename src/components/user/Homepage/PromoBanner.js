@@ -73,7 +73,7 @@ if (products.length === 0 && !summerSaleProduct) return null;
                   <p className="product-description-banner">{product.description}</p>
                  <BuyNow className="buy-button-banner" product={product} label="SHOW NOW" />
                 </div>
-                <div className="product-image-banner" onClick={handleProductClick}>
+                <div className="product-image-banner"  onClick={() => handleProductClick(product.id)}>
                   <img
                     src={product.images?.[0]?.image_url || "https://placehold.co/300x200"}
                     alt={product.name}
@@ -93,7 +93,7 @@ if (products.length === 0 && !summerSaleProduct) return null;
               <p className="sale-badge-banner-description">{displayProduct.name}</p>
              <BuyNow className="buy-button-banner" product={displayProduct} label="SHOW NOW" />
             </div>
-            <div className="promotion-image" onClick={handleProductClick}>
+            <div className="promotion-image"  onClick={() => handleProductClick(displayProduct.id)}>
               <img
                 src={displayProduct.images?.[0]?.image_url}
                 alt={displayProduct.name}
@@ -103,7 +103,7 @@ if (products.length === 0 && !summerSaleProduct) return null;
           </div>
 
           <div className="product-card-banner-bottom">
-            <div className="card-content-banner-bottom" onClick={handleProductClick}>
+            <div className="card-content-banner-bottom"  onClick={() => handleProductClick(displayProduct.id)}>
               <img
                 src={displayProduct.images?.[0]?.image_url}
                 alt={displayProduct.name}

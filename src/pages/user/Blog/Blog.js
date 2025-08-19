@@ -3,6 +3,7 @@ import "./Blog.css";
 import BlogSlideBar from '../../../components/user/Blog/BlogSlideBar';
 import ContentBlog from '../../../components/user/Blog/ContentBlog';
 import NoResultsMessageBlog from '../../../components/user/Blog/NoResultsMessageBlog';
+
 const Blog = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [hasResults, setHasResults] = useState(true); 

@@ -37,7 +37,7 @@ function App() {
     };
 
     fetchCartItems();
-  }, []); 
+  }, []);
 
   const syncCartItems = async () => {
     try {
@@ -67,7 +67,18 @@ function App() {
   return (
     <CartContext.Provider value={{ cartItems, setCartItems, syncCartItems }}>
       <Router>
-        <ToastContainer />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          style={{ zIndex: 999999 }}
+        />
         <AppRoutes />
       </Router>
     </CartContext.Provider>
