@@ -232,10 +232,23 @@ export default function Cart() {
   };
 
 
-  const handleSelectAll = () => {
-    const availableIds = cartItems.filter((item) => item.stock > 0).map((item) => item.id);
+  // const handleSelectAll = () => {
+  //   const availableIds = cartItems.filter((item) => item.stock > 0).map((item) => item.id);
+  //   setSelectedItems(availableIds);
+  // };
+
+  const handleSelectAll = (isChecked) => {
+  if (isChecked) {
+    // chọn tất cả sản phẩm còn hàng
+    const availableIds = cartItems
+      .filter((item) => item.stock > 0)
+      .map((item) => item.id);
     setSelectedItems(availableIds);
-  };
+  } else {
+    // bỏ chọn tất cả
+    setSelectedItems([]);
+  }
+};
 
 
   const handleProceedToCheckout = async () => {
