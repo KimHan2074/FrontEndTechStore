@@ -40,6 +40,7 @@ body {
   flex-direction: column;
   align-items: center;
   margin-bottom: 8px;
+  cursor: pointer;
 }
 
 .actions-container .price-wrapper .line-through {
@@ -61,12 +62,15 @@ body {
 
 .product-card-product-list img {
   width: 165px;
-  /* height: 165px; */
+cursor:pointer;
   object-fit: contain;
   border-radius: 8px;
   margin-right: 16px;
 }
-
+.product-details{
+  flex:1;
+  cursor: pointer;
+}
 .product-details h3 {
   font-size: 12px;
   color: #666;
@@ -222,12 +226,12 @@ body {
 }
 
 .pagination button:hover {
-  background: #ff0019;
+  background: #FA8232;
   color: #fff;
 }
 
 .pagination button.active {
-  background: #ff0022;
+  background: #FA8232;
   color: #fff;
   font-weight: bold;
 }

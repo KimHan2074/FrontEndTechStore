@@ -288,6 +288,7 @@
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  height: 30vh;
 }
 .category-item{
   flex: 0 0 calc((100% - (15px * 5)) / 6);
@@ -1506,6 +1507,7 @@
   align-items: center;
   overflow: hidden;
   position: relative;
+  margin-top: 30px;
 }
 .save-badge {
   background: #B1DDFF;
@@ -1655,10 +1657,11 @@
 .macbook-image {
   width: 400px;
   height: 300px;
-  object-fit: cover;
+  object-fit: contain;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 .product-title-macbook {

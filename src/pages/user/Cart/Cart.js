@@ -20,6 +20,10 @@ export default function Cart() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const fetchCartItems = () => {
       axios
         .get(`${apiUrl}/api/user/cart`, {
@@ -232,10 +236,23 @@ export default function Cart() {
   };
 
 
-  const handleSelectAll = () => {
-    const availableIds = cartItems.filter((item) => item.stock > 0).map((item) => item.id);
+  // const handleSelectAll = () => {
+  //   const availableIds = cartItems.filter((item) => item.stock > 0).map((item) => item.id);
+  //   setSelectedItems(availableIds);
+  // };
+
+  const handleSelectAll = (isChecked) => {
+  if (isChecked) {
+    // chọn tất cả sản phẩm còn hàng
+    const availableIds = cartItems
+      .filter((item) => item.stock > 0)
+      .map((item) => item.id);
     setSelectedItems(availableIds);
-  };
+  } else {
+    // bỏ chọn tất cả
+    setSelectedItems([]);
+  }
+};
 
 
   const handleProceedToCheckout = async () => {

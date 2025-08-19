@@ -1,4 +1,14 @@
 .store-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.store-header {
   font-family: Arial, sans-serif;
   width: 100%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -258,6 +268,7 @@
   display: flex;
   align-items: center;
   color: #5F6C72;
+  cursor: pointer;
 }
 
 .phone-icon {
