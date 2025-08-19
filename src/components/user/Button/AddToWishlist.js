@@ -201,7 +201,7 @@ export default class AddToWishlist extends Component {
       if (this.state.added) {
         // ✅ Remove khỏi wishlist
         await axios.delete(
-          `https://backendtechstore1-production.up.railway.app/api/user/delete/wishlist/${item.id}`,
+          `https://backendtechstore1-production.up.railway.app/api/user/delete/wishlist/${productId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
