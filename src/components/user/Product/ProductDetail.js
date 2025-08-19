@@ -265,9 +265,13 @@ Product does not exist.
                 <CreditCard size={18} color="#000000" style={{ marginRight: 8 }} />
                 Buy Now
               </BuyNow> 
-              <AddToWishlist item={product.id} className="secondary-btn-product-detail">
-                <Heart size={18} color="#000000" style={{ marginRight: 8 }} /> Favorited
-              </AddToWishlist>
+              {/* <AddToWishlist item={product.id} className="secondary-btn-product-detail">
+                <Heart size={18} color="#000000" style={{ marginRight: 8 }} /> Wishlist
+              </AddToWishlist> */}
+              <AddToWishlist
+                item={product.id}
+                className="secondary-btn-product-detail"
+              />
             </div>
           </div>
 
