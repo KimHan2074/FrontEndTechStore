@@ -226,12 +226,12 @@ cursor:pointer;
 }
 
 .pagination button:hover {
-  background: #ff0019;
+  background: #FA8232;
   color: #fff;
 }
 
 .pagination button.active {
-  background: #ff0022;
+  background: #FA8232;
   color: #fff;
   font-weight: bold;
 }

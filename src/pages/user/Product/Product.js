@@ -27,7 +27,7 @@ const ProductList = ({ searchQuery }) => {
       setLoading(true);
       try {
         let url = `https://backendtechstore1-production.up.railway.app/api/products/list?page=${currentPage}&per_page=${itemsPerPage}`;
-         if (categoryId) {
+        if (categoryId) {
           url += `&category_id=${categoryId}`;
         } else if (searchQuery) {
           url += `&q=${searchQuery}`;
@@ -83,7 +83,7 @@ const ProductList = ({ searchQuery }) => {
               <div
                 key={product.id}
                 className="product-card-product-list border rounded-md shadow-sm p-4 flex items-center mb-4"
-                  onClick={() => handleProductClick(product.id)}
+                onClick={() => handleProductClick(product.id)}
               >
                 {product.promotion_type && (
                   <div className="promotion-label-product-list">{product.promotion_type}</div>
@@ -120,18 +120,36 @@ const ProductList = ({ searchQuery }) => {
         </div>
 
         <div className="pagination">
-          <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+          <button onClick={() => handlePageChange(currentPage - 1, false)} disabled={currentPage === 1}>
             <FaChevronLeft />
           </button>
-          {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
-            <button key={page} onClick={() => handlePageChange(page)} className={currentPage === page ? "active" : ""}>
-              {page}
-            </button>
-          ))}
-          <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+
+          {(() => {
+            const pageButtons = [];
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            startPage = Math.max(1, endPage - 4);
+
+            for (let page = startPage; page <= endPage; page++) {
+              pageButtons.push(
+                <button
+                  key={page}
+                  onClick={() => handlePageChange(page)}
+                  className={currentPage === page ? "active" : ""}
+                >
+                  {page}
+                </button>
+              );
+            }
+            return pageButtons;
+          })()}
+
+          <button onClick={() => handlePageChange(currentPage + 1, false)} disabled={currentPage === totalPages}>
             <FaChevronRight />
           </button>
         </div>
+
+
       </div>
     </div>
   );
