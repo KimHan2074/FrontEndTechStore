@@ -12,6 +12,7 @@
     "cors": "^2.8.5",
     "crypto-browserify": "^3.12.1",
     "dotenv": "^16.5.0",
+    "framer-motion": "^12.23.12",
     "helmet": "^8.1.0",
     "lucide-react": "^0.515.0",
     "react": "^19.1.0",
