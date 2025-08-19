@@ -82,7 +82,6 @@ const ProductList = ({ searchQuery }) => {
     // Gọi AddToWishlist component
   };
 
-  if (loading) return <LoadingSpinner />;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -106,6 +105,7 @@ const ProductList = ({ searchQuery }) => {
               <div
                 key={product.id}
                 className="product-card-product-list border rounded-md shadow-sm p-4 flex items-center mb-4"
+                  onClick={() => handleProductClick(product.id)}
               >
                 {product.promotion_type && (
                   <div className="promotion-label-product-list">{product.promotion_type}</div>
@@ -116,7 +116,7 @@ const ProductList = ({ searchQuery }) => {
                   className="w-24 h-24 object-cover mr-4"
                   onClick={() => handleProductClick(product.id)}
                 />
-                <div className="product-details flex-1">
+                <div className="product-details">
                   <h3 className="text-gray-600 text-sm">{product.category}</h3>
                   <h2 className="text-lg font-semibold">{product.name}</h2>
                   <p className="text-sm text-gray-500">{product.description}</p>

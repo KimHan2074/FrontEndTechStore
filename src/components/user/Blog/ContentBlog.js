@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 
-
 const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
   const [cards, setCards] = useState([]);
   const [searchItem, setSearchItem] = useState("");
@@ -12,24 +11,17 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [searchInput, setSearchInput] = useState("");
 
-
   const cardsPerPage = 9;
-
-
   const location = useLocation();
   const searchQueryFromBar = location.state?.searchQuery || "";
-
 
   useEffect(() => {
     setSearchItem(searchQueryFromBar);
   }, [searchQueryFromBar]);
 
-
   useEffect(() => {
     axios
       .get("https://backendtechstore1-production.up.railway.app/api/user/blogs/index")
-
-
       .then((res) => {
         setCards(res.data);
         setIsDataFetched(true);
@@ -37,20 +29,16 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
       .catch((err) => console.error("Error fetching blogs:", err));
   }, []);
 
-
   const filteredCards = cards.filter((card) => {
     const matchesSearch =
       card.title.toLowerCase().includes(searchItem.toLowerCase()) ||
       card.content.toLowerCase().includes(searchItem.toLowerCase());
 
-
     const matchesCategory =
       selectedCategoryId === null || card.category_id === selectedCategoryId;
 
-
     return matchesSearch && matchesCategory;
   });
-
 
   useEffect(() => {
     if (isDataFetched && typeof onSearchResult === "function") {
@@ -58,23 +46,24 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
     }
   }, [filteredCards, onSearchResult, isDataFetched, searchItem, selectedCategoryId]);
 
-
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = filteredCards.slice(indexOfFirstCard, indexOfLastCard);
   const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
 
-
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
 
   const handleSearchChange = (e) => {
     setSearchItem(e.target.value);
     setCurrentPage(1);
   };
 
+  // 👉 Scroll lên đầu khi đổi trang
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
 
   return (
     <div className="blog-container">
@@ -88,7 +77,6 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
             const value = e.target.value;
             setSearchInput(value);
 
-
             if (value.trim() === "") {
               setSearchItem("");
               setCurrentPage(1);
@@ -101,11 +89,7 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
             }
           }}
         />
-
-
-        {/* <i className="fa-solid fa-magnifying-glass search-icon-blog"></i> */}
       </div>
-
 
       <div className="cards-container-blog">
         {filteredCards.length === 0 ? (
@@ -134,16 +118,25 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
                   </div>
                 </div>
 
-
-                <h3 className={`card-title-blog ${expandedCardId === card.id ? "expanded" : ""}`}>
+                <h3
+                  className={`card-title-blog ${
+                    expandedCardId === card.id ? "expanded" : ""
+                  }`}
+                >
                   {card.title}
                 </h3>
-                <p className={`card-description-blog ${expandedCardId === card.id ? "expanded" : ""}`}>
+                <p
+                  className={`card-description-blog ${
+                    expandedCardId === card.id ? "expanded" : ""
+                  }`}
+                >
                   {card.content}
                 </p>
                 <button
                   className="read-more-button"
-                  onClick={() => setExpandedCardId(expandedCardId === card.id ? null : card.id)}
+                  onClick={() =>
+                    setExpandedCardId(expandedCardId === card.id ? null : card.id)
+                  }
                 >
                   {expandedCardId === card.id ? "SHOW LESS" : "READ MORE"}{" "}
                   <span className="arrow-icon">
@@ -152,11 +145,8 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
                 </button>
               </div>
             ))
-
-
         )}
       </div>
-
 
       {totalPages > 1 && (
         <div className="pagination-blog">
@@ -172,8 +162,9 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
               <button
                 key={pageNum}
                 onClick={() => handlePageChange(i + 1)}
-                className={`pagination-button ${currentPage === i + 1 ? "active-page" : ""
-                  }`}
+                className={`pagination-button ${
+                  currentPage === i + 1 ? "active-page" : ""
+                }`}
               >
                 {pageNum}
               </button>
@@ -191,6 +182,4 @@ const ContentBlog = ({ selectedCategoryId, onSearchResult }) => {
   );
 };
 
-
 export default ContentBlog;
-

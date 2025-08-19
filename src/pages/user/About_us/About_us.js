@@ -84,7 +84,6 @@ const AboutUs = () => {
         <div className="about-container">
             <div className="top-content-row-about-us">
                 <div className="text-container">
-                    <div className="who-we-are">WHO WE ARE</div>
                     <h1 className="title">
                         TechStore - largest electronics retail shop in the world.
                     </h1>
