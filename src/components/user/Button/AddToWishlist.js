@@ -207,6 +207,7 @@ export default class AddToWishlist extends Component {
               Authorization: `Bearer ${token}`,
               Accept: "application/json",
             },
+            withCredentials: true,
           }
         );
         toast.info("Removed from wishlist");
