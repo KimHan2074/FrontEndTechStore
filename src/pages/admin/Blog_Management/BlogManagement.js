@@ -20,7 +20,7 @@ export default function BlogManagement() {
     content: "",
     image_url: "",
     link_url: "",
-    status: "draft",
+    status: "active",
     author_id: "",
     publish_date: "",
   };
