@@ -86,6 +86,7 @@
   color: #888484;
   transition: all 0.3s ease;
   padding: 10px;
+  cursor: pointer;
 }
 .category-item-slidebar {
   transition: background-color 0.3s, box-shadow 0.3s;
