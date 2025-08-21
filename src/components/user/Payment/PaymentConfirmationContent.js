@@ -188,13 +188,10 @@
 
 // export default PaymentConfirmation;
 
-
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const PaymentConfirmation = ({
-  orderId,
   customerInfo,
   paymentMethod,
   paymentStatus,
@@ -206,12 +203,18 @@ const PaymentConfirmation = ({
   onConfirmOrder,
 }) => {
   const location = useLocation();
+  const [orderId, setOrderId] = useState("");
 
+  // Lấy orderId từ query string và xóa query ngay sau đó
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const id = params.get("orderId");
+    if (id) setOrderId(id);
+
     if (location.search) {
       window.history.replaceState({}, document.title, "/user/payment_confirmation");
     }
-  }, [orderId, location.search]);
+  }, [location.search]);
 
   const steps = [
     { number: 1, title: "Information Order", completed: true, active: false, confirmed: false },
@@ -301,10 +304,22 @@ const PaymentConfirmation = ({
               <h3 className="section_title">Customer Information</h3>
             </div>
             <div className="customer-info">
-              <div className="info-item"><div className="info-label">FullName</div><div className="info-value">{customerInfo.fullname}</div></div>
-              <div className="info-item"><div className="info-label">Email</div><div className="info-value">{customerInfo.email}</div></div>
-              <div className="info-item"><div className="info-label">Phone</div><div className="info-value">{customerInfo.phone}</div></div>
-              <div className="info-item"><div className="info-label">Address</div><div className="info-value">{customerInfo.address}</div></div>
+              <div className="info-item">
+                <div className="info-label">FullName</div>
+                <div className="info-value">{customerInfo.fullname}</div>
+              </div>
+              <div className="info-item">
+                <div className="info-label">Email</div>
+                <div className="info-value">{customerInfo.email}</div>
+              </div>
+              <div className="info-item">
+                <div className="info-label">Phone</div>
+                <div className="info-value">{customerInfo.phone}</div>
+              </div>
+              <div className="info-item">
+                <div className="info-label">Address</div>
+                <div className="info-value">{customerInfo.address}</div>
+              </div>
             </div>
           </div>
 
@@ -332,7 +347,7 @@ const PaymentConfirmation = ({
                 return (
                   <div key={item.id} className="order-item">
                     <div className="item-image">
-                      <img src={item.image} alt={item.name} style={{ width: '64px', height: '64px' }} />
+                      <img src={item.image} alt={item.name} style={{ width: "64px", height: "64px" }} />
                     </div>
                     <div className="item-details">
                       <div className="item-name">{item.name}</div>
@@ -351,19 +366,27 @@ const PaymentConfirmation = ({
           <div className="price-summary">
             <div className="price-row">
               <span className="price-label">Subtotal</span>
-              <span className="price-value" style={{ fontWeight: "bold" }}>{formatter.format(subtotal)}</span>
+              <span className="price-value" style={{ fontWeight: "bold" }}>
+                {formatter.format(subtotal)}
+              </span>
             </div>
             <div className="price-row">
               <span className="price-label">Shipping Fee</span>
-              <span className="price-value" style={{ fontWeight: "bold" }}>{formatter.format(shippingFee)}</span>
+              <span className="price-value" style={{ fontWeight: "bold" }}>
+                {formatter.format(shippingFee)}
+              </span>
             </div>
             <div className="price-row">
               <span className="price-label">Discount</span>
-              <span className="price-value" style={{ fontWeight: "bold" }}>-{formatter.format(discount)}</span>
+              <span className="price-value" style={{ fontWeight: "bold" }}>
+                -{formatter.format(discount)}
+              </span>
             </div>
             <div className="price-row">
               <span className="price-label total">Total</span>
-              <span className="price-value total" style={{ fontWeight: "bold", color: "#0070f3" }}>{formatter.format(total)}</span>
+              <span className="price-value total" style={{ fontWeight: "bold", color: "#0070f3" }}>
+                {formatter.format(total)}
+              </span>
             </div>
           </div>
 
