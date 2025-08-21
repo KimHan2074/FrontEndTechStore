@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import BuyNow from "../../../components/user/Button/BuyNow";
 import AddToCart from "../../../components/user/Button/AddToCart";
-import { Heart } from "lucide-react";
+import { Trash } from "lucide-react";   // đổi từ Heart sang Trash
+
 export default function Wishlist() {
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
@@ -41,6 +42,10 @@ export default function Wishlist() {
       console.error("Failed to remove from wishlist:", error.response?.data || error.message);
       toast.error("Failed to remove item from wishlist.");
     }
+  };
+
+  const handleProductClick = (productId) => {
+    navigate(`/user/product-detail/${productId}`);
   };
 
   useEffect(() => {
@@ -106,7 +111,7 @@ export default function Wishlist() {
 
       <div className="wishlist-table">
         <div className="wishlist-header">
-          <div className="col-product"></div>
+          <div className="col-product">PRODUCT</div>
           <div className="col-price">PRICES</div>
           <div className="col-action">ACTION</div>
         </div>
@@ -119,7 +124,11 @@ export default function Wishlist() {
 
           return (
             <div className="wishlist-row" key={item.id}>
-              <div className="col-product">
+              <div 
+                className="col-product product-details" 
+                onClick={() => handleProductClick(product.id)}  // click để sang detail
+                style={{ cursor: "pointer" }}
+              >
                 <img
                   src={product?.images?.[0]?.image_url || "https://placehold.co/100x70?text=No+Image"}
                   alt={product?.name || "Product"}
@@ -138,15 +147,15 @@ export default function Wishlist() {
               <div className="col-action">
                 <BuyNow className="buy-now-btn" product={product} label="SHOW NOW" />
                 <AddToCart className="add-to-cart-btn" product={product} quantity={1}>
-  Add To Cart
-</AddToCart>
+                  Add To Cart
+                </AddToCart>
 
                 <button
-                  className="heart-icon"
+                  className="trash-icon"
                   onClick={() => handleRemoveFromWishlist(item)}
                   title="Remove from wishlist"
                 >
-                <Heart size={24} color="red" />
+                  <Trash size={24} color="red" />
                 </button>
               </div>
             </div>
