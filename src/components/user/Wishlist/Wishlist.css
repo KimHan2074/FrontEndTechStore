@@ -122,13 +122,13 @@
   border-color: #ff4f00;
 }
 
-.heart-icon {
+.trash-icon {
   font-size: 18px;
   color: #ff4f00;
   cursor: pointer;
 }
 
-.heart-icon {
+.trash-icon {
   background: none;
   border: none;
   font-size: 20px;
@@ -137,6 +137,18 @@
   transition: color 0.3s;
 }
 
-.heart-icon.heart-removed {
+.trash-icon.trash-removed {
   color: white;
+}
+
+.wishlist-row {
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.wishlist-row:hover {
+  background-color: #fdfdfd;     
+  transform: translateY(-3px);    
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
+  border-radius: 6px;
 }
