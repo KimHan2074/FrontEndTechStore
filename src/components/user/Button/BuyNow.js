@@ -13,12 +13,32 @@ const BuyNow = ({ product, selectedColor = "black", className = "", children }) 
       return;
     }
 
+    // const token = localStorage.getItem("token");
+    // const userId = localStorage.getItem("userId");
+    // //  if (!token || !userId) {
+    // if (!token) {
+    //   toast.warning("Please login to proceed with your order.");
+    //   return;
+    // }
+
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
-    //  if (!token || !userId) {
     if (!token) {
       toast.warning("Please login to proceed with your order.");
       return;
+    }
+
+    // Try to get userId
+    let userId = localStorage.getItem("userId");
+    if (!userId) {
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_BE_URL}/api/user/getUserId`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        userId = res.data.userId;
+      } catch (err) {
+        toast.error("Failed to get user info. Please login again.");
+        return;
+      }
     }
 
     const color = selectedColor || "black";
