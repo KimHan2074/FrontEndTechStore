@@ -204,3 +204,42 @@
   font-weight: 500;
   color: #374151;
 }
+
+
+/* Sidebar */
+.admin-sidebar {
+  width: 285px;
+  background-color: #0D1B2A;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px 0 20px;
+  font-family: Arial, sans-serif;
+  overflow-y: auto;
+  position: fixed;
+}
+
+.admin-sidebar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.admin-sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+
+.outlet::-webkit-scrollbar {
+  display: none;
+}
+
+.product-submenu-scroll {
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.product-submenu-scroll::-webkit-scrollbar {
+  display: none;
+}

@@ -56,7 +56,7 @@ export default function ReviewManagement() {
   const startIndex = (currentPage - 1) * reviewsPerPage;
   const paginatedReviews = reviews.slice(startIndex, startIndex + reviewsPerPage);
 
-  if (loading) return <LoadingSpinner />;
+  // if (loading) return <LoadingSpinner />;
 
   return (
     <div className="review-management">
