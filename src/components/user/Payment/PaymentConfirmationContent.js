@@ -188,13 +188,10 @@
 
 // export default PaymentConfirmation;
 
-
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const PaymentConfirmation = ({
-  orderId,
   customerInfo,
   paymentMethod,
   paymentStatus,
@@ -206,22 +203,34 @@ const PaymentConfirmation = ({
   onConfirmOrder,
 }) => {
   const location = useLocation();
+  const [orderId, setOrderId] = useState("");
+  const [localPaymentStatus, setLocalPaymentStatus] = useState("");
 
+  // Lấy orderId và resultCode từ query string MoMo và xóa query ngay sau đó
   useEffect(() => {
-    if (location.search) {
-      window.history.replaceState({}, document.title, "/user/payment_confirmation");
-    }
-  }, [orderId, location.search]);
+    const params = new URLSearchParams(location.search);
+    const id = params.get("orderId");
+    const resultCode = params.get("resultCode");
 
-  const steps = [
-    { number: 1, title: "Information Order", completed: true, active: false, confirmed: false },
-    { number: 2, title: "Payment Method", completed: true, active: false, confirmed: false },
-    { number: 3, title: "Order Confirmation", completed: false, active: true, confirmed: false },
-  ];
+    if (id) setOrderId(id);
+    if (resultCode === "0") setLocalPaymentStatus("Successful");
+    else if (resultCode) setLocalPaymentStatus("Failed");
+
+    // Lưu orderId nếu cần cho các component khác
+    if (id) localStorage.setItem("currentOrderId", id);
+
+    // Xóa query params khỏi URL (URL chỉ còn sạch)
+    const cleanUrl = "/user/payment_confirmation";
+    window.history.replaceState({}, document.title, cleanUrl);
+  }, [location.search]);
 
   const UserIcon = () => (
     <svg className="section-icon" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+      <path
+        fillRule="evenodd"
+        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+        clipRule="evenodd"
+      />
     </svg>
   );
 
@@ -269,6 +278,12 @@ const PaymentConfirmation = ({
   discount = parseFloat(discount?.toString().replace(/,/g, "") || 0);
   total = parseFloat(total?.toString().replace(/,/g, "") || 0);
 
+  const steps = [
+    { number: 1, title: "Information Order", completed: true, active: false, confirmed: false },
+    { number: 2, title: "Payment Method", completed: true, active: false, confirmed: false },
+    { number: 3, title: "Order Confirmation", completed: false, active: true, confirmed: false },
+  ];
+
   return (
     <div className="payment-container">
       <h1 className="payment-title">Payment</h1>
@@ -301,10 +316,22 @@ const PaymentConfirmation = ({
               <h3 className="section_title">Customer Information</h3>
             </div>
             <div className="customer-info">
-              <div className="info-item"><div className="info-label">FullName</div><div className="info-value">{customerInfo.fullname}</div></div>
-              <div className="info-item"><div className="info-label">Email</div><div className="info-value">{customerInfo.email}</div></div>
-              <div className="info-item"><div className="info-label">Phone</div><div className="info-value">{customerInfo.phone}</div></div>
-              <div className="info-item"><div className="info-label">Address</div><div className="info-value">{customerInfo.address}</div></div>
+              <div className="info-item">
+                <div className="info-label">FullName</div>
+                <div className="info-value">{customerInfo.fullname}</div>
+              </div>
+              <div className="info-item">
+                <div className="info-label">Email</div>
+                <div className="info-value">{customerInfo.email}</div>
+              </div>
+              <div className="info-item">
+                <div className="info-label">Phone</div>
+                <div className="info-value">{customerInfo.phone}</div>
+              </div>
+              <div className="info-item">
+                <div className="info-label">Address</div>
+                <div className="info-value">{customerInfo.address}</div>
+              </div>
             </div>
           </div>
 
@@ -315,7 +342,7 @@ const PaymentConfirmation = ({
             </div>
             <div className="payment-method-row">
               <span className="payment-name">{paymentMethod}</span>
-              <span className="processing-badge">{paymentStatus}</span>
+              <span className="processing-badge">{localPaymentStatus || paymentStatus}</span>
             </div>
           </div>
 
@@ -328,11 +355,10 @@ const PaymentConfirmation = ({
               {orderItems.map((item) => {
                 const unitPrice = parseFloat(item.price?.toString().replace(/,/g, "") || 0);
                 const totalItemPrice = unitPrice * item.quantity;
-
                 return (
                   <div key={item.id} className="order-item">
                     <div className="item-image">
-                      <img src={item.image} alt={item.name} style={{ width: '64px', height: '64px' }} />
+                      <img src={item.image} alt={item.name} style={{ width: "64px", height: "64px" }} />
                     </div>
                     <div className="item-details">
                       <div className="item-name">{item.name}</div>
@@ -351,19 +377,27 @@ const PaymentConfirmation = ({
           <div className="price-summary">
             <div className="price-row">
               <span className="price-label">Subtotal</span>
-              <span className="price-value" style={{ fontWeight: "bold" }}>{formatter.format(subtotal)}</span>
+              <span className="price-value" style={{ fontWeight: "bold" }}>
+                {formatter.format(subtotal)}
+              </span>
             </div>
             <div className="price-row">
               <span className="price-label">Shipping Fee</span>
-              <span className="price-value" style={{ fontWeight: "bold" }}>{formatter.format(shippingFee)}</span>
+              <span className="price-value" style={{ fontWeight: "bold" }}>
+                {formatter.format(shippingFee)}
+              </span>
             </div>
             <div className="price-row">
               <span className="price-label">Discount</span>
-              <span className="price-value" style={{ fontWeight: "bold" }}>-{formatter.format(discount)}</span>
+              <span className="price-value" style={{ fontWeight: "bold" }}>
+                -{formatter.format(discount)}
+              </span>
             </div>
             <div className="price-row">
               <span className="price-label total">Total</span>
-              <span className="price-value total" style={{ fontWeight: "bold", color: "#0070f3" }}>{formatter.format(total)}</span>
+              <span className="price-value total" style={{ fontWeight: "bold", color: "#0070f3" }}>
+                {formatter.format(total)}
+              </span>
             </div>
           </div>
 
