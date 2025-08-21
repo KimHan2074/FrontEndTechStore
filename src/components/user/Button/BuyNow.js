@@ -14,9 +14,9 @@ const BuyNow = ({ product, selectedColor = "black", className = "", children }) 
     }
 
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
-
-    if (!token || !userId) {
+    // const userId = localStorage.getItem("userId");
+    //  if (!token || !userId) {
+    if (!token) {
       toast.warning("Please login to proceed with your order.");
       return;
     }
