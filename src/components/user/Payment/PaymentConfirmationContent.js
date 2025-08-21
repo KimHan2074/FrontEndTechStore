@@ -207,22 +207,22 @@ const PaymentConfirmation = ({
   const [localPaymentStatus, setLocalPaymentStatus] = useState("");
 
   // Lấy orderId và resultCode từ query string MoMo và xóa query ngay sau đó
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const id = params.get("orderId");
-    const resultCode = params.get("resultCode");
+useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const orderIdParam = params.get("orderId");
+  const resultCodeParam = params.get("resultCode");
 
-    if (id) setOrderId(id);
-    if (resultCode === "0") setLocalPaymentStatus("Successful");
-    else if (resultCode) setLocalPaymentStatus("Failed");
+  if (orderIdParam) setOrderId(orderIdParam);
+  if (resultCodeParam === "0") setLocalPaymentStatus("Successful");
+  else if (resultCodeParam) setLocalPaymentStatus("Failed");
 
-    // Lưu orderId nếu cần cho các component khác
-    if (id) localStorage.setItem("currentOrderId", id);
-
-    // Xóa query params khỏi URL (URL chỉ còn sạch)
+  if (orderIdParam || resultCodeParam) {
     const cleanUrl = "/user/payment_confirmation";
-    window.history.replaceState({}, document.title, cleanUrl);
-  }, [location.search]);
+    setTimeout(() => {
+      window.history.replaceState({}, document.title, cleanUrl);
+    }, 100); // delay nhỏ để state cập nhật trước khi xóa URL
+  }
+}, [location.search]);
 
   const UserIcon = () => (
     <svg className="section-icon" fill="currentColor" viewBox="0 0 20 20">
