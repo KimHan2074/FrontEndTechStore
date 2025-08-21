@@ -204,27 +204,33 @@ const PaymentConfirmation = ({
 }) => {
   const location = useLocation();
   const [orderId, setOrderId] = useState("");
+  const [localPaymentStatus, setLocalPaymentStatus] = useState("");
 
-  // Lấy orderId từ query string và xóa query ngay sau đó
+  // Lấy orderId và resultCode từ query string MoMo và xóa query ngay sau đó
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params.get("orderId");
+    const resultCode = params.get("resultCode");
+
     if (id) setOrderId(id);
+    if (resultCode === "0") setLocalPaymentStatus("Successful");
+    else if (resultCode) setLocalPaymentStatus("Failed");
 
-    if (location.search) {
-      window.history.replaceState({}, document.title, "/user/payment_confirmation");
-    }
+    // Lưu orderId nếu cần cho các component khác
+    if (id) localStorage.setItem("currentOrderId", id);
+
+    // Xóa query params khỏi URL (URL chỉ còn sạch)
+    const cleanUrl = "/user/payment_confirmation";
+    window.history.replaceState({}, document.title, cleanUrl);
   }, [location.search]);
-
-  const steps = [
-    { number: 1, title: "Information Order", completed: true, active: false, confirmed: false },
-    { number: 2, title: "Payment Method", completed: true, active: false, confirmed: false },
-    { number: 3, title: "Order Confirmation", completed: false, active: true, confirmed: false },
-  ];
 
   const UserIcon = () => (
     <svg className="section-icon" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+      <path
+        fillRule="evenodd"
+        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+        clipRule="evenodd"
+      />
     </svg>
   );
 
@@ -271,6 +277,12 @@ const PaymentConfirmation = ({
   shippingFee = parseFloat(shippingFee?.toString().replace(/,/g, "") || 0);
   discount = parseFloat(discount?.toString().replace(/,/g, "") || 0);
   total = parseFloat(total?.toString().replace(/,/g, "") || 0);
+
+  const steps = [
+    { number: 1, title: "Information Order", completed: true, active: false, confirmed: false },
+    { number: 2, title: "Payment Method", completed: true, active: false, confirmed: false },
+    { number: 3, title: "Order Confirmation", completed: false, active: true, confirmed: false },
+  ];
 
   return (
     <div className="payment-container">
@@ -330,7 +342,7 @@ const PaymentConfirmation = ({
             </div>
             <div className="payment-method-row">
               <span className="payment-name">{paymentMethod}</span>
-              <span className="processing-badge">{paymentStatus}</span>
+              <span className="processing-badge">{localPaymentStatus || paymentStatus}</span>
             </div>
           </div>
 
@@ -343,7 +355,6 @@ const PaymentConfirmation = ({
               {orderItems.map((item) => {
                 const unitPrice = parseFloat(item.price?.toString().replace(/,/g, "") || 0);
                 const totalItemPrice = unitPrice * item.quantity;
-
                 return (
                   <div key={item.id} className="order-item">
                     <div className="item-image">
