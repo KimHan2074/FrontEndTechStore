@@ -64,7 +64,7 @@ export default function UserManagement() {
   const startIndex = (currentPage - 1) * usersPerPage;
   const paginatedUsers = users.slice(startIndex, startIndex + usersPerPage);
 
-  if (loading) return <LoadingSpinner />;
+  // if (loading) return <LoadingSpinner />;
 
   return (
     <div className="user-management">

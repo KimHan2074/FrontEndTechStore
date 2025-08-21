@@ -105,7 +105,7 @@ export default function BlogManagement() {
   const startIndex = (currentPage - 1) * blogsPerPage;
   const paginatedBlogs = blogs.slice(startIndex, startIndex + blogsPerPage);
 
-  if (loading) return <LoadingSpinner />;
+  // if (loading) return <LoadingSpinner />;
 
   return (
     <div className="blog-management">

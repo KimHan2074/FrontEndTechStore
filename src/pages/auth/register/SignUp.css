@@ -223,13 +223,13 @@
 /* OTP */
 .otp-form-wrapper {
   max-width: 400px;
-  margin: 50px auto;
+  margin: 40px auto;
   padding: 40px;
   background: #ffffff;
   border-radius: 10px;
   box-shadow: 0 5px 15px -3px #0003;
   text-align: center;
-  font-family: "Helvetica", sans-serif;
+  margin-top: 180px;
 }
 
 .otp-form-wrapper h2 {

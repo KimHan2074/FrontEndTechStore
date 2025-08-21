@@ -12,26 +12,26 @@ export default function AdminLayout() {
   const [theme, setTheme] = useState("dark");
 
   const renderContent = () => {
-    if (activeItem.startsWith("ProductCategory:")) {
-      const categoryId = parseInt(activeItem.split(":")[1], 10);
-      return <ProductManagement categoryId={categoryId} />;
-    }
+  if (activeItem.type === "ProductCategory") {
+    return <ProductManagement categoryId={activeItem.id} categoryName={activeItem.name} />;
+  }
 
-    switch (activeItem) {
-      case "Product":
-        return <ProductManagement categoryId={null} />;
-      case "User":
-        return <UserManagement />;
-      case "Review":
-        return <ReviewManagement />;
-      case "Order":
-        return <OrderManagement />;
-      case "Blog":
-        return <BlogManagement />;
-      default:
-        return <Dashboard/>
-    }
-  };
+  switch (activeItem.name) {
+    case "Product":
+      return <ProductManagement categoryId={null} />;
+    case "User":
+      return <UserManagement />;
+    case "Review":
+      return <ReviewManagement />;
+    case "Order":
+      return <OrderManagement />;
+    case "Blog":
+      return <BlogManagement />;
+    default:
+      return <Dashboard />;
+  }
+};
+
 
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>

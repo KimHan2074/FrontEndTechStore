@@ -71,7 +71,7 @@ export default function OrderManagement() {
     currentPage * ordersPerPage
   );
 
-  if (loading) return <LoadingSpinner />;
+  // if (loading) return <LoadingSpinner />;
 
   return (
     <div className="order-management">
