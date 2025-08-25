@@ -1,3 +1,5 @@
+
+
 // import { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 // import "../../../pages/user/Payment/Payment.css";
@@ -40,80 +42,81 @@
 //   const token = localStorage.getItem("token");
 //   const orderId = localStorage.getItem("currentOrderId");
 
-// const handleAccept = async () => {
-//   if (!selectedPayment) return alert("Please select a payment method.");
-//   if (!orderId) return alert("Order ID not found.");
+//   const handleAccept = async () => {
+//     if (!selectedPayment) return alert("Please select a payment method.");
+//     if (!orderId) return alert("Order ID not found.");
 
-//   const exchangeRate = 24000;
-//   const amountVND = Math.round(total * exchangeRate);
-//   const checkoutDataString = localStorage.getItem("checkoutData");
-//   let checkoutData = null;
+//     const exchangeRate = 24000;
+//     const amountVND = Math.round(total * exchangeRate);
+//     const checkoutDataString = localStorage.getItem("checkoutData");
+//     let checkoutData = null;
 
-//   if (checkoutDataString) {
-//     try { checkoutData = JSON.parse(checkoutDataString); } 
-//     catch (err) { console.error(err); }
-//   }
+//     if (checkoutDataString) {
+//       try { checkoutData = JSON.parse(checkoutDataString); } 
+//       catch (err) { console.error(err); }
+//     }
 
-//   setIsLoading(true);
+//     setIsLoading(true);
 
-//   try {
-//     // Cash / QR
-//     if (["cash", "qr"].includes(selectedPayment)) {
-//       if (selectedPayment === "qr" && !showQRCode) return setShowQRCode(true);
+//     try {
+//       // Cash / QR
+//       if (["cash", "qr"].includes(selectedPayment)) {
+//         if (selectedPayment === "qr" && !showQRCode) return setShowQRCode(true);
 
-//       await axios.post(
-//         "https://backendtechstore1-production.up.railway.app/api/user/orders/confirm-payment",
-//         {
-//           order_id: orderId,
-//           method: paymentMap[selectedPayment],
-//           items: checkoutData?.items.map(i => ({
-//             product_id: i.product_id,
-//             quantity: i.quantity,
-//             unit_price: i.unit_price,
-//             color: i.color || "",
-//           })) || [],
+//         await axios.post(
+//           "https://backendtechstore1-production.up.railway.app/api/user/orders/confirm-payment",
+//           {
+//             order_id: orderId,
+//             method: paymentMap[selectedPayment],
+//             items: checkoutData?.items.map(i => ({
+//               product_id: i.product_id,
+//               quantity: i.quantity,
+//               unit_price: i.unit_price,
+//               color: i.color || "",
+//             })) || [],
+//           }
+//         );
+
+//         navigate("/user/payment_confirmation");
+//         return;
+//       }
+
+//       // MoMo
+//       if (selectedPayment === "momo") {
+//         if (amountVND > 50000000) return alert("⚠️ MoMo supports payments up to 50 million VND.");
+//         const res = await fetch(
+//           "https://backendtechstore1-production.up.railway.app/api/user/momo/create-payment",
+//           {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json" },
+//             credentials: "include",
+//             body: JSON.stringify({ amount: amountVND, order_id: orderId }),
+//           }
+//         );
+//         const data = await res.json();
+//         if (data.payUrl) {
+//           window.location.href = data.payUrl;
 //         }
-//       );
+//         return;
+//       }
 
-//       navigate("/user/payment_confirmation");
-//       return;
+//       // VNPay
+//       if (selectedPayment === "vnpay") {
+//         const res = await axios.post(
+//           "https://backendtechstore1-production.up.railway.app/api/user/create-payment",
+//           { amount: amountVND, order_id: orderId }
+//         );
+//         if (res.data?.url) window.location.href = res.data.url;
+//         return;
+//       }
+
+//     } catch (err) {
+//       alert("Payment error!");
+//       console.error(err);
+//     } finally {
+//       setIsLoading(false);
 //     }
-
-//     // MoMo
-//     if (selectedPayment === "momo") {
-//       if (amountVND > 50000000) return alert("⚠️ MoMo supports payments up to 50 million VND.");
-//       const res = await fetch(
-//         "https://backendtechstore1-production.up.railway.app/api/user/momo/create-payment",
-//         {
-//           method: "POST",
-//           headers: { "Content-Type": "application/json" },
-//           credentials: "include",
-//           body: JSON.stringify({ amount: amountVND, order_id: orderId }),
-//         }
-//       );
-      
-//       const data = await res.json();
-//       if (data.payUrl) window.location.href = data.payUrl;
-//       return;
-//     }
-
-//     // VNPay
-//     if (selectedPayment === "vnpay") {
-//       const res = await axios.post(
-//         "https://backendtechstore1-production.up.railway.app/api/user/create-payment",
-//         { amount: amountVND, order_id: orderId }
-//       );
-//       if (res.data?.url) window.location.href = res.data.url;
-//       return;
-//     }
-
-//   } catch (err) {
-//     alert("Payment error!");
-//     console.error(err);
-//   } finally {
-//     setIsLoading(false);
-//   }
-// };
+//   };
 
 //   const paymentMethods = [
 //     { id: "momo", name: "MoMo", description: "Payment via MoMo", icon: "phone" },
@@ -284,44 +287,67 @@ const PaymentMethod = () => {
     if (!selectedPayment) return alert("Please select a payment method.");
     if (!orderId) return alert("Order ID not found.");
 
-    const exchangeRate = 24000;
-    const amountVND = Math.round(total * exchangeRate);
     const checkoutDataString = localStorage.getItem("checkoutData");
     let checkoutData = null;
-
     if (checkoutDataString) {
-      try { checkoutData = JSON.parse(checkoutDataString); } 
-      catch (err) { console.error(err); }
+      try {
+        checkoutData = JSON.parse(checkoutDataString);
+      } catch (err) {
+        console.error(err);
+        return alert("Invalid checkout data!");
+      }
     }
+
+    if (!checkoutData) return alert("Checkout data not found!");
+
+    const exchangeRate = 24000;
+    const amountVND = Math.round(total * exchangeRate);
 
     setIsLoading(true);
 
     try {
       // Cash / QR
       if (["cash", "qr"].includes(selectedPayment)) {
-        if (selectedPayment === "qr" && !showQRCode) return setShowQRCode(true);
+        if (selectedPayment === "qr" && !showQRCode) {
+          setShowQRCode(true);
+          return;
+        }
 
         await axios.post(
           "https://backendtechstore1-production.up.railway.app/api/user/orders/confirm-payment",
           {
             order_id: orderId,
             method: paymentMap[selectedPayment],
-            items: checkoutData?.items.map(i => ({
-              product_id: i.product_id,
-              quantity: i.quantity,
-              unit_price: i.unit_price,
-              color: i.color || "",
-            })) || [],
+            items:
+              checkoutData?.items.map((i) => ({
+                product_id: i.product_id,
+                quantity: i.quantity,
+                unit_price: i.unit_price,
+                color: i.color || "",
+              })) || [],
           }
         );
 
-        navigate("/user/payment_confirmation");
+        navigate("/user/payment_confirmation", {
+          state: {
+            orderId,
+            customerInfo: checkoutData.customer,
+            paymentMethod: selectedPayment,
+            orderItems: checkoutData.items,
+            subtotal,
+            shippingFee,
+            discount,
+            total,
+          },
+        });
         return;
       }
 
       // MoMo
       if (selectedPayment === "momo") {
-        if (amountVND > 50000000) return alert("⚠️ MoMo supports payments up to 50 million VND.");
+        if (amountVND > 50000000)
+          return alert("⚠️ MoMo supports payments up to 50 million VND.");
+
         const res = await fetch(
           "https://backendtechstore1-production.up.railway.app/api/user/momo/create-payment",
           {
@@ -332,10 +358,7 @@ const PaymentMethod = () => {
           }
         );
         const data = await res.json();
-        if (data.payUrl) {
-          // Redirect MoMo, backend xác nhận xong sẽ redirect về PaymentConfirmation
-          window.location.href = data.payUrl;
-        }
+        if (data.payUrl) window.location.href = data.payUrl;
         return;
       }
 
@@ -348,10 +371,9 @@ const PaymentMethod = () => {
         if (res.data?.url) window.location.href = res.data.url;
         return;
       }
-
     } catch (err) {
-      alert("Payment error!");
       console.error(err);
+      alert("Payment error!");
     } finally {
       setIsLoading(false);
     }
@@ -363,24 +385,6 @@ const PaymentMethod = () => {
     { id: "qr", name: "QR", description: "Payment via QR", icon: "qr" },
     { id: "vnpay", name: "VNPay", description: "Payment via VNPay", icon: "card" },
   ];
-
-  useEffect(() => {
-    const fetchOrder = async () => {
-      try {
-        const res = await fetch(`https://backendtechstore1-production.up.railway.app/api/user/orders/${orderId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!res.ok) throw new Error("Failed to fetch order");
-        const data = await res.json();
-        if (data.order) setTotal(parseFloat(data.order.total_amount || 0));
-      } catch (err) {
-        console.error("Error fetching order in PaymentMethod:", err.message);
-      }
-    };
-
-    if (orderId && token) fetchOrder();
-  }, [orderId, token]);
 
   return (
     <div className="payment-container-paymentMethod">
@@ -476,3 +480,4 @@ const PaymentMethod = () => {
 };
 
 export default PaymentMethod;
+
