@@ -1,7 +1,8 @@
 
 
 import React from "react"
-
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 const PaymentConfirmation = ({
   orderId,
   customerInfo,
@@ -19,6 +20,19 @@ const PaymentConfirmation = ({
     { number: 2, title: "Payment Method", completed: true, active: false, confirmed: false },
     { number: 3, title: "Order Confirmation", completed: false, active: true, confirmed: false },
   ];
+const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const resultCode = params.get("resultCode");
+    const message = params.get("message");
+
+    if (resultCode) {
+      console.log("Payment result:", resultCode, message);
+      navigate("/user/payment_confirmation", { replace: true });
+    }
+  }, [location, navigate]);
 
   const UserIcon = () => (
     <svg className="section-icon" fill="currentColor" viewBox="0 0 20 20">
