@@ -423,16 +423,12 @@ useEffect(() => {
       );
       const orderTotal = parseFloat(res.data.order?.total_amount || 0);
       setTotal(orderTotal);
-
-      // Fetch xong -> điều hướng
-      navigate("/user/payment_confirmation");
     } catch (err) {
       console.error("Fetch order error:", err);
     }
   };
   fetchOrder();
-}, [orderId, token, navigate]);
-
+}, [orderId, token]);
   return (
     <div className="payment-container-paymentMethod">
       <h1 className="payment-title-paymentMethod">Payment</h1>
