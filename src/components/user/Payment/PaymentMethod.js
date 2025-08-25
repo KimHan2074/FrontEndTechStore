@@ -240,7 +240,6 @@
 
 
 
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../pages/user/Payment/Payment.css";
@@ -293,15 +292,25 @@ const PaymentMethod = () => {
       try {
         checkoutData = JSON.parse(checkoutDataString);
       } catch (err) {
-        console.error(err);
+        console.error("Invalid checkout data:", err);
         return alert("Invalid checkout data!");
       }
     }
-
     if (!checkoutData) return alert("Checkout data not found!");
 
     const exchangeRate = 24000;
     const amountVND = Math.round(total * exchangeRate);
+
+    if (selectedPayment === "momo" && amountVND <= 0) {
+      return alert("Invalid amount for MoMo payment.");
+    }
+
+    console.log("Payment info:", {
+      orderId,
+      selectedPayment,
+      amountVND,
+      checkoutItems: checkoutData.items,
+    });
 
     setIsLoading(true);
 
@@ -319,7 +328,7 @@ const PaymentMethod = () => {
             order_id: orderId,
             method: paymentMap[selectedPayment],
             items:
-              checkoutData?.items.map((i) => ({
+              checkoutData.items.map((i) => ({
                 product_id: i.product_id,
                 quantity: i.quantity,
                 unit_price: i.unit_price,
@@ -342,6 +351,23 @@ const PaymentMethod = () => {
         });
         return;
       }
+console.log("Sending VNPay request:", {
+  amount: amountVND,
+  order_id: orderId,
+  token
+});
+
+try {
+  const res = await axios.post(
+    "https://backendtechstore1-production.up.railway.app/api/user/create-payment",
+    { amount: amountVND, order_id: orderId },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  console.log("VNPay response:", res.data);
+  if (res.data?.url) window.location.href = res.data.url;
+} catch (err) {
+  console.error("VNPay Payment error:", err.response?.data || err.message);
+}
 
       // MoMo
       if (selectedPayment === "momo") {
@@ -358,7 +384,9 @@ const PaymentMethod = () => {
           }
         );
         const data = await res.json();
+        console.log("MoMo response:", data);
         if (data.payUrl) window.location.href = data.payUrl;
+        else alert("MoMo payment failed!");
         return;
       }
 
@@ -372,7 +400,7 @@ const PaymentMethod = () => {
         return;
       }
     } catch (err) {
-      console.error(err);
+      console.error("Payment error:", err);
       alert("Payment error!");
     } finally {
       setIsLoading(false);
@@ -385,12 +413,32 @@ const PaymentMethod = () => {
     { id: "qr", name: "QR", description: "Payment via QR", icon: "qr" },
     { id: "vnpay", name: "VNPay", description: "Payment via VNPay", icon: "card" },
   ];
+useEffect(() => {
+  const fetchOrder = async () => {
+    if (!orderId || !token) return;
+    try {
+      const res = await axios.get(
+        `https://backendtechstore1-production.up.railway.app/api/user/orders/${orderId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const orderTotal = parseFloat(res.data.order?.total_amount || 0);
+      setTotal(orderTotal);
+
+      // Fetch xong -> điều hướng
+      navigate("/user/payment_confirmation");
+    } catch (err) {
+      console.error("Fetch order error:", err);
+    }
+  };
+  fetchOrder();
+}, [orderId, token, navigate]);
 
   return (
     <div className="payment-container-paymentMethod">
       <h1 className="payment-title-paymentMethod">Payment</h1>
       <div className="payment-content-paymentMethod">
         <div className="left-section-paymentMethod">
+          {/* Step 1 */}
           <div className="step-section-paymentMethod completed-paymentMethod">
             <div className="step-header-paymentMethod">
               <div className="step-number-paymentMethod completed-paymentMethod">1</div>
@@ -398,6 +446,7 @@ const PaymentMethod = () => {
             </div>
           </div>
 
+          {/* Step 2 */}
           <div className="step-section-paymentMethod active-paymentMethod">
             <div className="step-header-paymentMethod">
               <div className="step-number-paymentMethod active-paymentMethod">2</div>
@@ -457,6 +506,7 @@ const PaymentMethod = () => {
             </div>
           </div>
 
+          {/* Step 3 */}
           <div className="step-section-paymentMethod">
             <div className="step-header-paymentMethod">
               <div className="step-number-paymentMethod">3</div>
@@ -480,4 +530,3 @@ const PaymentMethod = () => {
 };
 
 export default PaymentMethod;
-
