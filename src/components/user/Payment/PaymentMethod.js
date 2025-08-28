@@ -300,7 +300,7 @@ const PaymentMethod = () => {
   const orderId = localStorage.getItem("currentOrderId");
 
 const handleAccept = async () => {
-  if (isLoading) return; // tránh click liên tục
+  if (isLoading) return;
   if (!selectedPayment) return alert("Please select a payment method.");
   if (!orderId) return alert("Order ID not found.");
 
@@ -308,7 +308,7 @@ const handleAccept = async () => {
   let checkoutData = null;
   try {
     checkoutData = checkoutDataString ? JSON.parse(checkoutDataString) : null;
-  } catch (err) {
+  } catch {
     return alert("Invalid checkout data!");
   }
   if (!checkoutData) return alert("Checkout data not found!");
@@ -319,7 +319,7 @@ const handleAccept = async () => {
   setIsLoading(true);
 
   try {
-    // 🟢 COD & QR
+    // COD & QR
     if (selectedPayment === "cash" || selectedPayment === "qr") {
       await axios.post(
         "https://backendtechstore1-production.up.railway.app/api/user/orders/confirm-payment",
@@ -350,47 +350,38 @@ const handleAccept = async () => {
       return;
     }
 
+    // MoMo
+    if (selectedPayment === "momo") {
+      if (amountVND <= 0) return alert("Invalid amount for MoMo payment.");
+      if (amountVND > 50000000)
+        return alert("⚠️ MoMo supports payments up to 50 million VND.");
 
-if (selectedPayment === "momo") {
-  if (amountVND <= 0) return alert("Invalid amount for MoMo payment.");
-  if (amountVND > 50000000) return alert("⚠️ MoMo supports payments up to 50 million VND.");
-
-  try {
-    const res = await axios.post(
-      "https://backendtechstore1-production.up.railway.app/api/user/momo/create-payment",
-      {
-        amount: amountVND,
-        order_id: orderId,
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    if (res.data?.payUrl) {
-      window.location.href = res.data.payUrl;
-
-      localStorage.setItem(
-        "pendingOrder",
-        JSON.stringify({
-          orderId,
-          customerInfo: checkoutData.customer,
-          paymentMethod: "momo",
-          orderItems: checkoutData.items,
-          subtotal,
-          shippingFee,
-          discount,
-          total,
-        })
+      const res = await axios.post(
+        "https://backendtechstore1-production.up.railway.app/api/user/momo/create-payment",
+        { amount: amountVND, order_id: orderId },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      if (res.data?.payUrl) {
+        window.location.href = res.data.payUrl;
+        localStorage.setItem(
+          "pendingOrder",
+          JSON.stringify({
+            orderId,
+            customerInfo: checkoutData.customer,
+            paymentMethod: "momo",
+            orderItems: checkoutData.items,
+            subtotal,
+            shippingFee,
+            discount,
+            total,
+          })
+        );
+      }
+      return;
     }
-  } catch (err) {
-    console.error("MoMo error:", err);
-    alert("MoMo payment failed!");
-  }
-  return;
-}
 
-
-    // 🟡 VNPay
+    // VNPay
     if (selectedPayment === "vnpay") {
       const res = await axios.post(
         "https://backendtechstore1-production.up.railway.app/api/user/create-payment",
@@ -400,13 +391,11 @@ if (selectedPayment === "momo") {
       if (res.data?.url) window.location.href = res.data.url;
       return;
     }
-  } catch (err) {
-    console.error("Payment error:", err);
-    alert("Payment error!");
   } finally {
     setIsLoading(false);
   }
 };
+
 
 
   const paymentMethods = [
@@ -495,13 +484,13 @@ if (selectedPayment === "momo") {
                 <span className="total-amount-paymentMethod">${total.toFixed(2)}</span>
               </div>
 
-             <button
-  className="accept-btn-paymentMethod"
-  onClick={handleAccept}
-  disabled={isLoading}
->
-  {isLoading ? "Processing..." : "Accept"}
-</button>
+              <button
+                className="accept-btn-paymentMethod"
+                onClick={handleAccept}
+                  disabled={isLoading || !selectedPayment}
+              >
+                {isLoading ? "Processing..." : "Accept"}
+              </button>
 
             </div>
           </div>
