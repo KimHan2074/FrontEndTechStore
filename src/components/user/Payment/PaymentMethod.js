@@ -627,7 +627,7 @@ const handleAccept = async () => {
 
 
       await axios.post(
-        "http://localhost:8000/api/user/orders/confirm-payment",
+        "https://backendtechstore1-production.up.railway.app/api/user/orders/confirm-payment",
         {
           order_id: orderId,
           method: paymentMap[selectedPayment],
@@ -664,7 +664,7 @@ const handleAccept = async () => {
 
 
       const res = await fetch(
-        "http://localhost:8000/api/user/momo/create-payment",
+        "https://backendtechstore1-production.up.railway.app/api/user/momo/create-payment",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -683,7 +683,7 @@ const handleAccept = async () => {
     // === VNPay ===
     if (selectedPayment === "vnpay") {
       const res = await axios.post(
-        "http://localhost:8000/api/user/create-payment",
+        "https://backendtechstore1-production.up.railway.app/api/user/create-payment",
         { amount: amountVND, order_id: orderId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -715,7 +715,7 @@ useEffect(() => {
     if (!orderId || !token) return;
     try {
       const res = await axios.get(
-        `http://localhost:8000/api/user/orders/${orderId}`,
+        `https://backendtechstore1-production.up.railway.app/api/user/orders/${orderId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const orderTotal = parseFloat(res.data.order?.total_amount || 0);
