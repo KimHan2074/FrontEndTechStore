@@ -652,7 +652,7 @@ const PaymentMethod = () => {
 
         // Redirect to MoMo payment page (backend trả link MoMo)
         const res = await axios.post(
-          "https://backendtechstore1-production.up.railway.app/api/user/create-momo-payment",
+          "https://backendtechstore1-production.up.railway.app/api/user/momo/create-payment",
           { order_id: orderId, amount: amountVND }
         );
 
