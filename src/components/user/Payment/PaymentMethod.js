@@ -398,10 +398,7 @@ const PaymentMethod = () => {
           { amount: amountVND, order_id: orderId },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-      if (res.data?.payUrl) {
-  const cleanUrl = res.data.payUrl.split('?')[0]; // bỏ hết params
-  window.location.href = cleanUrl;
-}
+        if (res.data?.url) window.location.href = res.data.url;
         return;
       }
     } catch (err) {
