@@ -130,51 +130,25 @@ try {
 }
 
       // MoMo
-      // if (selectedPayment === "momo") {
-      //   if (amountVND > 50000000)
-      //     return alert("⚠️ MoMo supports payments up to 50 million VND.");
+      if (selectedPayment === "momo") {
+        if (amountVND > 50000000)
+          return alert("⚠️ MoMo supports payments up to 50 million VND.");
 
-      //   const res = await fetch(
-      //     "https://backendtechstore1-production.up.railway.app/api/user/momo/create-payment",
-      //     {
-      //       method: "POST",
-      //       headers: { "Content-Type": "application/json" },
-      //       credentials: "include",
-      //       body: JSON.stringify({ amount: amountVND, order_id: orderId }),
-      //     }
-      //   );
-      //   const data = await res.json();
-      //   console.log("MoMo response:", data);
-      //   if (data.payUrl) window.location.href = data.payUrl;
-      //   else alert("MoMo payment failed!");
-      //   return;
-      // }
-
-      // MoMo
-if (selectedPayment === "momo") {
-  if (amountVND > 50000000) {
-    return alert("⚠️ MoMo supports payments up to 50 million VND.");
-  }
-
-  try {
-    const res = await axios.post(
-      "https://backendtechstore1-production.up.railway.app/api/momo/payment",
-      { amount: amountVND, order_id: orderId }
-    );
-
-    if (res.data?.payUrl) {
-      window.location.href = res.data.payUrl; // ✅ chuyển user sang MoMo
-    } else {
-      alert("MoMo payment failed!");
-    }
-  } catch (err) {
-    console.error("MoMo Payment error:", err.response?.data || err.message);
-    alert("MoMo payment error!");
-  }
-
-  return;
-}
-
+        const res = await fetch(
+          "https://backendtechstore1-production.up.railway.app/api/user/momo/create-payment",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ amount: amountVND, order_id: orderId }),
+          }
+        );
+        const data = await res.json();
+        console.log("MoMo response:", data);
+        if (data.payUrl) window.location.href = data.payUrl;
+        else alert("MoMo payment failed!");
+        return;
+      }
 
       // VNPay
       if (selectedPayment === "vnpay") {
