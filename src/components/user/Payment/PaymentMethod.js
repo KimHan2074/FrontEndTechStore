@@ -299,115 +299,118 @@ const PaymentMethod = () => {
   const token = localStorage.getItem("token");
   const orderId = localStorage.getItem("currentOrderId");
 
-const handleAccept = async () => {
-  if (isLoading) return; // tránh click liên tục
-  if (!selectedPayment) return alert("Please select a payment method.");
-  if (!orderId) return alert("Order ID not found.");
+  const handleAccept = async () => {
+    if (isLoading) return; // tránh click liên tục
+    if (!selectedPayment) return alert("Please select a payment method.");
+    if (!orderId) return alert("Order ID not found.");
 
-  const checkoutDataString = localStorage.getItem("checkoutData");
-  let checkoutData = null;
-  try {
-    checkoutData = checkoutDataString ? JSON.parse(checkoutDataString) : null;
-  } catch (err) {
-    return alert("Invalid checkout data!");
-  }
-  if (!checkoutData) return alert("Checkout data not found!");
-
-  const exchangeRate = 24000;
-  const amountVND = Math.round(total * exchangeRate);
-
-  setIsLoading(true);
-
-  try {
-    // 🟢 COD & QR
-    if (selectedPayment === "cash" || selectedPayment === "qr") {
-      await axios.post(
-        "https://backendtechstore1-production.up.railway.app/api/user/orders/confirm-payment",
-        {
-          order_id: orderId,
-          method: paymentMap[selectedPayment],
-          items: checkoutData.items.map((i) => ({
-            product_id: i.product_id,
-            quantity: i.quantity,
-            unit_price: i.unit_price,
-            color: i.color || "",
-          })),
-        }
-      );
-
-      navigate("/user/payment_confirmation", {
-        state: {
-          orderId,
-          customerInfo: checkoutData.customer,
-          paymentMethod: selectedPayment,
-          orderItems: checkoutData.items,
-          subtotal,
-          shippingFee,
-          discount,
-          total,
-        },
-      });
-      return;
+    const checkoutDataString = localStorage.getItem("checkoutData");
+    let checkoutData = null;
+    try {
+      checkoutData = checkoutDataString ? JSON.parse(checkoutDataString) : null;
+    } catch (err) {
+      return alert("Invalid checkout data!");
     }
+    if (!checkoutData) return alert("Checkout data not found!");
 
+    const exchangeRate = 24000;
+    const amountVND = Math.round(total * exchangeRate);
 
-if (selectedPayment === "momo") {
-  if (amountVND <= 0) return alert("Invalid amount for MoMo payment.");
-  if (amountVND > 50000000)
-    return alert("⚠️ MoMo supports payments up to 50 million VND.");
+    setIsLoading(true);
 
-  try {
-    await axios.post(
-      "https://backendtechstore1-production.up.railway.app/api/user/orders/confirm-payment",
-      {
-        order_id: orderId,
-        method: paymentMap[selectedPayment], // "Momo"
-        items: checkoutData.items.map((i) => ({
-          product_id: i.product_id,
-          quantity: i.quantity,
-          unit_price: i.unit_price,
-          color: i.color || "",
-        })),
+    try {
+      // 🟢 COD & QR
+      if (selectedPayment === "cash" || selectedPayment === "qr") {
+        await axios.post(
+          "https://backendtechstore1-production.up.railway.app/api/user/orders/confirm-payment",
+          {
+            order_id: orderId,
+            method: paymentMap[selectedPayment],
+            items: checkoutData.items.map((i) => ({
+              product_id: i.product_id,
+              quantity: i.quantity,
+              unit_price: i.unit_price,
+              color: i.color || "",
+            })),
+          }
+        );
+
+        navigate("/user/payment_confirmation", {
+          state: {
+            orderId,
+            customerInfo: checkoutData.customer,
+            paymentMethod: selectedPayment,
+            orderItems: checkoutData.items,
+            subtotal,
+            shippingFee,
+            discount,
+            total,
+          },
+        });
+        return;
       }
-    );
 
-    navigate("/user/payment_confirmation", {
-      state: {
-        orderId,
-        customerInfo: checkoutData.customer,
-        paymentMethod: selectedPayment, // ✅ sửa lại
-        orderItems: checkoutData.items,
-        subtotal,
-        shippingFee,
-        discount,
-        total,
-      },
-    });
-  } catch (err) {
-    console.error("MoMo confirm error:", err);
-    alert("MoMo payment failed!");
-  }
-  return;
+
+      if (selectedPayment === "momo") {
+        if (amountVND <= 0) return alert("Invalid amount for MoMo payment.");
+        if (amountVND > 50000000)
+          return alert("⚠️ MoMo supports payments up to 50 million VND.");
+
+        try {
+          await axios.post(
+            "https://backendtechstore1-production.up.railway.app/api/user/orders/confirm-payment",
+            {
+              order_id: orderId,
+              method: paymentMap[selectedPayment], // "Momo"
+              items: checkoutData.items.map((i) => ({
+                product_id: i.product_id,
+                quantity: i.quantity,
+                unit_price: i.unit_price,
+                color: i.color || "",
+              })),
+            }
+          );
+
+          navigate("/user/payment_confirmation", {
+            state: {
+              orderId,
+              customerInfo: checkoutData.customer,
+              paymentMethod: selectedPayment, // ✅ sửa lại
+              orderItems: checkoutData.items,
+              subtotal,
+              shippingFee,
+              discount,
+              total,
+            },
+          });
+        } catch (err) {
+          console.error("MoMo confirm error:", err);
+          alert("MoMo payment failed!");
+        }
+        return;
+      }
+
+
+      // 🟡 VNPay
+      if (selectedPayment === "vnpay") {
+        const res = await axios.post(
+          "https://backendtechstore1-production.up.railway.app/api/user/create-payment",
+          { amount: amountVND, order_id: orderId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+      if (res.data?.payUrl) {
+  const cleanUrl = res.data.payUrl.split('?')[0]; // bỏ hết params
+  window.location.href = cleanUrl;
 }
-
-
-    // 🟡 VNPay
-    if (selectedPayment === "vnpay") {
-      const res = await axios.post(
-        "https://backendtechstore1-production.up.railway.app/api/user/create-payment",
-        { amount: amountVND, order_id: orderId },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      if (res.data?.url) window.location.href = res.data.url;
-      return;
+        return;
+      }
+    } catch (err) {
+      console.error("Payment error:", err);
+      alert("Payment error!");
+    } finally {
+      setIsLoading(false);
     }
-  } catch (err) {
-    console.error("Payment error:", err);
-    alert("Payment error!");
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
 
   const paymentMethods = [
@@ -495,13 +498,13 @@ if (selectedPayment === "momo") {
                 <span className="total-label-paymentMethod">Total:</span>
                 <span className="total-amount-paymentMethod">${total.toFixed(2)}</span>
               </div>
-<button
-  className="accept-btn-paymentMethod"
-  onClick={handleAccept}
-  disabled={isLoading || !selectedPayment} // 🔹 chỉ enable khi đã chọn
->
-  {isLoading ? "Processing..." : "Accept"}
-</button>
+              <button
+                className="accept-btn-paymentMethod"
+                onClick={handleAccept}
+                disabled={isLoading || !selectedPayment} // 🔹 chỉ enable khi đã chọn
+              >
+                {isLoading ? "Processing..." : "Accept"}
+              </button>
 
 
             </div>
