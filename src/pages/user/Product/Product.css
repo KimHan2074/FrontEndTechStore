@@ -959,6 +959,7 @@ cursor:pointer;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
+  margin-top: 135px;
 }
 
 @keyframes modalSlideIn {
